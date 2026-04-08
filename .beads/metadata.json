@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "server",
+  "dolt_database": "comark",
+  "project_id": "8ab1104d-e168-44cf-b983-1438d267ac90"
+}
