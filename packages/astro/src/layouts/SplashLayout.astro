@@ -1,5 +1,6 @@
 ---
-// Documentation page layout — assembles all USWDS chrome components
+// Splash / landing page layout — wider layout, no sidebar or TOC
+// Uses USWDS hero component
 import { SEO } from 'astro-seo'
 import config from 'virtual:starsandstripes/config'
 import GovBanner from '../components/GovBanner.astro'
@@ -11,10 +12,15 @@ import SiteAlert from '../components/SiteAlert.astro'
 interface Props {
   title: string;
   description?: string;
-  alert?: { message: string; type?: string; dismissible?: boolean } | false;
+  hero?: {
+    heading: string;
+    tagline?: string;
+    image?: string;
+    callToAction?: { label: string; href: string };
+  };
 }
 
-const { title, description, alert } = Astro.props
+const { title, description, hero } = Astro.props
 const headTags = config.head ?? []
 const pageTitle = `${title} | ${config.title}`
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost').href
@@ -31,7 +37,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
       openGraph={{
         basic: {
           title: pageTitle,
-          type: 'article',
+          type: 'website',
           url: canonicalUrl,
         },
         optional: {
@@ -53,12 +59,34 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
 
     {config.governmentBanner && <GovBanner />}
 
-    <SiteAlert alert={alert} />
+    <SiteAlert />
 
     <Header currentPath={Astro.url.pathname} />
 
     <main id="main-content">
-      <slot />
+      {hero && (
+        <section class="usa-hero" aria-label="Introduction">
+          <div class="grid-container">
+            <div class="usa-hero__callout">
+              <h1 class="usa-hero__heading">
+                <span class="usa-hero__heading--alt">{hero.heading}</span>
+              </h1>
+              {hero.tagline && <p>{hero.tagline}</p>}
+              {hero.callToAction && (
+                <a class="usa-button" href={hero.callToAction.href}>
+                  {hero.callToAction.label}
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section class="usa-section">
+        <div class="grid-container">
+          <slot />
+        </div>
+      </section>
     </main>
 
     <Footer />

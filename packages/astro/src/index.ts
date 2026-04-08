@@ -1,5 +1,6 @@
 import type { AstroIntegration } from "astro";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import {
   StarsAndStripesConfigSchema,
   type StarsAndStripesUserConfig,
@@ -47,9 +48,11 @@ export default function starsAndStripes(
           config.uswdsSettings,
         );
 
-        // Register virtual module plugin + USWDS config + React integration
+        // Auto-inject integrations: React, Sitemap
+        const integrations: AstroIntegration[] = [react(), sitemap()];
+
         updateConfig({
-          integrations: [react()],
+          integrations,
           vite: {
             plugins: [vitePluginVirtualConfig(config, astroConfig)],
             ...uswdsViteConfig,
