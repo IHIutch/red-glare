@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-// Maps Comark alert types to USWDS alert variants
 const typeMap: Record<string, string> = {
   info: "usa-alert--info",
   warning: "usa-alert--warning",
@@ -18,13 +17,8 @@ interface AlertProps {
   children?: ReactNode;
 }
 
-/**
- * USWDS Alert component for use with Comark's MDC syntax.
- * Usage in markdown: ::alert{type="warning"} Content here ::
- */
 export default function Alert({ type = "info", children }: AlertProps) {
   const alertClass = typeMap[type] ?? "usa-alert--info";
-
   return (
     <div className={`usa-alert ${alertClass}`} role="alert">
       <div className="usa-alert__body">

@@ -5,26 +5,9 @@ interface CodeGroupProps {
   children?: ReactNode;
 }
 
-/**
- * Tabbed code block component for showing multiple code alternatives.
- * Usage in markdown:
- *   ::code-group{labels="npm,pnpm,yarn"}
- *   ```bash
- *   npm install @starsandstripes/astro
- *   ```
- *   ```bash
- *   pnpm add @starsandstripes/astro
- *   ```
- *   ```bash
- *   yarn add @starsandstripes/astro
- *   ```
- *   ::
- */
 export default function CodeGroup({ labels = "", children }: CodeGroupProps) {
   const [activeTab, setActiveTab] = useState(0);
   const tabs = labels.split(",").map((l) => l.trim());
-
-  // Children are expected to be multiple code blocks
   const childArray = Array.isArray(children) ? children : [children];
 
   return (
@@ -47,10 +30,8 @@ export default function CodeGroup({ labels = "", children }: CodeGroupProps) {
             }`}
             onClick={() => setActiveTab(i)}
             onKeyDown={(e) => {
-              if (e.key === "ArrowRight")
-                setActiveTab((i + 1) % tabs.length);
-              if (e.key === "ArrowLeft")
-                setActiveTab((i - 1 + tabs.length) % tabs.length);
+              if (e.key === "ArrowRight") setActiveTab((i + 1) % tabs.length);
+              if (e.key === "ArrowLeft") setActiveTab((i - 1 + tabs.length) % tabs.length);
             }}
           >
             {tab}

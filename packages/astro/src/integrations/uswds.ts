@@ -6,7 +6,9 @@ export function getUswdsViteConfig(
   userSettingsPath?: string,
 ) {
   const require = createRequire(import.meta.url);
-  const uswdsPath = dirname(require.resolve("@uswds/uswds/package.json"));
+  // Resolve the main entry point, then navigate up to the package root
+  const uswdsMain = require.resolve("@uswds/uswds");
+  const uswdsPath = uswdsMain.replace(/\/dist\/.*$/, "").replace(/\/src\/.*$/, "");
 
   return {
     css: {

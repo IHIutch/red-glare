@@ -59,7 +59,7 @@ export default function starsAndStripes(
           config.uswdsSettings,
         );
 
-        // Auto-inject integrations: React, Sitemap, and optionally Pagefind
+        // Auto-inject integrations: React (for ComarkRenderer), Sitemap, and optionally Pagefind
         const integrations: AstroIntegration[] = [react(), sitemap()];
 
         if (config.pagefind) {
@@ -70,6 +70,9 @@ export default function starsAndStripes(
           integrations,
           vite: {
             plugins: [vitePluginVirtualConfig(config, astroConfig)],
+            ssr: {
+              noExternal: ["@comark/react", "comark"],
+            },
             ...uswdsViteConfig,
           },
         });

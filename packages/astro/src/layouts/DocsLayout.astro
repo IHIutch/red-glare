@@ -28,16 +28,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
       title={pageTitle}
       description={description}
       canonical={canonicalUrl}
-      openGraph={{
-        basic: {
-          title: pageTitle,
-          type: 'article',
-          url: canonicalUrl,
-        },
-        optional: {
-          description,
-        },
-      }}
       twitter={{
         card: 'summary',
         title: pageTitle,
