@@ -53,12 +53,6 @@ export default function starsAndStripes(
           });
         }
 
-        // USWDS SCSS configuration
-        const uswdsViteConfig = getUswdsViteConfig(
-          astroConfig.root.pathname,
-          config.uswdsSettings,
-        );
-
         // Auto-inject integrations: React (for ComarkRenderer), Sitemap, and optionally Pagefind
         const integrations: AstroIntegration[] = [react(), sitemap()];
 
@@ -73,7 +67,7 @@ export default function starsAndStripes(
             ssr: {
               noExternal: ["@comark/react", "comark"],
             },
-            ...uswdsViteConfig,
+            ...getUswdsViteConfig(),
           },
         });
       },

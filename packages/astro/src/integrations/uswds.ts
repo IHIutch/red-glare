@@ -1,24 +1,17 @@
-import { resolve, dirname } from "node:path";
 import { createRequire } from "node:module";
 
-export function getUswdsViteConfig(
-  projectRoot: string,
-  userSettingsPath?: string,
-) {
+export function getUswdsViteConfig() {
+  // Resolve USWDS packages path from wherever pnpm installed it
   const require = createRequire(import.meta.url);
-  // Resolve the main entry point, then navigate up to the package root
   const uswdsMain = require.resolve("@uswds/uswds");
-  const uswdsPath = uswdsMain.replace(/\/dist\/.*$/, "").replace(/\/src\/.*$/, "");
+  const uswdsPackages = uswdsMain.replace(/\/dist\/.*$/, "/packages");
 
   return {
     css: {
       preprocessorOptions: {
         scss: {
-          api: "modern-compiler" as const,
-          includePaths: [resolve(uswdsPath, "packages")],
-          additionalData: userSettingsPath
-            ? `@use "${resolve(projectRoot, userSettingsPath)}" as user-settings;\n`
-            : "",
+          loadPaths: [uswdsPackages],
+          quietDeps: true,
         },
       },
     },

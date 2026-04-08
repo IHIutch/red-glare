@@ -1,5 +1,9 @@
-// Base USWDS component imports — modular to minimize CSS bundle size.
-// Users customize via their own SCSS settings file pointed to by uswdsSettings config.
+// USWDS base styles for Stars and Stripes
+// Uses modular component imports to minimize CSS bundle size.
+
+@use "uswds-core" with (
+  $theme-show-notifications: false
+);
 
 @forward "usa-banner";
 @forward "usa-header";
@@ -12,9 +16,14 @@
 @forward "usa-table";
 @forward "usa-tag";
 @forward "usa-skipnav";
-@forward "usa-in-page-nav";
+@forward "usa-in-page-navigation";
 @forward "usa-prose";
 @forward "usa-layout-grid";
 @forward "usa-button";
 @forward "usa-search";
 @forward "usa-section";
+@forward "usa-hero";
+@forward "usa-accordion";
+@forward "usa-media-block";
+@forward "usa-link";
+@forward "usa-list";
