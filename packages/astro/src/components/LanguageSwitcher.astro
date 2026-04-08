@@ -1,0 +1,40 @@
+---
+// Language switcher — shows in header when multiple locales are configured
+import config from 'virtual:starsandstripes/config'
+import { getCollection } from 'astro:content'
+import { findTranslations } from '../i18n/routing'
+
+interface Props {
+  currentId: string;
+}
+
+const { currentId } = Astro.props
+
+const locales = Object.keys(config.locales ?? {})
+if (locales.length <= 1) return
+
+const docs = await getCollection('docs')
+const allIds = docs.map((d) => d.id)
+const translations = findTranslations(currentId, allIds, config)
+---
+
+{translations.length > 1 && (
+  <div class="usa-language-container">
+    <ul class="usa-language__primary usa-accordion">
+      <li class="usa-language__primary-item">
+        <button type="button" class="usa-accordion__button usa-language__link" aria-expanded="false" aria-controls="language-options">
+          Languages
+        </button>
+        <ul id="language-options" class="usa-language__submenu" hidden>
+          {translations.map((t) => (
+            <li class="usa-language__submenu-item">
+              <a href={t.href} lang={t.locale} class="usa-language__submenu-link">
+                {t.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </li>
+    </ul>
+  </div>
+)}
