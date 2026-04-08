@@ -11,6 +11,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro'
 import PrevNext from '../components/PrevNext.astro'
 import EditLink from '../components/EditLink.astro'
 import Alert from '../components/Alert'
+import CodeGroup from '../components/CodeGroup'
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs')
@@ -30,7 +31,7 @@ const isSplash = doc.data.template === 'splash'
 {isSplash ? (
   <SplashLayout title={doc.data.title} description={doc.data.description}>
     <article class="usa-prose">
-      <ComarkRenderer tree={tree} components={{ Alert }} />
+      <ComarkRenderer tree={tree} components={{ Alert, 'code-group': CodeGroup }} />
     </article>
   </SplashLayout>
 ) : (
@@ -44,7 +45,7 @@ const isSplash = doc.data.template === 'splash'
         <div class={showToc ? 'tablet:grid-col-6' : 'tablet:grid-col-9'}>
           <article class="usa-prose">
             <h1>{doc.data.title}</h1>
-            <ComarkRenderer tree={tree} components={{ Alert }} />
+            <ComarkRenderer tree={tree} components={{ Alert, 'code-group': CodeGroup }} />
           </article>
           <div class="margin-top-4">
             <EditLink filePath={doc.filePath} />

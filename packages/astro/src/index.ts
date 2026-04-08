@@ -1,6 +1,7 @@
 import type { AstroIntegration } from "astro";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import pagefind from "astro-pagefind";
 import {
   StarsAndStripesConfigSchema,
   type StarsAndStripesUserConfig,
@@ -42,14 +43,28 @@ export default function starsAndStripes(
           prerender: true,
         });
 
+        // Conditionally inject RSS feed route
+        if (config.rss) {
+          injectRoute({
+            pattern: "feed.xml",
+            entrypoint: new URL("./routes/feed.xml.ts", import.meta.url)
+              .pathname,
+            prerender: true,
+          });
+        }
+
         // USWDS SCSS configuration
         const uswdsViteConfig = getUswdsViteConfig(
           astroConfig.root.pathname,
           config.uswdsSettings,
         );
 
-        // Auto-inject integrations: React, Sitemap
+        // Auto-inject integrations: React, Sitemap, and optionally Pagefind
         const integrations: AstroIntegration[] = [react(), sitemap()];
+
+        if (config.pagefind) {
+          integrations.push(pagefind());
+        }
 
         updateConfig({
           integrations,
