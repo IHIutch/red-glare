@@ -1,0 +1,25 @@
+---
+// Documentation page layout shell
+// Will be expanded with USWDS header, sidebar, TOC, footer, identifier
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Stars and Stripes</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <main id="main-content">
+      <slot />
+    </main>
+  </body>
+</html>

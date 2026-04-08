@@ -1,0 +1,17 @@
+{
+  "name": "create-starsandstripes",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "create-starsandstripes": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

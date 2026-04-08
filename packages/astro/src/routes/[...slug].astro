@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content'
+import { ComarkRenderer } from '@comark/react'
+import { parseContent } from '../comark'
+import DocsLayout from '../layouts/DocsLayout.astro'
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs')
+  return docs.map((doc) => ({
+    params: { slug: doc.id === 'index' ? undefined : doc.id },
+    props: { doc },
+  }))
+}
+
+const { doc } = Astro.props
+const tree = await parseContent(doc.body!)
+---
+
+<DocsLayout title={doc.data.title} description={doc.data.description}>
+  <article class="usa-prose">
+    <h1>{doc.data.title}</h1>
+    <ComarkRenderer tree={tree} />
+  </article>
+</DocsLayout>

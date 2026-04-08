@@ -1,0 +1,40 @@
+{
+  "name": "@starsandstripes/astro",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "astro": "^6.0.0"
+  },
+  "dependencies": {
+    "@astrojs/react": "^5.0.1",
+    "@comark/react": "^0.2.0",
+    "comark": "^0.2.0",
+    "@uswds/uswds": "^3.13.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^6.1.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.0",
+    "vitest": "^4.1.3",
+    "sass-embedded": "^1.99.0",
+    "shiki": "^4.0.0",
+    "katex": "^0.16.40"
+  }
+}

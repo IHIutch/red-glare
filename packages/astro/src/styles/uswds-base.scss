@@ -1,0 +1,20 @@
+// Base USWDS component imports — modular to minimize CSS bundle size.
+// Users customize via their own SCSS settings file pointed to by uswdsSettings config.
+
+@forward "usa-banner";
+@forward "usa-header";
+@forward "usa-nav";
+@forward "usa-sidenav";
+@forward "usa-footer";
+@forward "usa-identifier";
+@forward "usa-breadcrumb";
+@forward "usa-alert";
+@forward "usa-table";
+@forward "usa-tag";
+@forward "usa-skipnav";
+@forward "usa-in-page-nav";
+@forward "usa-prose";
+@forward "usa-layout-grid";
+@forward "usa-button";
+@forward "usa-search";
+@forward "usa-section";
