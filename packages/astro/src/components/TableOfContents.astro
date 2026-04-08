@@ -1,0 +1,26 @@
+---
+// Table of Contents — renders h2/h3 headings with scroll-spy
+// Uses USWDS in-page navigation pattern
+import type { Heading } from '../utils/headings'
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props
+---
+
+{headings.length > 0 && (
+  <nav class="usa-in-page-nav" aria-label="On this page" data-toc>
+    <p class="usa-in-page-nav__heading">On this page</p>
+    <ul class="usa-in-page-nav__list">
+      {headings.map((heading) => (
+        <li class={`usa-in-page-nav__item ${heading.depth === 3 ? 'usa-in-page-nav__item--sub-item' : ''}`}>
+          <a href={`#${heading.slug}`} class="usa-in-page-nav__link">
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}

@@ -1,0 +1,148 @@
+---
+// USWDS Side Navigation — auto-generated from file structure with config overrides
+// https://designsystem.digital.gov/components/sidenav/
+import config from 'virtual:starsandstripes/config'
+import { getCollection } from 'astro:content'
+
+interface SidebarItem {
+  label: string;
+  href: string;
+  order: number;
+  children?: SidebarItem[];
+}
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props
+
+// Build sidebar tree from content collection + config overrides
+const docs = await getCollection('docs', (entry) => {
+  // Filter out drafts and hidden pages
+  return !entry.data.draft && !entry.data.sidebar?.hidden
+})
+
+function buildSidebarTree(entries: typeof docs): SidebarItem[] {
+  const tree: Map<string, SidebarItem & { children: SidebarItem[] }> = new Map()
+  const topLevel: SidebarItem[] = []
+
+  for (const entry of entries) {
+    const parts = entry.id.split('/')
+    const label = entry.data.sidebar?.label ?? entry.data.title
+    const order = entry.data.sidebar?.order ?? 999
+    const href = `/${entry.id === 'index' ? '' : entry.id}/`
+
+    if (parts.length === 1) {
+      // Top-level page
+      if (entry.id !== 'index') {
+        topLevel.push({ label, href, order })
+      }
+    } else {
+      // Nested page — group by first directory segment
+      const groupKey = parts[0]
+      if (!tree.has(groupKey)) {
+        tree.set(groupKey, {
+          label: groupKey.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+          href: `/${groupKey}/`,
+          order: 999,
+          children: [],
+        })
+      }
+      const group = tree.get(groupKey)!
+      group.children.push({ label, href, order })
+    }
+  }
+
+  // Sort children within groups
+  for (const group of tree.values()) {
+    group.children.sort((a, b) => a.order - b.order)
+  }
+
+  // Merge top-level pages and groups, sorted by order
+  const result: SidebarItem[] = [
+    ...topLevel,
+    ...Array.from(tree.values()),
+  ]
+  result.sort((a, b) => a.order - b.order)
+
+  // Apply config sidebar overrides if provided
+  if (config.sidebar) {
+    return applySidebarConfig(config.sidebar, result)
+  }
+
+  return result
+}
+
+function applySidebarConfig(sidebarConfig: typeof config.sidebar, autoItems: SidebarItem[]): SidebarItem[] {
+  if (!sidebarConfig) return autoItems
+
+  return sidebarConfig.map((group) => {
+    if (group.autogenerate) {
+      // Find the auto-generated group matching this directory
+      const autoGroup = autoItems.find(
+        (item) => item.href === `/${group.autogenerate!.directory}/`
+      )
+      return {
+        label: group.label,
+        href: autoGroup?.href ?? '#',
+        order: 0,
+        children: autoGroup?.children,
+      }
+    }
+
+    // Explicit items
+    return {
+      label: group.label,
+      href: '#',
+      order: 0,
+      children: (group.items ?? []).map((item, i) => {
+        if (typeof item === 'string') {
+          const autoItem = autoItems
+            .flatMap((g) => [g, ...(g.children ?? [])])
+            .find((g) => g.href === `/${item}/`)
+          return {
+            label: autoItem?.label ?? item,
+            href: `/${item}/`,
+            order: i,
+          }
+        }
+        return { label: item.label, href: '#', order: i }
+      }),
+    }
+  })
+}
+
+const sidebarItems = buildSidebarTree(docs)
+---
+
+<aside class="usa-layout-docs__sidenav" aria-label="Secondary navigation">
+  <nav>
+    <ul class="usa-sidenav">
+      {sidebarItems.map((item) => (
+        <li class="usa-sidenav__item">
+          {item.children && item.children.length > 0 ? (
+            <>
+              <a href={item.href} class={currentPath === item.href ? 'usa-current' : ''}>
+                {item.label}
+              </a>
+              <ul class="usa-sidenav__sublist">
+                {item.children.map((child) => (
+                  <li class="usa-sidenav__item">
+                    <a href={child.href} class={currentPath === child.href ? 'usa-current' : ''}>
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <a href={item.href} class={currentPath === item.href ? 'usa-current' : ''}>
+              {item.label}
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>

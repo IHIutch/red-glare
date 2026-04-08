@@ -1,0 +1,36 @@
+---
+// USWDS Site Alert Banner
+// https://designsystem.digital.gov/components/site-alert/
+import config from 'virtual:starsandstripes/config'
+
+interface Props {
+  /** Override or suppress the global alert per-page */
+  alert?: { message: string; type?: string; dismissible?: boolean } | false;
+}
+
+const { alert: pageAlert } = Astro.props
+
+// Per-page override: false suppresses, object overrides, undefined uses global
+const alertConfig = pageAlert === false
+  ? null
+  : pageAlert ?? config.alert ?? null
+
+if (!alertConfig) return
+
+const typeClass = {
+  info: 'usa-site-alert--info',
+  warning: 'usa-site-alert--warning',
+  error: 'usa-site-alert--emergency',
+  success: 'usa-site-alert--info',
+}[alertConfig.type ?? 'info'] ?? 'usa-site-alert--info'
+---
+
+<section class={`usa-site-alert ${typeClass}`} aria-label="Site alert">
+  <div class="usa-alert">
+    <div class="usa-alert__body">
+      <p class="usa-alert__text">
+        {alertConfig.message}
+      </p>
+    </div>
+  </div>
+</section>

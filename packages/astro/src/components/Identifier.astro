@@ -1,0 +1,63 @@
+---
+// USWDS Identifier component (required federal agency strip)
+// https://designsystem.digital.gov/components/identifier/
+import config from 'virtual:starsandstripes/config'
+
+const identifier = config.identifier
+---
+
+{identifier && (
+  <div class="usa-identifier">
+    <section class="usa-identifier__section usa-identifier__section--masthead" aria-label="Agency identifier">
+      <div class="usa-identifier__container">
+        <div class="usa-identifier__logos">
+          {identifier.agencyLogo && (
+            <a href="/" class="usa-identifier__logo">
+              <img
+                class="usa-identifier__logo-img"
+                src={identifier.agencyLogo}
+                alt={`${identifier.agency} logo`}
+                role="img"
+              />
+            </a>
+          )}
+        </div>
+        <section class="usa-identifier__identity" aria-label="Agency description">
+          <p class="usa-identifier__identity-domain">{config.title}</p>
+          <p class="usa-identifier__identity-disclaimer">
+            {identifier.parentAgency ? (
+              <>An official website of the <a href={identifier.parentAgency.href}>{identifier.parentAgency.name}</a></>
+            ) : (
+              <>An official website of {identifier.agency}</>
+            )}
+          </p>
+        </section>
+      </div>
+    </section>
+
+    {identifier.links.length > 0 && (
+      <nav class="usa-identifier__section usa-identifier__section--required-links" aria-label="Important links">
+        <div class="usa-identifier__container">
+          <ul class="usa-identifier__required-links-list">
+            {identifier.links.map((link) => (
+              <li class="usa-identifier__required-links-list-item">
+                <a href={link.href} class="usa-identifier__required-link">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    )}
+
+    <section class="usa-identifier__section usa-identifier__section--usagov" aria-label="U.S. government information and services">
+      <div class="usa-identifier__container">
+        <div class="usa-identifier__usagov-description">
+          Looking for U.S. government information and services?
+          <a href="https://www.usa.gov/" class="usa-link">Visit USA.gov</a>
+        </div>
+      </div>
+    </section>
+  </div>
+)}

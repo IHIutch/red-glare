@@ -1,0 +1,21 @@
+---
+// "Edit this page" link — constructed from editLink.baseUrl config + page source path
+import config from 'virtual:starsandstripes/config'
+
+interface Props {
+  filePath?: string;
+}
+
+const { filePath } = Astro.props
+const editLink = config.editLink
+
+const editUrl = editLink && filePath
+  ? `${editLink.baseUrl.replace(/\/$/, '')}/${filePath}`
+  : null
+---
+
+{editUrl && (
+  <a href={editUrl} class="usa-link usa-link--external" target="_blank" rel="noopener noreferrer">
+    Edit this page
+  </a>
+)}

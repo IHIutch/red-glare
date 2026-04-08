@@ -1,0 +1,47 @@
+---
+// Previous / Next page navigation
+import { getCollection } from 'astro:content'
+
+interface Props {
+  currentId: string;
+}
+
+const { currentId } = Astro.props
+
+// Get all docs sorted by sidebar order, then alphabetically
+const docs = await getCollection('docs', (entry) => {
+  return !entry.data.draft && !entry.data.sidebar?.hidden && entry.id !== 'index'
+})
+
+const sorted = docs.sort((a, b) => {
+  const orderA = a.data.sidebar?.order ?? 999
+  const orderB = b.data.sidebar?.order ?? 999
+  if (orderA !== orderB) return orderA - orderB
+  return a.id.localeCompare(b.id)
+})
+
+const currentIndex = sorted.findIndex((doc) => doc.id === currentId)
+const prev = currentIndex > 0 ? sorted[currentIndex - 1] : null
+const next = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null
+---
+
+{(prev || next) && (
+  <nav class="margin-top-6 padding-top-4 border-top-1px border-base-lighter" aria-label="Previous and next pages">
+    <div class="grid-row">
+      <div class="grid-col-6">
+        {prev && (
+          <a href={`/${prev.id}/`} class="usa-link">
+            &larr; {prev.data.title}
+          </a>
+        )}
+      </div>
+      <div class="grid-col-6 text-right">
+        {next && (
+          <a href={`/${next.id}/`} class="usa-link">
+            {next.data.title} &rarr;
+          </a>
+        )}
+      </div>
+    </div>
+  </nav>
+)}

@@ -1,0 +1,46 @@
+---
+// USWDS Breadcrumb navigation
+// https://designsystem.digital.gov/components/breadcrumb/
+import config from 'virtual:starsandstripes/config'
+
+interface Props {
+  currentPath: string;
+  title: string;
+}
+
+const { currentPath, title } = Astro.props
+
+// Build breadcrumb trail from URL path
+const segments = currentPath.split('/').filter(Boolean)
+const crumbs = [
+  { label: config.title, href: '/' },
+  ...segments.map((segment, i) => ({
+    label: segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+    href: '/' + segments.slice(0, i + 1).join('/') + '/',
+  })),
+]
+
+// Replace last crumb label with actual page title
+if (crumbs.length > 1) {
+  crumbs[crumbs.length - 1].label = title
+}
+---
+
+{crumbs.length > 1 && (
+  <nav class="usa-breadcrumb" aria-label="Breadcrumbs">
+    <ol class="usa-breadcrumb__list">
+      {crumbs.map((crumb, i) => (
+        <li class={`usa-breadcrumb__list-item ${i === crumbs.length - 1 ? 'usa-current' : ''}`}
+            aria-current={i === crumbs.length - 1 ? 'page' : undefined}>
+          {i === crumbs.length - 1 ? (
+            <span>{crumb.label}</span>
+          ) : (
+            <a href={crumb.href} class="usa-breadcrumb__link">
+              <span>{crumb.label}</span>
+            </a>
+          )}
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

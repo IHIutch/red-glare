@@ -1,0 +1,94 @@
+---
+// USWDS Footer component
+// https://designsystem.digital.gov/components/footer/
+import config from 'virtual:starsandstripes/config'
+
+const footer = config.footer
+const links = footer?.links ?? []
+const contact = footer?.contact
+const social = footer?.social ?? []
+
+const socialIcons: Record<string, string> = {
+  facebook: '/assets/img/usa-icons/facebook.svg',
+  x: '/assets/img/usa-icons/x.svg',
+  youtube: '/assets/img/usa-icons/youtube.svg',
+  instagram: '/assets/img/usa-icons/instagram.svg',
+  linkedin: '/assets/img/usa-icons/linkedin.svg',
+  github: '/assets/img/usa-icons/github.svg',
+  rss: '/assets/img/usa-icons/rss_feed.svg',
+}
+---
+
+<footer class="usa-footer usa-footer--big">
+  <div class="grid-container usa-footer__return-to-top">
+    <a href="#">Return to top</a>
+  </div>
+
+  {links.length > 0 && (
+    <div class="usa-footer__primary-section">
+      <div class="grid-container">
+        <div class="grid-row grid-gap">
+          {links.map((column) => (
+            <div class="tablet:grid-col">
+              <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
+                <h4 class="usa-footer__primary-link">{column.heading}</h4>
+                <ul class="usa-list usa-list--unstyled">
+                  {column.items.map((item) => (
+                    <li class="usa-footer__secondary-link">
+                      <a href={item.href}>{item.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+
+  <div class="usa-footer__secondary-section">
+    <div class="grid-container">
+      <div class="grid-row grid-gap">
+        {social.length > 0 && (
+          <div class="tablet:grid-col-4">
+            <div class="usa-footer__social-links">
+              {social.map((item) => (
+                <a class="usa-social-link" href={item.href}>
+                  <img
+                    class="usa-social-link__icon"
+                    src={socialIcons[item.platform] ?? ''}
+                    alt={item.platform}
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+        {contact && (
+          <div class="tablet:grid-col-8">
+            {contact.heading && <h3 class="usa-footer__contact-heading">{contact.heading}</h3>}
+            <address class="usa-footer__address">
+              <div class="grid-row grid-gap">
+                {contact.phone && (
+                  <div class="grid-col-auto">
+                    <div class="usa-footer__contact-info">
+                      <a href={`tel:${contact.phone}`}>{contact.phone}</a>
+                    </div>
+                  </div>
+                )}
+                {contact.email && (
+                  <div class="grid-col-auto">
+                    <div class="usa-footer__contact-info">
+                      <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </address>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</footer>

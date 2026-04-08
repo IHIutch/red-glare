@@ -1,25 +1,48 @@
 ---
-// Documentation page layout shell
-// Will be expanded with USWDS header, sidebar, TOC, footer, identifier
+// Documentation page layout — assembles all USWDS chrome components
+import config from 'virtual:starsandstripes/config'
+import GovBanner from '../components/GovBanner.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import Identifier from '../components/Identifier.astro'
+import SiteAlert from '../components/SiteAlert.astro'
+
 interface Props {
   title: string;
   description?: string;
+  alert?: { message: string; type?: string; dismissible?: boolean } | false;
 }
 
-const { title, description } = Astro.props;
+const { title, description, alert } = Astro.props
+const headTags = config.head ?? []
 ---
 
-<html lang="en">
+<html lang={config.defaultLocale ?? 'en'}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — Stars and Stripes</title>
+    <title>{title} | {config.title}</title>
     {description && <meta name="description" content={description} />}
+    {headTags.map((tag) => (
+      <Fragment set:html={`<${tag.tag} ${Object.entries(tag.attrs ?? {}).map(([k, v]) => v === true ? k : `${k}="${v}"`).join(' ')}>${tag.content ?? ''}</${tag.tag}>`} />
+    ))}
   </head>
   <body>
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+
+    {config.governmentBanner && <GovBanner />}
+
+    <SiteAlert alert={alert} />
+
+    <Header currentPath={Astro.url.pathname} />
+
     <main id="main-content">
       <slot />
     </main>
+
+    <Footer />
+    <Identifier />
+
+    <script src="../scripts/uswds-init.ts"></script>
   </body>
 </html>

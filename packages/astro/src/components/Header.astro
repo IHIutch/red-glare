@@ -1,0 +1,55 @@
+---
+// USWDS Header component
+// https://designsystem.digital.gov/components/header/
+import config from 'virtual:starsandstripes/config'
+
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props
+
+// Build top-level nav from sidebar config if available
+const navItems: NavItem[] = (config.sidebar ?? []).map((group) => ({
+  label: group.label,
+  href: `/${(group.items?.[0] as string) ?? ''}`,
+}))
+---
+
+<header class="usa-header usa-header--basic">
+  <div class="usa-nav-container">
+    <div class="usa-navbar">
+      <div class="usa-logo">
+        <em class="usa-logo__text">
+          <a href="/" title={config.title}>
+            {config.logo && <img src={config.logo} alt="" class="usa-logo__img" />}
+            {config.title}
+          </a>
+        </em>
+      </div>
+      <button type="button" class="usa-menu-btn">Menu</button>
+    </div>
+    <nav aria-label="Primary navigation" class="usa-nav">
+      <button type="button" class="usa-nav__close">
+        <img src="/assets/img/usa-icons/close.svg" role="img" alt="Close" />
+      </button>
+      <ul class="usa-nav__primary usa-accordion">
+        {navItems.map((item) => (
+          <li class="usa-nav__primary-item">
+            <a
+              href={item.href}
+              class={`usa-nav-link ${currentPath.startsWith(item.href) ? 'usa-current' : ''}`}
+            >
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
