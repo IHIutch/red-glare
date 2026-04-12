@@ -1,5 +1,5 @@
-import { defineCollection } from 'astro:content'
 import { docsLoader, docsSchema } from '@starsandstripes/astro/schema'
+import { defineCollection } from 'astro:content'
 
 const docs = defineCollection({
   loader: docsLoader(),

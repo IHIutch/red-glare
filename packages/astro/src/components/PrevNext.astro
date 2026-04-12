@@ -3,7 +3,7 @@
 import { getCollection } from 'astro:content'
 
 interface Props {
-  currentId: string;
+  currentId: string
 }
 
 const { currentId } = Astro.props
@@ -16,11 +16,12 @@ const docs = await getCollection('docs', (entry) => {
 const sorted = docs.sort((a, b) => {
   const orderA = a.data.sidebar?.order ?? 999
   const orderB = b.data.sidebar?.order ?? 999
-  if (orderA !== orderB) return orderA - orderB
+  if (orderA !== orderB)
+return orderA - orderB
   return a.id.localeCompare(b.id)
 })
 
-const currentIndex = sorted.findIndex((doc) => doc.id === currentId)
+const currentIndex = sorted.findIndex(doc => doc.id === currentId)
 const prev = currentIndex > 0 ? sorted[currentIndex - 1] : null
 const next = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null
 ---

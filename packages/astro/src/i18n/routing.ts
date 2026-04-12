@@ -1,7 +1,7 @@
 // Locale-based content routing utilities
 // Supports locale folders: src/content/docs/en/, src/content/docs/es/
 
-import type { StarsAndStripesConfig } from "../config.js";
+import type { StarsAndStripesConfig } from '../config.js'
 
 /**
  * Extract locale prefix from a content entry ID.
@@ -11,8 +11,8 @@ export function getLocaleFromId(
   id: string,
   locales: string[],
 ): string | undefined {
-  const firstSegment = id.split("/")[0];
-  return locales.includes(firstSegment) ? firstSegment : undefined;
+  const firstSegment = id.split('/')[0]
+  return locales.includes(firstSegment) ? firstSegment : undefined
 }
 
 /**
@@ -20,7 +20,7 @@ export function getLocaleFromId(
  * e.g., "en/getting-started" → "getting-started"
  */
 export function stripLocalePrefix(id: string, locale: string): string {
-  return id.startsWith(`${locale}/`) ? id.slice(locale.length + 1) : id;
+  return id.startsWith(`${locale}/`) ? id.slice(locale.length + 1) : id
 }
 
 /**
@@ -34,12 +34,12 @@ export function getLocalizedPath(
 ): string {
   if (!locale || locale === defaultLocale) {
     // Default locale: no prefix
-    const slug = locale ? stripLocalePrefix(id, locale) : id;
-    return slug === "index" ? "/" : `/${slug}/`;
+    const slug = locale ? stripLocalePrefix(id, locale) : id
+    return slug === 'index' ? '/' : `/${slug}/`
   }
   // Non-default locale: add prefix
-  const slug = stripLocalePrefix(id, locale);
-  return slug === "index" ? `/${locale}/` : `/${locale}/${slug}/`;
+  const slug = stripLocalePrefix(id, locale)
+  return slug === 'index' ? `/${locale}/` : `/${locale}/${slug}/`
 }
 
 /**
@@ -48,28 +48,30 @@ export function getLocalizedPath(
 export function findTranslations(
   currentId: string,
   allIds: string[],
-  config: Pick<StarsAndStripesConfig, "locales" | "defaultLocale">,
-): Array<{ locale: string; label: string; href: string }> {
-  const locales = Object.keys(config.locales ?? {});
-  if (locales.length <= 1) return [];
+  config: Pick<StarsAndStripesConfig, 'locales' | 'defaultLocale'>,
+): Array<{ locale: string, label: string, href: string }> {
+  const locales = Object.keys(config.locales ?? {})
+  if (locales.length <= 1)
+    return []
 
-  const currentLocale = getLocaleFromId(currentId, locales);
+  const currentLocale = getLocaleFromId(currentId, locales)
   const baseSlug = currentLocale
     ? stripLocalePrefix(currentId, currentLocale)
-    : currentId;
+    : currentId
 
   return locales
     .map((locale) => {
-      const targetId =
-        locale === config.defaultLocale ? baseSlug : `${locale}/${baseSlug}`;
-      const exists = allIds.includes(targetId);
-      if (!exists) return null;
+      const targetId
+        = locale === config.defaultLocale ? baseSlug : `${locale}/${baseSlug}`
+      const exists = allIds.includes(targetId)
+      if (!exists)
+        return null
 
       return {
         locale,
         label: config.locales?.[locale]?.label ?? locale,
         href: getLocalizedPath(targetId, locale, config.defaultLocale),
-      };
+      }
     })
-    .filter((t): t is NonNullable<typeof t> => t !== null);
+    .filter((t): t is NonNullable<typeof t> => t !== null)
 }

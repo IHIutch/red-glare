@@ -1,32 +1,22 @@
----
-// Pagefind search — renders USWDS-styled search input
-// Only rendered when pagefind: true in config
-import config from 'virtual:starsandstripes/config'
----
+<div class="usa-search usa-search--small" role="search" id="pagefind-search">
+  <label class="usa-sr-only" for="search-field">Search</label>
+  <input
+    class="usa-input"
+    id="search-field"
+    type="search"
+    name="search"
+    placeholder="Search documentation..."
+  />
+</div>
 
-{config.pagefind && (
-  <div class="usa-search usa-search--small" role="search" id="pagefind-search">
-    <label class="usa-sr-only" for="search-field">Search</label>
-    <input
-      class="usa-input"
-      id="search-field"
-      type="search"
-      name="search"
-      placeholder="Search documentation..."
-    />
-  </div>
-)}
-
-{config.pagefind && (
-  <script>
-    // Pagefind auto-initializes via astro-pagefind integration
-    // This script wires up the USWDS search input to Pagefind's UI
-    window.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('pagefind-search');
-      if (container && window.PagefindUI) {
-        container.innerHTML = '';
-        new window.PagefindUI({ element: container, showSubResults: true });
-      }
-    });
-  </script>
-)}
+<script>
+  // Pagefind auto-initializes via astro-pagefind integration
+  // This script wires up the USWDS search input to Pagefind's UI
+  window.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('pagefind-search')
+  if (container && window.PagefindUI) {
+      container.innerHTML = ''
+      new window.PagefindUI({ element: container, showSubResults: true })
+  }
+  })
+</script>
