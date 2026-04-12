@@ -1,14 +1,33 @@
 {
   "name": "create-starsandstripes",
-  "version": "0.0.1",
   "type": "module",
+  "version": "0.0.1",
+  "description": "CLI scaffolder for Stars and Stripes documentation sites",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/starsandstripes/starsandstripes",
+    "directory": "packages/create-starsandstripes"
+  },
+  "keywords": [
+    "create",
+    "scaffold",
+    "uswds",
+    "astro",
+    "documentation",
+    "federal",
+    "government"
+  ],
   "bin": {
     "create-starsandstripes": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "prepublishOnly": "tsc",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
