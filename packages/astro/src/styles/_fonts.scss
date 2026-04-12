@@ -1,0 +1,10 @@
+// Font delivery is handled by Fontsource packages imported as JS modules
+// in layouts/BaseLayout.astro. Vite processes those CSS imports and bundles
+// the woff2 files through its asset pipeline.
+//
+// USWDS is told about the loaded faces via custom typeface tokens registered
+// in _uswds.scss — the `display-name` of each token must match the
+// font-family declared by the corresponding Fontsource package.
+//
+// This file exists for project-specific overrides only. Add custom @font-face
+// declarations here if you need a face that Fontsource doesn't ship.

@@ -1,89 +1,44 @@
 ---
-// Splash / landing page layout — wider layout, no sidebar or TOC
-// Uses USWDS hero component
-import '../styles/uswds-base.scss'
-import '../styles/a11y.scss'
-import { SEO } from 'astro-seo'
-import config from 'virtual:starsandstripes/config'
-import GovBanner from '../components/GovBanner.astro'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
-import Identifier from '../components/Identifier.astro'
-import SiteAlert from '../components/SiteAlert.astro'
+// Splash / landing page layout — wider layout, no sidebar or TOC.
+// Wraps slot content in a USWDS hero (optional) + section/grid-container.
+import BaseLayout from './BaseLayout.astro'
 
 interface Props {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
   hero?: {
-    heading: string;
-    tagline?: string;
-    image?: string;
-    callToAction?: { label: string; href: string };
-  };
+    heading: string
+    tagline?: string
+    image?: string
+    callToAction?: { label: string, href: string }
+  }
 }
 
 const { title, description, hero } = Astro.props
-const headTags = config.head ?? []
-const pageTitle = `${title} | ${config.title}`
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost').href
 ---
 
-<html lang={config.defaultLocale ?? 'en'}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEO
-      title={pageTitle}
-      description={description}
-      canonical={canonicalUrl}
-      twitter={{
-        card: 'summary',
-        title: pageTitle,
-        description,
-      }}
-    />
-    {headTags.map((tag) => (
-      <Fragment set:html={`<${tag.tag} ${Object.entries(tag.attrs ?? {}).map(([k, v]) => v === true ? k : `${k}="${v}"`).join(' ')}>${tag.content ?? ''}</${tag.tag}>`} />
-    ))}
-  </head>
-  <body>
-    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-
-    {config.governmentBanner && <GovBanner />}
-
-    <SiteAlert />
-
-    <Header currentPath={Astro.url.pathname} />
-
-    <main id="main-content">
-      {hero && (
-        <section class="usa-hero" aria-label="Introduction">
-          <div class="grid-container">
-            <div class="usa-hero__callout">
-              <h1 class="usa-hero__heading">
-                <span class="usa-hero__heading--alt">{hero.heading}</span>
-              </h1>
-              {hero.tagline && <p>{hero.tagline}</p>}
-              {hero.callToAction && (
-                <a class="usa-button" href={hero.callToAction.href}>
-                  {hero.callToAction.label}
-                </a>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <section class="usa-section">
-        <div class="grid-container">
-          <slot />
+<BaseLayout title={title} description={description}>
+  {hero && (
+    <section class="usa-hero" aria-label="Introduction">
+      <div class="grid-container">
+        <div class="usa-hero__callout">
+          <h1 class="usa-hero__heading">
+            <span class="usa-hero__heading--alt">{hero.heading}</span>
+          </h1>
+          {hero.tagline && <p>{hero.tagline}</p>}
+          {hero.callToAction && (
+            <a class="usa-button" href={hero.callToAction.href}>
+              {hero.callToAction.label}
+            </a>
+          )}
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+  )}
 
-    <Footer />
-    <Identifier />
-
-    <script src="../scripts/uswds-init.ts"></script>
-  </body>
-</html>
+  <section class="usa-section">
+    <div class="grid-container">
+      <slot />
+    </div>
+  </section>
+</BaseLayout>

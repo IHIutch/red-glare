@@ -1,0 +1,87 @@
+---
+// BaseLayout — owns the page shell shared by every layout in the framework:
+// html/head/body, USWDS chrome (banner, header, footer, identifier), the
+// SEO tag block, custom head injection, the skipnav target, and the
+// client init script. Child layouts (DocsLayout, SplashLayout) consume
+// this via slot, supplying whatever goes inside <main id="main-content">.
+// Self-host fonts via Fontsource. Each package's index.css declares the
+// @font-face blocks and points at its own woff2 files; Vite handles the
+// CSS import, processes the @font-face declarations, and bundles the
+// font files through its asset pipeline. The family names declared by
+// these packages must match the `display-name` values in the custom
+// typeface tokens registered in styles/_uswds.scss so USWDS's compiled
+// font-family references resolve to these faces.
+import '@fontsource-variable/public-sans'
+import '@fontsource-variable/merriweather'
+import '@fontsource-variable/roboto-mono'
+
+import '../styles/styles.scss'
+import { SEO } from 'astro-seo'
+import config from 'virtual:starsandstripes/config'
+
+import Footer from '../components/Footer.astro'
+import GovBanner from '../components/GovBanner.astro'
+import Header from '../components/Header.astro'
+import Identifier from '../components/Identifier.astro'
+import SiteAlert from '../components/SiteAlert.astro'
+
+interface Props {
+  title: string
+  description?: string
+  alert?: { message: string, type?: string, dismissible?: boolean } | false
+}
+
+const { title, description, alert } = Astro.props
+const headTags = config.head ?? []
+const pageTitle = `${title} | ${config.title}`
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  Astro.site ?? 'http://localhost',
+).href;
+---
+
+<html lang={config.defaultLocale ?? 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO
+      title={pageTitle}
+      description={description}
+      canonical={canonicalUrl}
+      twitter={{
+        card: 'summary',
+        title: pageTitle,
+        description,
+      }}
+    />
+    {
+      headTags.map(tag => (
+        <Fragment
+          set:html={`<${tag.tag} ${Object.entries(tag.attrs ?? {})
+            .map(([k, v]) => (v === true ? k : `${k}="${v}"`))
+            .join(' ')}>${tag.content ?? ''}</${tag.tag}>`}
+        />
+      ))
+    }
+  </head>
+  <body>
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+
+    {config.governmentBanner && <GovBanner />}
+
+    <SiteAlert alert={alert} />
+
+    <Header currentPath={Astro.url.pathname} />
+
+    <div class="usa-section">
+      <main id="main-content">
+        <slot />
+      </main>
+    </div>
+
+    <Footer />
+    <Identifier />
+
+    <script src="../scripts/uswds-init.ts"></script>
+  </body>
+</html>
