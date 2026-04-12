@@ -3,16 +3,16 @@
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "strict": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
   },
   "references": [
     { "path": "packages/astro" },
