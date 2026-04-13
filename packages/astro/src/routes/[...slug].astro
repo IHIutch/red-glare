@@ -1,21 +1,24 @@
 ---
 import { getCollection } from 'astro:content'
-import { ComarkRenderer } from '@comark/react'
-import { parseContent } from '../comark'
-import { extractHeadings } from '../utils/headings'
-import DocsLayout from '../layouts/DocsLayout.astro'
-import SplashLayout from '../layouts/SplashLayout.astro'
+
+import type { DocsEntry } from '../schema'
+
+import { extractSummaryText, parseContent } from '../comark'
+import Article from '../components/Article'
+import EditLink from '../components/EditLink.astro'
+import PrevNext from '../components/PrevNext.astro'
 import Sidebar from '../components/Sidebar.astro'
 import TableOfContents from '../components/TableOfContents.astro'
-import Breadcrumbs from '../components/Breadcrumbs.astro'
-import PrevNext from '../components/PrevNext.astro'
-import EditLink from '../components/EditLink.astro'
-import Alert from '../components/Alert'
-import CodeGroup from '../components/CodeGroup'
+import DocsLayout from '../layouts/DocsLayout.astro'
+import SplashLayout from '../layouts/SplashLayout.astro'
+import { extractHeadings } from '../utils/headings'
 
 export async function getStaticPaths() {
-  const docs = await getCollection('docs')
-  return docs.map((doc) => ({
+  // getCollection returns `any` inside integration packages — Astro's
+  // collection types are codegen'd in the user project, not the library.
+  // We need "unknown" since docs is inferred as "any" first.
+  const docs = (await getCollection('docs')) as unknown as DocsEntry[]
+  return docs.map(doc => ({
     params: { slug: doc.id === 'index' ? undefined : doc.id },
     props: { doc },
   }))
@@ -24,40 +27,57 @@ export async function getStaticPaths() {
 const { doc } = Astro.props
 const tree = await parseContent(doc.body!)
 const headings = extractHeadings(tree)
+// Frontmatter description wins; otherwise fall back to the <!-- more --> summary
+const description = doc.data.description ?? extractSummaryText(tree) ?? undefined
 const showToc = doc.data.toc !== false
-const isSplash = doc.data.template === 'splash'
+const isSplash = doc.data.template === 'splash';
 ---
 
-{isSplash ? (
-  <SplashLayout title={doc.data.title} description={doc.data.description}>
-    <article class="usa-prose">
-      <ComarkRenderer tree={tree} components={{ Alert, 'code-group': CodeGroup }} />
-    </article>
-  </SplashLayout>
-) : (
-  <DocsLayout title={doc.data.title} description={doc.data.description}>
-    <div class="grid-container">
-      <Breadcrumbs currentPath={Astro.url.pathname} title={doc.data.title} />
-      <div class="grid-row grid-gap">
-        <div class="tablet:grid-col-3">
-          <Sidebar currentPath={Astro.url.pathname} />
-        </div>
-        <div class={showToc ? 'tablet:grid-col-6' : 'tablet:grid-col-9'}>
-          <article class="usa-prose">
-            <h1>{doc.data.title}</h1>
-            <ComarkRenderer tree={tree} components={{ Alert, 'code-group': CodeGroup }} />
-          </article>
-          <div class="margin-top-4">
-            <EditLink filePath={doc.filePath} />
+{
+  isSplash
+  ? (
+    <SplashLayout title={doc.data.title} description={description}>
+      <article>
+        <Article
+          tree={tree}
+          className="usa-prose"
+          client:visible
+        />
+      </article>
+    </SplashLayout>
+  )
+: (
+    <DocsLayout title={doc.data.title} description={description}>
+      <div class="grid-container">
+        <div class="grid-row grid-gap">
+          <div class="tablet:grid-col-auto width-card-lg">
+            <Sidebar currentPath={Astro.url.pathname} />
           </div>
-          <PrevNext currentId={doc.id} />
-        </div>
-        {showToc && headings.length > 0 && (
-          <div class="tablet:grid-col-3">
-            <TableOfContents headings={headings} />
+          <div class="tablet:grid-col">
+            <div class="grid-row grid-gap">
+              <div class="display-none tablet:display-block grid-col-auto width-card-lg order-last">
+                {showToc && headings.length > 0 && (
+                  <TableOfContents headings={headings} />
+                )}
+              </div>
+              <div class="grid-col">
+                <article>
+                  <h1 class="margin-top-0">{doc.data.title}</h1>
+                  <Article
+                    tree={tree}
+                    className="usa-prose"
+                    client:visible
+                  />
+                </article>
+                <div class="margin-top-4">
+                  <EditLink filePath={doc.filePath} />
+                </div>
+                <PrevNext currentId={doc.id} />
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </div>
-    </div>
-  </DocsLayout>
-)}
+    </DocsLayout>
+  )
+}

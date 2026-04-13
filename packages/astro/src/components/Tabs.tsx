@@ -4,31 +4,32 @@ import { cva } from 'class-variance-authority'
 import { Children, isValidElement, useId, useRef, useState } from 'react'
 
 import Icon from './Icon.js'
-import { getLangIcon } from './lang-icons.js'
+import { resolveIconByName } from './icons.js'
 
-interface CodeGroupProps {
-  children?: ReactNode
+interface TabsProps {
+  'children'?: ReactNode
+  'aria-label'?: string
 }
 
-interface CodeChildProps {
-  filename?: string
+interface TabsItemChildProps {
   label?: string
+  icon?: string
+  description?: string
 }
 
-function collectItems(children: ReactNode): ReactElement<CodeChildProps>[] {
-  return Children.toArray(children).filter(isValidElement) as ReactElement<CodeChildProps>[]
-}
-
+// Styles are composed with class-variance-authority so the variant map
+// is the single source of truth for active/inactive state — both SSR
+// and client-side re-renders go through the same function.
 const tablistStyles = cva(
-  'ss-code-group__tabs display-flex flex-row',
+  'ss-tabs__list display-flex flex-row border-bottom-1px border-base-lighter',
 )
 
 const tabStyles = cva(
-  'ss-code-group__tab display-inline-flex flex-align-center bg-transparent text-semibold border-0 padding-y-105 padding-x-2 margin-0 font-sans-sm text-no-underline',
+  'ss-tabs__tab display-inline-flex flex-align-center bg-transparent text-semibold border-0 padding-y-105 padding-x-2 margin-0 font-sans-sm text-no-underline',
   {
     variants: {
       state: {
-        active: 'ss-code-group__tab--active text-black',
+        active: 'ss-tabs__tab--active text-black',
         inactive: 'text-base-dark',
       },
     },
@@ -36,20 +37,20 @@ const tabStyles = cva(
   },
 )
 
-const panelStyles = cva('ss-code-group__panel')
+const panelStyles = cva('ss-tabs__panel')
 
 /**
- * Tabbed code group — each child code block's tab label comes from its
- * `filename` attribute (set via the `[filename]` bracket syntax after the
- * fenced language), with `label` and the child's index as fallbacks.
- * Icons are inferred from the filename via `getLangIcon`.
+ * Generic tabbed panel — Nuxt UI's `::tabs` / `::tabs-item` directive
+ * equivalent. Each child must be a `<TabsItem>` carrying `label` and an
+ * optional Iconify-style `icon` reference (e.g. `i-lucide-eye`).
  *
- * Rendered as a hydrated client island via the `Article` wrapper, so
- * click + keyboard handlers run in the browser.
+ * Implements the WAI-ARIA Authoring Practices tabs pattern. Rendered as
+ * a hydrated client island via the `Article` wrapper in the slug route,
+ * so click + keyboard handlers run in the browser.
  */
-export default function CodeGroup({ children }: CodeGroupProps) {
+export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
   const groupId = useId()
-  const items = collectItems(children)
+  const items = Children.toArray(children).filter(isValidElement) as ReactElement<TabsItemChildProps>[]
 
   const [activeIdx, setActiveIdx] = useState(0)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -74,12 +75,12 @@ export default function CodeGroup({ children }: CodeGroupProps) {
   }
 
   return (
-    <div className="ss-code-group" data-code-group>
-      <div role="tablist" aria-label="Code alternatives" className={tablistStyles()}>
-        {items.map((child, i) => {
+    <div className="ss-tabs" data-tabs>
+      <div role="tablist" aria-label={ariaLabel ?? 'Tabs'} className={tablistStyles()}>
+        {items.map((item, i) => {
           const active = i === activeIdx
-          const label = child.props.filename ?? child.props.label ?? `${i + 1}`
-          const icon = getLangIcon(label)
+          const label = item.props.label ?? `${i + 1}`
+          const icon = item.props.icon ? resolveIconByName(item.props.icon) : null
           const tabId = `${groupId}-tab-${i}`
           const panelId = `${groupId}-panel-${i}`
           return (
@@ -96,13 +97,13 @@ export default function CodeGroup({ children }: CodeGroupProps) {
               onKeyDown={e => handleKeyDown(e, i)}
               className={tabStyles({ state: active ? 'active' : 'inactive' })}
             >
-              {icon && <Icon icon={icon} className="ss-code-group__tab-icon margin-right-1" />}
+              {icon && <Icon icon={icon} className="ss-tabs__tab-icon margin-right-1" />}
               {label}
             </button>
           )
         })}
       </div>
-      {items.map((child, i) => {
+      {items.map((item, i) => {
         const active = i === activeIdx
         const tabId = `${groupId}-tab-${i}`
         const panelId = `${groupId}-panel-${i}`
@@ -116,7 +117,7 @@ export default function CodeGroup({ children }: CodeGroupProps) {
             tabIndex={active ? 0 : -1}
             className={panelStyles()}
           >
-            {child}
+            {item}
           </div>
         )
       })}

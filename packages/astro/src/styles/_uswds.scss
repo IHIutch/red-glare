@@ -31,6 +31,8 @@
     $theme-font-type-sans: "fontsource-public-sans",
     $theme-font-type-serif: "fontsource-merriweather",
     $theme-font-type-mono: "fontsource-roboto-mono",
+    $theme-font-weight-medium: 500,
+    $theme-font-weight-semibold: 600,
 );
 
 // Global
@@ -135,4 +137,51 @@ pre {
     @include u-font("mono", "sm");
     background-color: #f0f0f0;
     padding: 1rem;
+}
+
+// Tabs — colors/spacing/typography come from USWDS utility classes applied
+// in `Tabs.tsx` / `CodeGroup.tsx`. This rule only handles the bits that
+// don't map cleanly to utilities: the hover background, the active-tab
+// underline (needs an inset box-shadow so the accent sits on top of the
+// tablist's border-bottom-1px), and the focus ring.
+//
+// The hover selector is written in full rather than with `&--active`
+// because `&` inside a comma-separated group expands to the whole list,
+// which produces invalid nested selectors.
+.ss-tabs__tabs,
+.ss-code-group__tabs {
+    position: relative;
+    &::after{
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background-color: color("base-lighter");
+    }
+}
+
+.ss-tabs__tab,
+.ss-code-group__tab {
+    cursor: pointer;
+
+    &:focus {
+        outline: 0.25rem solid color("blue-40v");
+        outline-offset: -0.25rem;
+        z-index: 1;
+    }
+}
+
+.ss-tabs__tab:hover:not(.ss-tabs__tab--active),
+.ss-code-group__tab:hover:not(.ss-code-group__tab--active) {
+    color: color("primary")
+}
+
+.ss-tabs__tab--active,
+.ss-code-group__tab--active {
+    box-shadow: inset 0 -4px 0 color("primary-vivid");
+    z-index: 1;
 }

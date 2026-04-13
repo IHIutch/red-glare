@@ -3,20 +3,21 @@ title: Getting Started
 description: How to install and configure Stars and Stripes
 sidebar:
   order: 1
+toc: false
 ---
 
 ## Installation
 
 Install the package using your preferred package manager:
 
-::code-group{labels="pnpm,npm,yarn"}
-```bash
+::code-group
+```bash [pnpm]
 pnpm add @starsandstripes/astro
 ```
-```bash
+```bash [npm]
 npm install @starsandstripes/astro
 ```
-```bash
+```bash [yarn]
 yarn add @starsandstripes/astro
 ```
 ::
