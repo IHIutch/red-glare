@@ -4,9 +4,9 @@ import type { ReactElement, ReactNode } from 'react'
 import { cva } from 'class-variance-authority'
 import { isValidElement, useId, useRef, useState } from 'react'
 
-import type { IconData } from './icon-data.js'
+import type { IconData } from './icon-data'
 
-import Icon from './Icon.js'
+import Icon from './Icon'
 
 interface CodeGroupProps {
   children?: ReactNode

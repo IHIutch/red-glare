@@ -4,9 +4,9 @@ import type { ReactElement, ReactNode } from 'react'
 import { cva } from 'class-variance-authority'
 import { isValidElement, useId, useRef, useState } from 'react'
 
-import type { IconData } from './icon-data.js'
+import type { IconData } from './icon-data'
 
-import Icon from './Icon.js'
+import Icon from './Icon'
 
 interface TabsProps {
   'children'?: ReactNode
@@ -63,7 +63,7 @@ export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
   const items = collectItems(children)
 
   const [activeIdx, setActiveIdx] = useState(0)
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const tabsRef = useRef<(HTMLButtonElement | null)[]>([])
 
   function handleKeyDown(e: TargetedKeyboardEvent<HTMLButtonElement>, i: number): void {
     let target = -1
@@ -81,7 +81,7 @@ export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
 
     e.preventDefault()
     setActiveIdx(target)
-    tabRefs.current[target]?.focus()
+    tabsRef.current[target]?.focus()
   }
 
   return (
@@ -96,7 +96,7 @@ export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
           return (
             <button
               key={tabId}
-              ref={(el) => { tabRefs.current[i] = el }}
+              ref={(el) => { tabsRef.current[i] = el }}
               type="button"
               role="tab"
               id={tabId}

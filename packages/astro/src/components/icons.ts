@@ -1,8 +1,8 @@
-import type { IconData } from './icon-data.js'
-
 import logosSet from '@iconify-json/logos/icons.json' with { type: 'json' }
 import lucideSet from '@iconify-json/lucide/icons.json' with { type: 'json' }
 import vscodeIconsSet from '@iconify-json/vscode-icons/icons.json' with { type: 'json' }
+
+import type { IconData } from './icon-data'
 
 export type { IconData }
 
@@ -11,6 +11,8 @@ interface RawIconSet {
   height?: number
   icons: Record<string, { body: string, width?: number, height?: number }>
 }
+
+const ICONIFY_PREFIX_RE = /^i-/
 
 // Installed Iconify collections, keyed by the prefix used in `i-{set}-{name}`
 // references (matching Nuxt UI's Iconify shorthand). Adding a new set is a
@@ -44,7 +46,7 @@ function fromSet(set: RawIconSet, name: string): IconData | null {
  * the named icon doesn't exist in that set.
  */
 export function resolveIconByName(reference: string): IconData | null {
-  const cleaned = reference.replace(/^i-/, '')
+  const cleaned = reference.replace(ICONIFY_PREFIX_RE, '')
   if (!cleaned)
     return null
 

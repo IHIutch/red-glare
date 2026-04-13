@@ -1,4 +1,4 @@
-import type { IconData } from './icon-data.js'
+import type { IconData } from './icon-data'
 
 interface IconProps {
   icon: IconData
@@ -18,6 +18,7 @@ export default function Icon({ icon, className }: IconProps) {
       width="1em"
       height="1em"
       aria-hidden="true"
+      // eslint-disable-next-line react-dom/no-dangerously-set-innerhtml
       dangerouslySetInnerHTML={{ __html: icon.body }}
     />
   )
