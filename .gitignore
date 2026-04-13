@@ -3,6 +3,10 @@ dist/
 .astro/
 *.tsbuildinfo
 
+# Vitest browser mode: failure screenshots + playwright attachments
+__screenshots__/
+.vitest-attachments/
+
 # Dolt database files (added by bd init)
 .dolt/
 *.db
