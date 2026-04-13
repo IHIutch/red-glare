@@ -13,6 +13,31 @@ import { extractText, nodesToPlainText, truncate } from './utils/text'
 
 const HEADING_TAG_RE = /^h[1-6]$/
 
+/**
+ * Extra metadata the link validator reads off each parsed tree.
+ * `parseContent` populates these as side effects of the slug walker:
+ *
+ * - `pageIds` is every element `id` we'll emit on this page — real
+ *   heading ids (backfilled by `attachTocHeadings`) plus any `id=`
+ *   attribute an author set manually. `#anchor` link targets on this
+ *   page must exist in this set.
+ * - `links` is every `<a href>` value seen in the tree, in document
+ *   order. The cross-doc validator resolves each one against the
+ *   full set of known page slugs + per-page `pageIds`.
+ */
+export interface ComarkPageMeta {
+  pageIds: Set<string>
+  links: string[]
+}
+
+export function getPageMeta(tree: ComarkTree): ComarkPageMeta {
+  const meta = (tree.meta ?? {}) as Record<string, unknown>
+  return {
+    pageIds: (meta.pageIds as Set<string> | undefined) ?? new Set(),
+    links: (meta.links as string[] | undefined) ?? [],
+  }
+}
+
 export type { ComarkTree }
 
 /**
@@ -84,7 +109,12 @@ function attachIconData(nodes: ComarkNode[]): void {
  * Astro's markdown pipeline uses, so internal links agree with
  * Astro's own heading ids.
  */
-function attachTocHeadings(nodes: ComarkNode[], slugger: GithubSlugger): void {
+function attachTocHeadings(
+  nodes: ComarkNode[],
+  slugger: GithubSlugger,
+  pageIds: Set<string>,
+  links: string[],
+): void {
   for (const node of nodes) {
     if (!Array.isArray(node))
       continue
@@ -101,14 +131,28 @@ function attachTocHeadings(nodes: ComarkNode[], slugger: GithubSlugger): void {
         const existing = attrs?.id
         if (typeof existing === 'string' && existing) {
           slugger.slug(existing)
+          pageIds.add(existing)
         }
         else {
-          attrs.id = slugger.slug(text)
+          const slug = slugger.slug(text)
+          attrs.id = slug
+          pageIds.add(slug)
         }
       }
     }
+    else {
+      const existingId = attrs?.id
+      if (typeof existingId === 'string' && existingId)
+        pageIds.add(existingId)
+    }
 
-    attachTocHeadings(children, slugger)
+    if (tag === 'a') {
+      const href = attrs?.href
+      if (typeof href === 'string' && href)
+        links.push(href)
+    }
+
+    attachTocHeadings(children, slugger, pageIds, links)
   }
 }
 
@@ -139,7 +183,12 @@ export async function parseContent(markdown: string): Promise<ComarkTree> {
     ],
   })
   attachIconData(tree.nodes)
-  attachTocHeadings(tree.nodes, new GithubSlugger())
+
+  const pageIds = new Set<string>()
+  const links: string[] = []
+  attachTocHeadings(tree.nodes, new GithubSlugger(), pageIds, links)
+  tree.meta = { ...tree.meta, pageIds, links }
+
   return tree
 }
 

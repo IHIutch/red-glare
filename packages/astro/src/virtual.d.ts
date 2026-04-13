@@ -1,10 +1,15 @@
 declare module 'virtual:starsandstripes/config' {
-  const config: import('./config.js').StarsAndStripesConfig
+  const config: import('./config').StarsAndStripesConfig
   export default config
 }
 
 declare module 'virtual:starsandstripes/context' {
-  const context: { root: string, trailingSlash: string }
+  const context: {
+    root: string
+    trailingSlash: string
+    site: string | undefined
+    base: string
+  }
   export default context
 }
 

@@ -1,27 +1,46 @@
 import type { Plugin } from 'vite'
 
-import type { StarsAndStripesConfig } from '../config.js'
+import type { StarsAndStripesConfig } from '../config'
 
-const VIRTUAL_MODULES = {
-  'virtual:starsandstripes/config': '',
-  'virtual:starsandstripes/context': '',
-} as const
-
-type VirtualModuleId = keyof typeof VIRTUAL_MODULES
+type VirtualModuleId = 'virtual:starsandstripes/config' | 'virtual:starsandstripes/context'
 
 function resolvedId(id: string): string {
   return `\0${id}`
 }
 
+interface AstroConfigSubset {
+  root: URL
+  trailingSlash: string
+  site?: string | URL
+  base?: string
+}
+
 export function vitePluginVirtualConfig(
   config: StarsAndStripesConfig,
-  astroConfig: { root: URL, trailingSlash: string },
+  astroConfig: AstroConfigSubset,
 ): Plugin {
+  // Serialize a pruned slice of the resolved Astro config alongside
+  // our own user-facing config. Modules that import
+  // `virtual:starsandstripes/context` — notably the slug route's
+  // link validator — receive these fields as JSON constants baked
+  // into the prerender chunk, which works regardless of which
+  // module scope the importer ends up in (Astro hoists
+  // `getStaticPaths` into a separate chunk from the integration
+  // module, so runtime mutation of a shared `utils/build-config.ts`
+  // from `astro:config:done` doesn't flow across that boundary).
+  const siteString = astroConfig.site === undefined
+    ? undefined
+    : typeof astroConfig.site === 'string'
+      ? astroConfig.site
+      : astroConfig.site.toString()
+
   const modules: Record<VirtualModuleId, string> = {
     'virtual:starsandstripes/config': `export default ${JSON.stringify(config)};`,
     'virtual:starsandstripes/context': `export default ${JSON.stringify({
       root: astroConfig.root.toString(),
       trailingSlash: astroConfig.trailingSlash ?? 'ignore',
+      site: siteString,
+      base: astroConfig.base ?? '/',
     })};`,
   }
 
