@@ -23,8 +23,15 @@ export default defineConfig({
     // dep imported only from a test file (react-dom/server, @uswds/uswds/*,
     // etc.) gets discovered lazily mid-run — triggering a Vite reload that
     // breaks the in-flight test. Pointing `entries` at the test files makes
-    // Vite scan them at startup so everything is pre-optimized up front.
+    // Vite scan them at startup; the explicit `include` list is a
+    // belt-and-suspenders catch for USWDS submodules whose CJS entry
+    // points esbuild's crawler sometimes misses.
     entries: ['src/**/*.test.ts'],
+    include: [
+      '@uswds/uswds/js/usa-accordion',
+      '@uswds/uswds/js/usa-banner',
+      '@uswds/uswds/js/usa-header',
+    ],
   },
   test: {
     include: ['src/**/*.test.ts'],
