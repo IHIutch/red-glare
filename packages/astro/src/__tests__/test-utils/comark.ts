@@ -5,8 +5,16 @@ import { createRoot } from 'react-dom/client'
 
 import { parseContent } from '../../comark'
 import { Accordion, AccordionItem } from '../../components/Accordion'
+import AccordionHeading from '../../components/AccordionHeading'
 import Alert from '../../components/Alert'
+import AlertHeading from '../../components/AlertHeading'
+import Button from '../../components/Button'
 import CodeGroup from '../../components/CodeGroup'
+import ProcessList from '../../components/ProcessList'
+import ProcessListHeading from '../../components/ProcessListHeading'
+import ProcessListItem from '../../components/ProcessListItem'
+import SummaryBox from '../../components/SummaryBox'
+import SummaryBoxHeading from '../../components/SummaryBoxHeading'
 import Tabs from '../../components/Tabs'
 import TabsItem from '../../components/TabsItem'
 
@@ -20,11 +28,19 @@ export const md = String.raw
 
 const components = {
   Alert,
+  'alert-heading': AlertHeading,
+  'button': Button,
   'code-group': CodeGroup,
+  'process-list': ProcessList,
+  'process-list-item': ProcessListItem,
+  'process-list-heading': ProcessListHeading,
+  'summary-box': SummaryBox,
+  'summary-box-heading': SummaryBoxHeading,
   'tabs': Tabs,
   'tabs-item': TabsItem,
   Accordion,
   AccordionItem,
+  'accordion-heading': AccordionHeading,
 }
 
 let currentRoot: ReturnType<typeof createRoot> | null = null

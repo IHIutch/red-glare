@@ -14,15 +14,19 @@
     $theme-header-max-width: "widescreen",
     $theme-site-alert-max-width: "widescreen",
 
-    $theme-typeface-tokens: (fontsource-public-sans: (display-name: "Public Sans Variable",
+    $theme-typeface-tokens: (
+        fontsource-public-sans: (
+            display-name: "Public Sans Variable",
             cap-height: 362px,
             stack: stacks.$font-stack-helvetica,
         ),
-        fontsource-merriweather: (display-name: "Merriweather Variable",
+        fontsource-merriweather: (
+            display-name: "Merriweather Variable",
             cap-height: 371px,
             stack: stacks.$font-stack-georgia,
         ),
-        fontsource-roboto-mono: (display-name: "Roboto Mono Variable",
+        fontsource-roboto-mono: (
+            display-name: "Roboto Mono Variable",
             cap-height: 380px,
             stack: stacks.$font-stack-monospace,
         ),
@@ -31,7 +35,6 @@
     $theme-font-type-sans: "fontsource-public-sans",
     $theme-font-type-serif: "fontsource-merriweather",
     $theme-font-type-mono: "fontsource-roboto-mono",
-    $theme-font-weight-medium: 500,
     $theme-font-weight-semibold: 600,
 );
 
@@ -117,13 +120,21 @@
 @forward "uswds-utilities/src/styles";
 
 .usa-prose {
-    a {
+    .usa-accordion {
+        margin-top: 1em;
+    }
+
+    a:not(.usa-button) {
         color: color($theme-link-color);
+    }
+    ul, ol {
+        padding-left: 1.5rem;
+        line-height: 1.8
     }
 }
 
 code {
-    @include u-font("mono", "sm");
+    @include u-font("mono", "xs");
 
     &:not(pre code) {
         background-color: #f0f0f0;
@@ -134,10 +145,44 @@ code {
 }
 
 pre {
-    @include u-font("mono", "sm");
+    @include u-font("mono", "xs");
     background-color: #f0f0f0;
     padding: 1rem;
 }
+
+// Accordion heading slot: the author writes a real markdown heading
+// inside `:::accordion-heading`, which lives inside the toggle button
+// (USWDS's accordion pattern keeps the interactive control as the
+// label target). Reset the default heading typography so the nested
+// `<h1>`–`<h6>` visually matches the button's own text treatment —
+// the heading still anchors the document outline and the TOC, it
+// just stops fighting the button's layout.
+.usa-accordion__button,
+.usa-alert__heading,
+.usa-summary-box__heading,
+.usa-process-list__heading {
+    font-weight: bold;
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        color: inherit;
+    }
+}
+
+.usa-alert__text,
+.usa-summary-box__text {
+    & > * {                                          
+        &:first-child { 
+            margin-top: 0 
+        }                                                                                    
+        &:last-child  { 
+            margin-bottom: 0 
+        }
+    }
+}   
 
 // Tabs — colors/spacing/typography come from USWDS utility classes applied
 // in `Tabs.tsx` / `CodeGroup.tsx`. This rule only handles the bits that

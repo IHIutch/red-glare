@@ -101,6 +101,9 @@ importers:
       comark:
         specifier: ^0.2.0
         version: 0.2.0(@types/markdown-it@14.1.2)(katex@0.16.45)(markdown-it@14.1.1)(shiki@4.0.2)
+      github-slugger:
+        specifier: ^2.0.0
+        version: 2.0.0
       preact:
         specifier: ^10.29.1
         version: 10.29.1

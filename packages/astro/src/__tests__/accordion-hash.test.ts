@@ -3,20 +3,65 @@ import { expect, it } from 'vitest'
 import { expandAccordionForHash } from '../utils/accordion-hash'
 import { md, renderComark } from './test-utils/comark'
 
+it('accordion-hash: expands accordion panel when hash targets the item heading slug itself', async () => {
+  await renderComark(md`
+::accordion
+  :::accordion-item
+    ::::accordion-heading
+    ## Fees and billing
+    ::::
+
+    Details about fees go here.
+  :::
+  :::accordion-item
+    ::::accordion-heading
+    ## Payment methods
+    ::::
+
+    Check, money order, or EFT.
+  :::
+::
+`)
+
+  const heading = document.getElementById('fees-and-billing')!
+  expect(heading.tagName).toBe('H2')
+  const panel = heading.closest('.usa-accordion__heading')!.nextElementSibling!
+  expect(panel.classList.contains('usa-accordion__content')).toBe(true)
+  expect(panel.hasAttribute('hidden')).toBe(true)
+
+  window.location.hash = '#fees-and-billing'
+  expandAccordionForHash()
+
+  expect(panel.hasAttribute('hidden')).toBe(false)
+
+  // Second item stays closed — unrelated panels aren't touched.
+  const otherHeading = document.getElementById('payment-methods')!
+  const otherPanel = otherHeading.closest('.usa-accordion__heading')!.nextElementSibling!
+  expect(otherPanel.hasAttribute('hidden')).toBe(true)
+})
+
 it('accordion-hash: expands accordion panel when hash targets a heading inside it', async () => {
   await renderComark(md`
 ::accordion
-  :::accordion-item{title="Fees and billing"}
-  ### Fee schedule
+  :::accordion-item
+    ::::accordion-heading
+    ## Fees and billing
+    ::::
 
-  Details about fees.
+    ### Fee schedule
 
-  ### Expedited processing
+    Details about fees.
 
-  Details about expedited processing.
+    ### Expedited processing
+
+    Details about expedited processing.
   :::
-  :::accordion-item{title="Payment methods"}
-  Check, money order, or EFT.
+  :::accordion-item
+    ::::accordion-heading
+    ## Payment methods
+    ::::
+
+    Check, money order, or EFT.
   :::
 ::
 `)
@@ -32,16 +77,20 @@ it('accordion-hash: expands accordion panel when hash targets a heading inside i
 })
 
 it('accordion-hash: expands the correct panel for a different heading in the same panel', async () => {
-  await renderComark(`
+  await renderComark(md`
 ::accordion
-  :::accordion-item{title="Fees and billing"}
-  ### Fee schedule
+  :::accordion-item
+    ::::accordion-heading
+    ## Fees and billing
+    ::::
 
-  Details about fees.
+    ### Fee schedule
 
-  ### Expedited processing
+    Details about fees.
 
-  Details about expedited processing.
+    ### Expedited processing
+
+    Details about expedited processing.
   :::
 ::
 `)
@@ -56,11 +105,19 @@ it('accordion-hash: expands the correct panel for a different heading in the sam
 it('accordion-hash: does not expand unrelated panels', async () => {
   await renderComark(md`
 ::accordion
-  :::accordion-item{title="Fees and billing"}
-  ### Fee schedule
+  :::accordion-item
+    ::::accordion-heading
+    ## Fees and billing
+    ::::
+
+    ### Fee schedule
   :::
-  :::accordion-item{title="Payment methods"}
-  ### Payment options
+  :::accordion-item
+    ::::accordion-heading
+    ## Payment methods
+    ::::
+
+    ### Payment options
   :::
 ::
 `)
@@ -79,8 +136,12 @@ it('accordion-hash: does nothing when hash targets an element outside any accord
 Content outside any accordion.
 
 ::accordion
-  :::accordion-item{title="FAQ"}
-  ### A question
+  :::accordion-item
+    ::::accordion-heading
+    ## FAQ
+    ::::
+
+    ### A question
   :::
 ::
 `)
@@ -96,8 +157,12 @@ Content outside any accordion.
 it('accordion-hash: does nothing when hash is empty', async () => {
   await renderComark(md`
 ::accordion
-  :::accordion-item{title="Q"}
-  ### A heading
+  :::accordion-item
+    ::::accordion-heading
+    ## Q
+    ::::
+
+    ### A heading
   :::
 ::
 `)
@@ -111,8 +176,12 @@ it('accordion-hash: does nothing when hash is empty', async () => {
 it('accordion-hash: does nothing when hash targets a nonexistent element', async () => {
   await renderComark(md`
 ::accordion
-  :::accordion-item{title="Q"}
-  ### A heading
+  :::accordion-item
+    ::::accordion-heading
+    ## Q
+    ::::
+
+    ### A heading
   :::
 ::
 `)
@@ -127,14 +196,20 @@ it('accordion-hash: does nothing when hash targets a nonexistent element', async
 it('accordion-hash: re-expands panel after it was closed (same-hash edge case)', async () => {
   await renderComark(md`
 ::accordion
-  :::accordion-item{title="Fees"}
-  ### Fee schedule
-  Details.
+  :::accordion-item
+    ::::accordion-heading
+    ## Fees
+    ::::
+
+    ### Fee schedule
+
+    Details.
   :::
 ::
 `)
 
-  const panel = document.getElementById('fee-schedule')!.closest('.usa-accordion__content')!
+  const target = document.getElementById('fee-schedule')!
+  const panel = target.closest('.usa-accordion__content')!
   const button = panel.previousElementSibling!.querySelector<HTMLButtonElement>('.usa-accordion__button')!
 
   // First: expand via hash

@@ -5,10 +5,13 @@ import githubLight from '@shikijs/themes/github-light'
 import { parse } from 'comark'
 import highlight from 'comark/plugins/highlight'
 import summary from 'comark/plugins/summary'
+import GithubSlugger from 'github-slugger'
 
-import { getLangIcon } from './components/lang-icons.js'
-import { resolveIconByName } from './components/icons.js'
-import { nodesToPlainText, truncate } from './utils/text.js'
+import { resolveIconByName } from './components/icons'
+import { getLangIcon } from './components/lang-icons'
+import { extractText, nodesToPlainText, truncate } from './utils/text'
+
+const HEADING_TAG_RE = /^h[1-6]$/
 
 export type { ComarkTree }
 
@@ -64,6 +67,52 @@ function attachIconData(nodes: ComarkNode[]): void {
 }
 
 /**
+ * Walk the Comark tree and attach `tocHeading` markers to component
+ * nodes whose rendered output anchors the document outline:
+ *
+ *   - `alert` nodes with both `title` and `level` set (level is
+ *     normalized through the same path as the component, so strings
+ *     like `"3"` from directive attrs are accepted).
+ *   - `accordion-item` nodes whose parent `accordion` has a `level`
+ *     attr. Level comes from the parent's context, not the item.
+ *
+ * `extractHeadings` picks them up via its normal recursive walk —
+ * no synthetic heading attrs for components needed, because authors
+ * now write real markdown headings inside `:::alert-heading` /
+ * `:::accordion-heading` slots and those are just `h1`–`h6` nodes
+ * in the tree. Slugs come from `github-slugger`, the same library
+ * Astro's markdown pipeline uses, so internal links agree with
+ * Astro's own heading ids.
+ */
+function attachTocHeadings(nodes: ComarkNode[], slugger: GithubSlugger): void {
+  for (const node of nodes) {
+    if (!Array.isArray(node))
+      continue
+    if (node[0] === null)
+      continue
+
+    const tag = node[0]
+    const attrs = node[1] as Record<string, unknown>
+    const children = node.slice(2) as ComarkNode[]
+
+    if (typeof tag === 'string' && HEADING_TAG_RE.test(tag)) {
+      const text = extractText(node)
+      if (text) {
+        const existing = attrs?.id
+        if (typeof existing === 'string' && existing) {
+          slugger.slug(existing)
+        }
+        else {
+          attrs.id = slugger.slug(text)
+        }
+      }
+    }
+
+    attachTocHeadings(children, slugger)
+  }
+}
+
+/**
  * Parse markdown content into a Comark AST with configured plugins.
  *
  * The AST is then rendered by @comark/react's ComarkRenderer in Astro
@@ -90,6 +139,7 @@ export async function parseContent(markdown: string): Promise<ComarkTree> {
     ],
   })
   attachIconData(tree.nodes)
+  attachTocHeadings(tree.nodes, new GithubSlugger())
   return tree
 }
 
