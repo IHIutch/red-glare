@@ -6,9 +6,62 @@ import { parse } from 'comark'
 import highlight from 'comark/plugins/highlight'
 import summary from 'comark/plugins/summary'
 
+import { getLangIcon } from './components/lang-icons.js'
+import { resolveIconByName } from './components/icons.js'
 import { nodesToPlainText, truncate } from './utils/text.js'
 
 export type { ComarkTree }
+
+/**
+ * Walk the Comark tree and attach pre-resolved icon data to nodes that
+ * need it:
+ *
+ *   - `code-group` children (`pre` nodes with a `filename` attr) get an
+ *     `iconData` attr derived from the filename via `getLangIcon`.
+ *   - `tabs-item` nodes with an `icon="i-{set}-{name}"` attr get an
+ *     `iconData` attr derived via `resolveIconByName`.
+ *
+ * This keeps the Iconify JSON imports on the server side. The rendered
+ * components (`CodeGroup`, `Tabs`) read `iconData` straight from props
+ * and never call the resolvers themselves, so the 11 MB of icon data
+ * doesn't end up in the client hydration bundle.
+ */
+function attachIconData(nodes: ComarkNode[]): void {
+  for (const node of nodes) {
+    if (!Array.isArray(node))
+      continue
+    if (node[0] === null)
+      continue
+
+    const tag = node[0]
+    const attrs = node[1] as Record<string, unknown>
+    const children = node.slice(2) as ComarkNode[]
+
+    if (tag === 'code-group') {
+      for (const child of children) {
+        if (Array.isArray(child) && child[0] === 'pre') {
+          const childAttrs = child[1] as Record<string, unknown>
+          const filename = childAttrs?.filename
+          if (typeof filename === 'string') {
+            const icon = getLangIcon(filename)
+            if (icon)
+              childAttrs.iconData = icon
+          }
+        }
+      }
+    }
+    else if (tag === 'tabs-item') {
+      const icon = attrs?.icon
+      if (typeof icon === 'string') {
+        const resolved = resolveIconByName(icon)
+        if (resolved)
+          attrs.iconData = resolved
+      }
+    }
+
+    attachIconData(children)
+  }
+}
 
 /**
  * Parse markdown content into a Comark AST with configured plugins.
@@ -18,7 +71,7 @@ export type { ComarkTree }
  * prop.
  */
 export async function parseContent(markdown: string): Promise<ComarkTree> {
-  return parse(markdown, {
+  const tree = await parse(markdown, {
     plugins: [
       highlight({
         // Themes must be passed as preloaded ThemeRegistration objects, not
@@ -36,6 +89,8 @@ export async function parseContent(markdown: string): Promise<ComarkTree> {
       summary(),
     ],
   })
+  attachIconData(tree.nodes)
+  return tree
 }
 
 /**

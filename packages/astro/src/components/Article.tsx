@@ -1,6 +1,10 @@
 import type { ComarkTree } from 'comark'
 
-import { ComarkRenderer } from '@comark/react'
+// Deep import bypasses `@comark/react`'s index, which re-exports a
+// `ComarkClient` that depends on React 19's `use()` hook. `preact/compat`
+// doesn't implement `use`, so hitting the top-level entry breaks the
+// preact/compat build.
+import { ComarkRenderer } from '@comark/react/components/ComarkRenderer'
 
 import { Accordion, AccordionItem } from './Accordion'
 import Alert from './Alert'

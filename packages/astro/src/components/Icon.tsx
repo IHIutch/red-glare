@@ -1,4 +1,4 @@
-import type { IconData } from './icons.js'
+import type { IconData } from './icon-data.js'
 
 interface IconProps {
   icon: IconData

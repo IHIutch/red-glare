@@ -39,7 +39,7 @@
     "astro": "^6.0.0"
   },
   "dependencies": {
-    "@astrojs/react": "^5.0.1",
+    "@astrojs/preact": "^5.1.1",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@comark/react": "^0.2.0",
@@ -57,16 +57,13 @@
     "astro-seo": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "comark": "^0.2.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "preact": "^10.29.1",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint-react/eslint-plugin": "^3.0.0",
     "@types/jsdom": "^28.0.1",
     "@types/node": "^22.0.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
     "@vitest/browser": "^4.1.4",
     "@vitest/browser-playwright": "^4.1.4",
     "astro": "^6.1.4",

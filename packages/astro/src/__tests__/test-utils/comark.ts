@@ -1,8 +1,6 @@
-import type { Root } from 'react-dom/client'
-
-import { ComarkRenderer } from '@comark/react'
+import { ComarkRenderer } from '@comark/react/components/ComarkRenderer'
 import accordion from '@uswds/uswds/js/usa-accordion'
-import { act, createElement } from 'react'
+import { createElement } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import { parseContent } from '../../comark'
@@ -17,15 +15,6 @@ import TabsItem from '../../components/TabsItem'
  * enable VS Code syntax highlighting inside the template literal via the
  * `bierner.comment-tagged-templates` extension (or similar). At runtime
  * it just returns the raw string.
- *
- * Usage:
- *   await renderComark(md`
- *     ::accordion
- *       :::accordion-item{title="Q"}
- *       Body content
- *       :::
- *     ::
- *   `)
  */
 export const md = String.raw
 
@@ -38,42 +27,45 @@ const components = {
   AccordionItem,
 }
 
-let currentRoot: Root | null = null
+let currentRoot: ReturnType<typeof createRoot> | null = null
+
+function resetDom(): void {
+  if (currentRoot) {
+    currentRoot.unmount()
+    currentRoot = null
+  }
+  document.body.innerHTML = ''
+}
 
 /**
  * Parse Comark markdown through the real production pipeline and mount
- * the rendered React tree into `document.body` via `createRoot`. Using a
- * live React root (not `renderToStaticMarkup`) gives the interactive
- * components (tabs, code groups) their real click/keyboard handlers,
- * which is how they actually run in production via `Article`'s
- * `client:visible` island.
+ * the rendered tree into `document.body` via `createRoot`. Under
+ * preact/compat this resolves to Preact's client renderer, but source
+ * still imports from `react-dom/client` so `@comark/react` and our own
+ * component code keep working unchanged.
  *
- * Also initializes USWDS's accordion JS on the rendered content so click
- * behavior, aria-expanded toggling, and hidden-attribute management all
- * match what users get in production.
+ * Tests interact with the mounted tree via `@vitest/browser`'s
+ * `userEvent`, which handles event dispatching + microtask flushing
+ * natively — no manual `act()` wrappers required.
+ *
+ * Also initializes USWDS's accordion JS on the rendered content so
+ * click behavior, aria-expanded toggling, and hidden-attribute
+ * management all match what users get in production.
  */
+export function unmountComark(): void {
+  resetDom()
+}
+
 export async function renderComark(markdown: string): Promise<void> {
+  resetDom()
   const tree = await parseContent(markdown)
-  if (currentRoot) {
-    currentRoot.unmount()
-    currentRoot = null
-  }
-  document.body.innerHTML = ''
   const container = document.createElement('div')
   document.body.appendChild(container)
   currentRoot = createRoot(container)
-  await act(async () => {
-    currentRoot!.render(
-      createElement(ComarkRenderer, { tree, components }),
-    )
-  })
+  currentRoot.render(
+    createElement(ComarkRenderer, { tree, components }),
+  )
+  // Flush one microtask so the tree paints before the caller queries it.
+  await Promise.resolve()
   accordion.on(document.body)
-}
-
-export function unmountComark(): void {
-  if (currentRoot) {
-    currentRoot.unmount()
-    currentRoot = null
-  }
-  document.body.innerHTML = ''
 }

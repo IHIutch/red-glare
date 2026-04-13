@@ -3,8 +3,9 @@ import type { KeyboardEvent, ReactElement, ReactNode } from 'react'
 import { cva } from 'class-variance-authority'
 import { Children, isValidElement, useId, useRef, useState } from 'react'
 
+import type { IconData } from './icon-data.js'
+
 import Icon from './Icon.js'
-import { resolveIconByName } from './icons.js'
 
 interface TabsProps {
   'children'?: ReactNode
@@ -14,6 +15,7 @@ interface TabsProps {
 interface TabsItemChildProps {
   label?: string
   icon?: string
+  iconData?: IconData
   description?: string
 }
 
@@ -80,7 +82,7 @@ export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
         {items.map((item, i) => {
           const active = i === activeIdx
           const label = item.props.label ?? `${i + 1}`
-          const icon = item.props.icon ? resolveIconByName(item.props.icon) : null
+          const icon = item.props.iconData
           const tabId = `${groupId}-tab-${i}`
           const panelId = `${groupId}-panel-${i}`
           return (

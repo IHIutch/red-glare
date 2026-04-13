@@ -1,6 +1,6 @@
 import type { AstroIntegration } from 'astro'
 
-import react from '@astrojs/react'
+import preact from '@astrojs/preact'
 import sitemap from '@astrojs/sitemap'
 import pagefind from 'astro-pagefind'
 
@@ -10,8 +10,10 @@ import {
   StarsAndStripesConfigSchema,
 
 } from './config.js'
-import { getUswdsViteConfig } from './integrations/uswds.js'
+import { copyUswdsImages, getUswdsViteConfig } from './integrations/uswds.js'
 import { vitePluginVirtualConfig } from './integrations/virtual-config.js'
+
+const FONTSOURCE_REGEX = /^@fontsource(?:-variable)?\//
 
 export { extractSummaryText, parseContent } from './comark.js'
 export type { StarsAndStripesConfig, StarsAndStripesUserConfig } from './config.js'
@@ -77,16 +79,20 @@ export default function starsAndStripes(
 
         // Auto-inject integrations: React (for ComarkRenderer), Sitemap,
         // and optionally Pagefind
-        const integrations: AstroIntegration[] = [react(), sitemap()]
+        const integrations: AstroIntegration[] = [preact({ compat: true }), sitemap()]
 
         if (config.pagefind) {
           integrations.push(pagefind())
         }
 
+        const uswdsVite = getUswdsViteConfig()
         updateConfig({
           integrations,
           vite: {
-            plugins: [vitePluginVirtualConfig(config, astroConfig)],
+            plugins: [
+              vitePluginVirtualConfig(config, astroConfig),
+              ...uswdsVite.plugins,
+            ],
             ssr: {
               // Fontsource packages are CSS-only and need to flow through
               // Vite's CSS pipeline rather than Node's ESM loader on the SSR
@@ -95,12 +101,13 @@ export default function starsAndStripes(
               // The regex covers both `@fontsource/*` (static) and
               // `@fontsource-variable/*` namespaces.
               noExternal: [
+                '@starsandstripes/astro',
                 '@comark/react',
                 'comark',
-                /^@fontsource(?:-variable)?\//,
+                FONTSOURCE_REGEX,
               ],
             },
-            ...getUswdsViteConfig(),
+            css: uswdsVite.css,
           },
         })
       },
@@ -109,8 +116,8 @@ export default function starsAndStripes(
         // Reserved for post-config operations
       },
 
-      'astro:build:done': function () {
-        // Reserved for Pagefind indexing
+      'astro:build:done': async function ({ dir }) {
+        await copyUswdsImages(dir)
       },
     },
   }

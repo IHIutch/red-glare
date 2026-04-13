@@ -1,12 +1,10 @@
+import type { IconData } from './icon-data.js'
+
 import logosSet from '@iconify-json/logos/icons.json' with { type: 'json' }
 import lucideSet from '@iconify-json/lucide/icons.json' with { type: 'json' }
 import vscodeIconsSet from '@iconify-json/vscode-icons/icons.json' with { type: 'json' }
 
-export interface IconData {
-  body: string
-  width: number
-  height: number
-}
+export type { IconData }
 
 interface RawIconSet {
   width?: number

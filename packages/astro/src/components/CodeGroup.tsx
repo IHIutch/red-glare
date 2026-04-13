@@ -3,8 +3,9 @@ import type { KeyboardEvent, ReactElement, ReactNode } from 'react'
 import { cva } from 'class-variance-authority'
 import { Children, isValidElement, useId, useRef, useState } from 'react'
 
+import type { IconData } from './icon-data.js'
+
 import Icon from './Icon.js'
-import { getLangIcon } from './lang-icons.js'
 
 interface CodeGroupProps {
   children?: ReactNode
@@ -13,6 +14,7 @@ interface CodeGroupProps {
 interface CodeChildProps {
   filename?: string
   label?: string
+  iconData?: IconData
 }
 
 function collectItems(children: ReactNode): ReactElement<CodeChildProps>[] {
@@ -79,7 +81,7 @@ export default function CodeGroup({ children }: CodeGroupProps) {
         {items.map((child, i) => {
           const active = i === activeIdx
           const label = child.props.filename ?? child.props.label ?? `${i + 1}`
-          const icon = getLangIcon(label)
+          const icon = child.props.iconData
           const tabId = `${groupId}-tab-${i}`
           const panelId = `${groupId}-panel-${i}`
           return (
