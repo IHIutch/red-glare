@@ -1,7 +1,8 @@
-import type { KeyboardEvent, ReactElement, ReactNode } from 'react'
+import type { TargetedKeyboardEvent } from 'preact'
+import type { ReactElement, ReactNode } from 'react'
 
 import { cva } from 'class-variance-authority'
-import { Children, isValidElement, useId, useRef, useState } from 'react'
+import { isValidElement, useId, useRef, useState } from 'react'
 
 import type { IconData } from './icon-data.js'
 
@@ -41,6 +42,13 @@ const tabStyles = cva(
 
 const panelStyles = cva('ss-tabs__panel')
 
+// See `collectItems` in CodeGroup for why we iterate children directly
+// instead of using Children.toArray.
+function collectItems(children: ReactNode): ReactElement<TabsItemChildProps>[] {
+  const array = Array.isArray(children) ? children : [children]
+  return array.filter(isValidElement) as ReactElement<TabsItemChildProps>[]
+}
+
 /**
  * Generic tabbed panel — Nuxt UI's `::tabs` / `::tabs-item` directive
  * equivalent. Each child must be a `<TabsItem>` carrying `label` and an
@@ -52,12 +60,12 @@ const panelStyles = cva('ss-tabs__panel')
  */
 export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
   const groupId = useId()
-  const items = Children.toArray(children).filter(isValidElement) as ReactElement<TabsItemChildProps>[]
+  const items = collectItems(children)
 
   const [activeIdx, setActiveIdx] = useState(0)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-  function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>, i: number): void {
+  function handleKeyDown(e: TargetedKeyboardEvent<HTMLButtonElement>, i: number): void {
     let target = -1
     if (e.key === 'ArrowRight')
       target = (i + 1) % items.length

@@ -1,7 +1,8 @@
-import type { KeyboardEvent, ReactElement, ReactNode } from 'react'
+import type { TargetedKeyboardEvent } from 'preact'
+import type { ReactElement, ReactNode } from 'react'
 
 import { cva } from 'class-variance-authority'
-import { Children, isValidElement, useId, useRef, useState } from 'react'
+import { isValidElement, useId, useRef, useState } from 'react'
 
 import type { IconData } from './icon-data.js'
 
@@ -17,8 +18,15 @@ interface CodeChildProps {
   iconData?: IconData
 }
 
+// `@comark/react`'s ComarkRenderer passes the mapped `pre` siblings as
+// a plain array for `code-group` children, so we iterate directly and
+// filter out stray text nodes. Using Children.toArray would work but
+// trips the `react/no-children-to-array` lint — and we don't need the
+// key normalization it does, since every child already has a stable
+// position in the parsed tree.
 function collectItems(children: ReactNode): ReactElement<CodeChildProps>[] {
-  return Children.toArray(children).filter(isValidElement) as ReactElement<CodeChildProps>[]
+  const array = Array.isArray(children) ? children : [children]
+  return array.filter(isValidElement) as ReactElement<CodeChildProps>[]
 }
 
 const tablistStyles = cva(
@@ -54,9 +62,9 @@ export default function CodeGroup({ children }: CodeGroupProps) {
   const items = collectItems(children)
 
   const [activeIdx, setActiveIdx] = useState(0)
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const tabsRef = useRef<(HTMLButtonElement | null)[]>([])
 
-  function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>, i: number): void {
+  function handleKeyDown(e: TargetedKeyboardEvent<HTMLButtonElement>, i: number): void {
     let target = -1
     if (e.key === 'ArrowRight')
       target = (i + 1) % items.length
@@ -72,7 +80,7 @@ export default function CodeGroup({ children }: CodeGroupProps) {
 
     e.preventDefault()
     setActiveIdx(target)
-    tabRefs.current[target]?.focus()
+    tabsRef.current[target]?.focus()
   }
 
   return (
@@ -87,7 +95,7 @@ export default function CodeGroup({ children }: CodeGroupProps) {
           return (
             <button
               key={tabId}
-              ref={(el) => { tabRefs.current[i] = el }}
+              ref={(el) => { tabsRef.current[i] = el }}
               type="button"
               role="tab"
               id={tabId}
