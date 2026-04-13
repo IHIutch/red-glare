@@ -47,24 +47,24 @@ with a github-slugger-generated anchor id:
   your notice. Late submissions cannot be accepted.
 ::
 
-## Buttons
+## Link buttons
 
-The `:::button` directive renders a USWDS-styled button. Set `href` to
-render as a call-to-action link (the common case for docs); omit it
-for a real `<button>` element. `variant` maps to any USWDS modifier
-(`secondary`, `accent-cool`, `accent-warm`, `base`, `outline`,
-`inverse`), and `big` / `unstyled` toggle the corresponding USWDS
-flags.
+The `:::link-button` directive renders a USWDS-styled call-to-action
+link — an anchor dressed as a button. Prose pages rarely need a real
+`<button>` element, so the component only emits anchors; `href` is
+required. `variant` maps to any USWDS modifier (`secondary`,
+`accent-cool`, `accent-warm`, `base`, `outline`, `inverse`), and
+`big` / `unstyled` toggle the corresponding USWDS flags.
 
-:::button{href="https://www.foia.gov/" variant="outline"}
+:::link-button{href="https://www.foia.gov/" variant="outline"}
 Start a FOIA request
 :::
 
-:::button{href="#filing-deadline"}
+:::link-button{href="#filing-deadline"}
 Review the filing deadline
 :::
 
-:::button{href="/forms/waiver" variant="secondary" big}
+:::link-button{href="/forms/waiver" variant="secondary" big}
 Request a fee waiver
 :::
 

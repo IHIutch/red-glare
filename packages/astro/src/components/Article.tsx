@@ -10,8 +10,8 @@ import { Accordion, AccordionItem } from './Accordion'
 import AccordionHeading from './AccordionHeading'
 import Alert from './Alert'
 import AlertHeading from './AlertHeading'
-import Button from './Button'
 import CodeGroup from './CodeGroup'
+import LinkButton from './LinkButton'
 import ProcessList from './ProcessList'
 import ProcessListHeading from './ProcessListHeading'
 import ProcessListItem from './ProcessListItem'
@@ -32,7 +32,7 @@ interface ArticleProps {
 const components = {
   Alert,
   'alert-heading': AlertHeading,
-  'button': Button,
+  'link-button': LinkButton,
   'code-group': CodeGroup,
   'process-list': ProcessList,
   'process-list-item': ProcessListItem,

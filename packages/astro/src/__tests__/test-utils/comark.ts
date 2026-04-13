@@ -8,8 +8,8 @@ import { Accordion, AccordionItem } from '../../components/Accordion'
 import AccordionHeading from '../../components/AccordionHeading'
 import Alert from '../../components/Alert'
 import AlertHeading from '../../components/AlertHeading'
-import Button from '../../components/Button'
 import CodeGroup from '../../components/CodeGroup'
+import LinkButton from '../../components/LinkButton'
 import ProcessList from '../../components/ProcessList'
 import ProcessListHeading from '../../components/ProcessListHeading'
 import ProcessListItem from '../../components/ProcessListItem'
@@ -29,7 +29,7 @@ export const md = String.raw
 const components = {
   Alert,
   'alert-heading': AlertHeading,
-  'button': Button,
+  'link-button': LinkButton,
   'code-group': CodeGroup,
   'process-list': ProcessList,
   'process-list-item': ProcessListItem,
