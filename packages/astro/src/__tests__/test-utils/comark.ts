@@ -35,6 +35,10 @@ function resetDom(): void {
     currentRoot = null
   }
   document.body.innerHTML = ''
+  // Clear any lingering URL hash from the previous test so hash-based
+  // tests (accordion-hash) start from a clean location.
+  if (location.hash)
+    history.replaceState(null, '', location.pathname + location.search)
 }
 
 /**
@@ -52,10 +56,6 @@ function resetDom(): void {
  * click behavior, aria-expanded toggling, and hidden-attribute
  * management all match what users get in production.
  */
-export function unmountComark(): void {
-  resetDom()
-}
-
 export async function renderComark(markdown: string): Promise<void> {
   resetDom()
   const tree = await parseContent(markdown)

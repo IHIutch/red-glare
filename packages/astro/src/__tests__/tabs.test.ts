@@ -39,20 +39,19 @@ function getPanels(): HTMLElement[] {
     .filter(p => p.closest('[data-tabs]') === group)
 }
 
-
-it('Tabs: renders a tablist with one tab per tabs-item child', async () => {
+it('tabs: renders a tablist with one tab per tabs-item child', async () => {
   await renderComark(FIXTURE)
   expect(getTabs()).toHaveLength(3)
   expect(getPanels()).toHaveLength(3)
 })
 
-it('Tabs: uses each item label as the tab text', async () => {
+it('tabs: uses each item label as the tab text', async () => {
   await renderComark(FIXTURE)
   const labels = getTabs().map(t => t.textContent?.trim())
   expect(labels).toEqual(['Preview', 'Code', 'Notes'])
 })
 
-it('Tabs: renders inline SVG icons for items that specify `icon`, none otherwise', async () => {
+it('tabs: renders inline SVG icons for items that specify `icon`, none otherwise', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
   expect(tabs[0].querySelector('svg.ss-tabs__tab-icon')).not.toBeNull()
@@ -60,7 +59,7 @@ it('Tabs: renders inline SVG icons for items that specify `icon`, none otherwise
   expect(tabs[2].querySelector('svg.ss-tabs__tab-icon')).toBeNull()
 })
 
-it('Tabs: pairs tabs and panels via aria-controls / aria-labelledby', async () => {
+it('tabs: pairs tabs and panels via aria-controls / aria-labelledby', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
   const panels = getPanels()
@@ -70,7 +69,7 @@ it('Tabs: pairs tabs and panels via aria-controls / aria-labelledby', async () =
   })
 })
 
-it('Tabs: passes axe-core with no violations', async () => {
+it('tabs: passes axe-core with no violations', async () => {
   await renderComark(FIXTURE)
   const results = await axe.run(getGroup(), {
     runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },
@@ -78,7 +77,7 @@ it('Tabs: passes axe-core with no violations', async () => {
   expect(results.violations).toEqual([])
 })
 
-it('Tabs: arrow keys cycle focus + selection', async () => {
+it('tabs: arrow keys cycle focus + selection', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
 
@@ -93,7 +92,7 @@ it('Tabs: arrow keys cycle focus + selection', async () => {
   expect(tabs[0].getAttribute('aria-selected')).toBe('true')
 })
 
-it('Tabs: Home / End jump to first / last tab', async () => {
+it('tabs: Home / End jump to first / last tab', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
 
@@ -105,7 +104,7 @@ it('Tabs: Home / End jump to first / last tab', async () => {
   expect(tabs[0].getAttribute('aria-selected')).toBe('true')
 })
 
-it('Tabs: clicking a tab activates its panel and hides the others', async () => {
+it('tabs: clicking a tab activates its panel and hides the others', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
   const panels = getPanels()

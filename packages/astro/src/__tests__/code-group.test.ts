@@ -35,8 +35,7 @@ function getPanels(): HTMLElement[] {
   return Array.from(getGroup().querySelectorAll<HTMLElement>('[role="tabpanel"]'))
 }
 
-
-it('CodeGroup: renders a tablist with tabs and tabpanels wired together', async () => {
+it('codeGroup: renders a tablist with tabs and tabpanels wired together', async () => {
   await renderComark(FIXTURE)
 
   const tablist = getGroup().querySelector('[role="tablist"]')!
@@ -56,13 +55,13 @@ it('CodeGroup: renders a tablist with tabs and tabpanels wired together', async 
   })
 })
 
-it('CodeGroup: uses filenames from [bracket] syntax as tab labels', async () => {
+it('codeGroup: uses filenames from [bracket] syntax as tab labels', async () => {
   await renderComark(FIXTURE)
   const labels = getTabs().map(t => t.textContent?.trim())
   expect(labels).toEqual(['app.js', 'app.ts', 'styles.css'])
 })
 
-it('CodeGroup: starts with only the first tab selected and its panel visible', async () => {
+it('codeGroup: starts with only the first tab selected and its panel visible', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
   const panels = getPanels()
@@ -80,7 +79,7 @@ it('CodeGroup: starts with only the first tab selected and its panel visible', a
   }
 })
 
-it('CodeGroup: passes axe-core ruleset with no violations', async () => {
+it('codeGroup: passes axe-core ruleset with no violations', async () => {
   await renderComark(FIXTURE)
   const results = await axe.run(getGroup(), {
     runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },
@@ -88,7 +87,7 @@ it('CodeGroup: passes axe-core ruleset with no violations', async () => {
   expect(results.violations).toEqual([])
 })
 
-it('CodeGroup: clicking a tab activates it and shows its panel', async () => {
+it('codeGroup: clicking a tab activates it and shows its panel', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
   const panels = getPanels()
@@ -101,7 +100,7 @@ it('CodeGroup: clicking a tab activates it and shows its panel', async () => {
   expect(panels[0].hasAttribute('hidden')).toBe(true)
 })
 
-it('CodeGroup: ArrowRight cycles forward and wraps; ArrowLeft cycles back and wraps', async () => {
+it('codeGroup: ArrowRight cycles forward and wraps; ArrowLeft cycles back and wraps', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
 
@@ -124,7 +123,7 @@ it('CodeGroup: ArrowRight cycles forward and wraps; ArrowLeft cycles back and wr
   expect(tabs[2]).toHaveFocus()
 })
 
-it('CodeGroup: Home jumps to the first tab and End jumps to the last', async () => {
+it('codeGroup: Home jumps to the first tab and End jumps to the last', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
 
@@ -138,7 +137,7 @@ it('CodeGroup: Home jumps to the first tab and End jumps to the last', async () 
   expect(tabs[0]).toHaveFocus()
 })
 
-it('CodeGroup: keeps tabIndex roving — only the active tab is tab-stoppable', async () => {
+it('codeGroup: keeps tabIndex roving — only the active tab is tab-stoppable', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
 
