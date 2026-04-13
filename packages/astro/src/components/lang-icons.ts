@@ -38,10 +38,10 @@ const ICON_MAP: Record<string, string> = {
   'vue': 'file-type-vue',
   'ts': 'file-type-typescript',
   'tsx': 'file-type-typescript',
-  'mjs': 'file-type-js',
-  'cjs': 'file-type-js',
-  'js': 'file-type-js',
-  'jsx': 'file-type-js',
+  'mjs': 'file-type-js-official',
+  'cjs': 'file-type-js-official',
+  'js': 'file-type-js-official',
+  'jsx': 'file-type-js-official',
   'md': 'file-type-markdown',
   'py': 'file-type-python',
   'cs': 'file-type-csharp',
@@ -70,7 +70,11 @@ const ICON_MAP: Record<string, string> = {
   'dart': 'file-type-dartlang',
   'ico': 'file-type-favicon',
   'npm': 'file-type-npm',
-  'pnpm': 'file-type-pnpm',
+  // vscode-icons ships two pnpm variants: the default `file-type-pnpm`
+  // uses a white fill (for dark IDE themes) and `file-type-light-pnpm`
+  // uses a dark gray fill. Our docs run on a light background, so we
+  // want the dark-filled variant.
+  'pnpm': 'file-type-light-pnpm',
   'npx': 'file-type-npm',
   'yarn': 'file-type-yarn',
   'bun': 'file-type-bun',
@@ -79,8 +83,41 @@ const ICON_MAP: Record<string, string> = {
   'terminal': 'file-type-shell',
 }
 
+// Pattern-based matches for config files whose icon is project-specific
+// rather than language-specific. Each pattern is checked after the exact
+// basename lookup (which wins for things like `package.json` that have
+// their own entry in ICON_MAP) and before the extension fallback.
+// Patterns are matched in order — put more specific entries first if
+// they could overlap.
+//
+// Icons target a light UI background (our docs run on white), so we
+// prefer `file-type-light-*` variants whenever vscode-icons ships one.
+// For tools with only a single color variant, `file-type-<tool>` is
+// used as-is.
+const PATTERN_ICONS: Array<[RegExp, string]> = [
+  [/^astro\.config\.[cm]?[jt]s$/, 'file-type-light-astro'],
+  [/^vite\.config\.[cm]?[jt]s$/, 'file-type-light-vite'],
+  [/^vitest\.config\.[cm]?[jt]s$/, 'file-type-light-vite'],
+  [/^rollup\.config\.[cm]?[jt]s$/, 'file-type-rollup'],
+  [/^webpack\.config\.[cm]?[jt]s$/, 'file-type-webpack'],
+  [/^svelte\.config\.[cm]?[jt]s$/, 'file-type-svelte'],
+  [/^next\.config\.[cm]?[jt]s$/, 'file-type-light-next'],
+  [/^gatsby-config\.[cm]?[jt]s$/, 'file-type-gatsby'],
+  [/^playwright\.config\.[cm]?[jt]s$/, 'file-type-playwright'],
+  [/^prettier\.config\.[cm]?[jt]s$/, 'file-type-light-prettier'],
+  [/^\.prettierrc(\.[cm]?[jt]s|\.json5?|\.ya?ml|\.toml)?$/, 'file-type-light-prettier'],
+  [/^biome\.jsonc?$/, 'file-type-biome'],
+  [/^tauri\.conf\.json$/, 'file-type-tauri'],
+  [/^bun\.lock(b)?$/, 'file-type-bun'],
+  [/^deno\.jsonc?$/, 'file-type-light-deno'],
+]
+
+// Strip trailing parenthetical annotations like "app.tsx (client)" so the
+// bare filename drives the icon lookup.
+const TRAILING_PARENS_RE = /\s*\(.*\)\s*$/
+
 export function getLangIcon(filename: string): IconData | null {
-  const cleaned = filename.trim().replace(/\s*\(.*\)\s*$/, '')
+  const cleaned = filename.trim().replace(TRAILING_PARENS_RE, '')
   if (!cleaned)
     return null
 
@@ -88,6 +125,7 @@ export function getLangIcon(filename: string): IconData | null {
   if (!name)
     return null
 
+  // 1. Exact basename match (covers `package.json`, `.env`, etc.)
   const byName = ICON_MAP[name]
   if (byName) {
     const icon = getVscodeIcon(byName)
@@ -95,9 +133,19 @@ export function getLangIcon(filename: string): IconData | null {
       return icon
   }
 
+  // 2. Pattern match (covers `astro.config.{js,mjs,ts,cjs,mts,cts}`, etc.)
+  for (const [pattern, iconName] of PATTERN_ICONS) {
+    if (pattern.test(name)) {
+      const icon = getVscodeIcon(iconName)
+      if (icon)
+        return icon
+    }
+  }
+
   if (!name.includes('.'))
     return null
 
+  // 3. Extension lookup (curated, prefers `-official` variants etc.)
   const ext = name.split('.').pop()!
   const mapped = ICON_MAP[ext]
   if (mapped) {
@@ -106,5 +154,6 @@ export function getLangIcon(filename: string): IconData | null {
       return icon
   }
 
+  // 4. Dynamic fallback — try `file-type-${ext}` directly.
   return getVscodeIcon(`file-type-${ext}`)
 }
