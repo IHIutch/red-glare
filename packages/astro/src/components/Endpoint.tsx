@@ -21,23 +21,23 @@ interface EndpointProps extends EndpointAttrs {
 
 function ParameterList({ items }: { items: Parameter[] }) {
   return (
-    <dl className="ss-parameters">
+    <dl className="rg-parameters">
       {items.map(item => (
-        <div key={item.name} className="ss-parameters__row">
-          <dt className="ss-parameters__term">
-            <code className="ss-parameters__name">{item.name}</code>
-            <span className="ss-parameters__type">{item.type}</span>
+        <div key={item.name} className="rg-parameters__row">
+          <dt className="rg-parameters__term">
+            <code className="rg-parameters__name">{item.name}</code>
+            <span className="rg-parameters__type">{item.type}</span>
             {item.required && (
-              <span className="ss-parameters__pill ss-parameters__pill--required">
+              <span className="rg-parameters__pill rg-parameters__pill--required">
                 Required
               </span>
             )}
           </dt>
           {(item.description || item.enum || item.default) && (
-            <dd className="ss-parameters__description">
+            <dd className="rg-parameters__description">
               <div class="margin-bottom-05">{item.description}</div>
               {item.enum && (
-                <div className="ss-parameters__enum">
+                <div className="rg-parameters__enum">
                   Allowed values:
                   {' '}
                   {item.enum.map((v, i) => (
@@ -50,7 +50,7 @@ function ParameterList({ items }: { items: Parameter[] }) {
               )}
               {item.default && (
                 <div>
-                  <span className="ss-parameters__meta">
+                  <span className="rg-parameters__meta">
                     Default:
                     {' '}
                     <code>{String(item.default)}</code>
@@ -82,7 +82,7 @@ function ResponseSection({ items }: { items?: Response[] }) {
   return (
     <>
       <h3>Responses</h3>
-      <table className="ss-responses">
+      <table className="rg-responses">
         <thead>
           <tr>
             <th scope="col">Status code</th>
@@ -148,7 +148,7 @@ export default function Endpoint({
   slotResponse,
 }: EndpointProps) {
   const methodUpper = method.toUpperCase()
-  const methodClass = `ss-endpoint__method ss-endpoint__method--${method.toLowerCase()}`
+  const methodClass = `rg-endpoint__method rg-endpoint__method--${method.toLowerCase()}`
   const isDeprecated = deprecated === true || deprecated === 'true' || deprecated === ''
 
   const array = Array.isArray(children) ? children : [children]
@@ -158,21 +158,21 @@ export default function Endpoint({
   const leftBody = array.filter(c => c !== heading)
 
   return (
-    <section className="ss-endpoint" id={id}>
+    <section className="rg-endpoint" id={id}>
       <div class="display-flex flex-align-center">
         {heading}
         {isDeprecated && (
-          <span className="ss-endpoint__pill ss-endpoint__pill--deprecated margin-left-2">
+          <span className="rg-endpoint__pill rg-endpoint__pill--deprecated margin-left-2">
             Deprecated
           </span>
         )}
       </div>
-      <div className="ss-endpoint__signature">
+      <div className="rg-endpoint__signature">
         <span className={methodClass}>{methodUpper}</span>
-        <code className="ss-endpoint__path">{path}</code>
+        <code className="rg-endpoint__path">{path}</code>
       </div>
-      <div className="ss-endpoint__grid grid-row grid-gap">
-        <div className="ss-endpoint__col tablet:grid-col-6">
+      <div className="rg-endpoint__grid grid-row grid-gap">
+        <div className="rg-endpoint__col tablet:grid-col-6">
           {leftBody}
           <ParameterSection title="Path parameters" items={pathParameters} />
           <ParameterSection title="Query parameters" items={queryParameters} />
@@ -180,7 +180,7 @@ export default function Endpoint({
           <ParameterSection title="Body parameters" items={bodyParameters} />
           <ResponseSection items={responses} />
         </div>
-        <div className="ss-endpoint__col tablet:grid-col-6">
+        <div className="rg-endpoint__col tablet:grid-col-6">
           <div className="position-sticky top-3">
             {slotRequest && (
               <>

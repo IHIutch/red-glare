@@ -157,12 +157,12 @@ pre {
 }
 
 // API reference endpoint sections. One `:::endpoint` in markdown
-// becomes one `<section class="ss-endpoint">` containing the
+// becomes one `<section class="rg-endpoint">` containing the
 // author's h2 (rendered first), a method/path signature strip, and
 // everything else unchanged. Method colors match the conventional
 // HTTP-verb palette (GET blue, POST green, DELETE red, etc.) keyed
 // to USWDS tokens.
-.ss-endpoint {
+.rg-endpoint {
     margin-top: units(5);
     margin-bottom: units(5);
 
@@ -176,12 +176,12 @@ pre {
 // which point the pre's own `overflow-x` never engages because it
 // isn't actually overflowing. Forcing min-width: 0 on each column lets
 // the track honor `tablet:grid-col-6` and the pre scrolls inside it.
-.ss-endpoint__col,
-.ss-endpoint__col > * {
+.rg-endpoint__col,
+.rg-endpoint__col > * {
     min-width: 0;
 }
 
-.ss-endpoint__signature {
+.rg-endpoint__signature {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -190,7 +190,7 @@ pre {
     margin-bottom: units(2);
 }
 
-.ss-endpoint__method {
+.rg-endpoint__method {
     display: inline-block;
     padding: units("05") units(1);
     border-radius: radius("sm");
@@ -223,7 +223,7 @@ pre {
     }
 }
 
-.ss-endpoint__path {
+.rg-endpoint__path {
     @include u-font("mono", "sm");
     background-color: transparent;
     color: color("base-darker");
@@ -234,11 +234,11 @@ pre {
 // fenced block. Each row stacks the name + type + Required pill on the
 // term line and the description underneath, with thin dividers between
 // rows. Authoring contract lives in comark-plugins/parameters.ts.
-.ss-parameters {
+.rg-parameters {
     margin: units(2) 0;
     padding: 0;
 }
-.ss-parameters__row {
+.rg-parameters__row {
     padding: units("105") 0;
     border-top: 1px solid color("base-lighter");
 
@@ -246,31 +246,31 @@ pre {
         border-bottom: 1px solid color("base-lighter");
     }
 }
-.ss-parameters__term {
+.rg-parameters__term {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     // gap: units(1);
     margin: 0;
 }
-.ss-parameters__name {
+.rg-parameters__name {
     @include u-font("mono", "sm");
     font-weight: font-weight("bold");
     color: color("base-darkest");
     background-color: transparent;
     padding: 0;
 }
-.ss-parameters__type {
+.rg-parameters__type {
     @include u-font("sans", "xs");
     color: color("base-dark");
     margin-left: units(1);
     font-style: italic;
 }
-.ss-parameters__meta {
+.rg-parameters__meta {
     @include u-font("sans", "2xs");
     color: color("base");
 }
-.ss-parameters__pill--required {
+.rg-parameters__pill--required {
     display: inline-block;
     // padding: units("05") units(1);
     // border-radius: radius("sm");
@@ -282,18 +282,18 @@ pre {
     // text-transform: uppercase;
     // letter-spacing: 0.05em;
 }
-.ss-parameters__description {
+.rg-parameters__description {
     margin: units("05") 0 0;
     color: color("base-darker");
     @include u-font("sans", "xs");
 }
-.ss-parameters__enum {
+.rg-parameters__enum {
     margin-top: units("05");
     @include u-font("sans", "2xs");
     color: color("base-dark");
 }
 
-.ss-endpoint__pill--deprecated {
+.rg-endpoint__pill--deprecated {
     display: inline-block;
     padding: units("05") units(1);
     border-radius: radius("sm");
@@ -348,8 +348,8 @@ pre {
 // The hover selector is written in full rather than with `&--active`
 // because `&` inside a comma-separated group expands to the whole list,
 // which produces invalid nested selectors.
-.ss-tabs__tabs,
-.ss-code-group__tabs {
+.rg-tabs__tabs,
+.rg-code-group__tabs {
     position: relative;
     &::after{
         content: '';
@@ -364,8 +364,8 @@ pre {
     }
 }
 
-.ss-tabs__tab,
-.ss-code-group__tab {
+.rg-tabs__tab,
+.rg-code-group__tab {
     cursor: pointer;
 
     &:focus {
@@ -375,13 +375,13 @@ pre {
     }
 }
 
-.ss-tabs__tab:hover:not(.ss-tabs__tab--active),
-.ss-code-group__tab:hover:not(.ss-code-group__tab--active) {
+.rg-tabs__tab:hover:not(.rg-tabs__tab--active),
+.rg-code-group__tab:hover:not(.rg-code-group__tab--active) {
     color: color("primary")
 }
 
-.ss-tabs__tab--active,
-.ss-code-group__tab--active {
+.rg-tabs__tab--active,
+.rg-code-group__tab--active {
     box-shadow: inset 0 -4px 0 color("primary-vivid");
     z-index: 1;
 }

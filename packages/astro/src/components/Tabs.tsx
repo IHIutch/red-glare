@@ -24,15 +24,15 @@ interface TabsItemChildProps {
 // is the single source of truth for active/inactive state — both SSR
 // and client-side re-renders go through the same function.
 const tablistStyles = cva(
-  'ss-tabs__list display-flex flex-row border-bottom-1px border-base-lighter',
+  'rg-tabs__list display-flex flex-row border-bottom-1px border-base-lighter',
 )
 
 const tabStyles = cva(
-  'ss-tabs__tab display-inline-flex flex-align-center bg-transparent text-semibold border-0 padding-y-105 padding-x-2 margin-0 font-sans-sm text-no-underline',
+  'rg-tabs__tab display-inline-flex flex-align-center bg-transparent text-semibold border-0 padding-y-105 padding-x-2 margin-0 font-sans-sm text-no-underline',
   {
     variants: {
       state: {
-        active: 'ss-tabs__tab--active text-black',
+        active: 'rg-tabs__tab--active text-black',
         inactive: 'text-base-dark',
       },
     },
@@ -40,7 +40,7 @@ const tabStyles = cva(
   },
 )
 
-const panelStyles = cva('ss-tabs__panel')
+const panelStyles = cva('rg-tabs__panel')
 
 // See `collectItems` in CodeGroup for why we iterate children directly
 // instead of using Children.toArray.
@@ -85,7 +85,7 @@ export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
   }
 
   return (
-    <div className="ss-tabs" data-tabs>
+    <div className="rg-tabs" data-tabs>
       <div role="tablist" aria-label={ariaLabel ?? 'Tabs'} className={tablistStyles()}>
         {items.map((item, i) => {
           const active = i === activeIdx
@@ -107,7 +107,7 @@ export default function Tabs({ children, 'aria-label': ariaLabel }: TabsProps) {
               onKeyDown={e => handleKeyDown(e, i)}
               className={tabStyles({ state: active ? 'active' : 'inactive' })}
             >
-              {icon && <Icon icon={icon} className="ss-tabs__tab-icon margin-right-1" />}
+              {icon && <Icon icon={icon} className="rg-tabs__tab-icon margin-right-1" />}
               {label}
             </button>
           )

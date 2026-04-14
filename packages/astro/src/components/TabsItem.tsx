@@ -15,7 +15,7 @@ interface TabsItemProps {
  */
 export default function TabsItem({ children, description }: TabsItemProps) {
   return (
-    <div className="ss-tabs__item">
+    <div className="rg-tabs__item">
       {children ?? (description && <p>{description}</p>)}
     </div>
   )

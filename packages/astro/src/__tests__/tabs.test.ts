@@ -24,7 +24,7 @@ const FIXTURE = `
 `
 
 function getGroup(): HTMLElement {
-  return document.querySelector<HTMLElement>('.ss-tabs[data-tabs]')!
+  return document.querySelector<HTMLElement>('.rg-tabs[data-tabs]')!
 }
 
 function getTabs(): HTMLButtonElement[] {
@@ -54,9 +54,9 @@ it('tabs: uses each item label as the tab text', async () => {
 it('tabs: renders inline SVG icons for items that specify `icon`, none otherwise', async () => {
   await renderComark(FIXTURE)
   const tabs = getTabs()
-  expect(tabs[0].querySelector('svg.ss-tabs__tab-icon')).not.toBeNull()
-  expect(tabs[1].querySelector('svg.ss-tabs__tab-icon')).not.toBeNull()
-  expect(tabs[2].querySelector('svg.ss-tabs__tab-icon')).toBeNull()
+  expect(tabs[0].querySelector('svg.rg-tabs__tab-icon')).not.toBeNull()
+  expect(tabs[1].querySelector('svg.rg-tabs__tab-icon')).not.toBeNull()
+  expect(tabs[2].querySelector('svg.rg-tabs__tab-icon')).toBeNull()
 })
 
 it('tabs: pairs tabs and panels via aria-controls / aria-labelledby', async () => {

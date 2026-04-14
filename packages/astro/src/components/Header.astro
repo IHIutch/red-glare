@@ -79,11 +79,11 @@ function dropdownIsCurrent(dropdown: NavDropdown): boolean {
                   type="button"
                   class={`usa-accordion__button usa-nav__link${dropdownIsCurrent(item) ? ' usa-current' : ''}`}
                   aria-expanded="false"
-                  aria-controls={`ss-nav-section-${i}`}
+                  aria-controls={`rg-nav-section-${i}`}
                 >
                   <span>{item.label}</span>
                 </button>
-                <ul id={`ss-nav-section-${i}`} class="usa-nav__submenu" hidden>
+                <ul id={`rg-nav-section-${i}`} class="usa-nav__submenu" hidden>
                   {item.items.map(sub => (
                     <li class="usa-nav__submenu-item">
                       <a

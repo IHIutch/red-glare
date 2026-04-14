@@ -30,15 +30,15 @@ function collectItems(children: ReactNode): ReactElement<CodeChildProps>[] {
 }
 
 const tablistStyles = cva(
-  'ss-code-group__tabs display-flex flex-row',
+  'rg-code-group__tabs display-flex flex-row',
 )
 
 const tabStyles = cva(
-  'ss-code-group__tab display-inline-flex flex-align-center bg-transparent text-semibold border-0 padding-y-105 padding-x-2 margin-0 font-sans-sm text-no-underline',
+  'rg-code-group__tab display-inline-flex flex-align-center bg-transparent text-semibold border-0 padding-y-105 padding-x-2 margin-0 font-sans-sm text-no-underline',
   {
     variants: {
       state: {
-        active: 'ss-code-group__tab--active text-black',
+        active: 'rg-code-group__tab--active text-black',
         inactive: 'text-base-dark',
       },
     },
@@ -46,7 +46,7 @@ const tabStyles = cva(
   },
 )
 
-const panelStyles = cva('ss-code-group__panel')
+const panelStyles = cva('rg-code-group__panel')
 
 /**
  * Tabbed code group — each child code block's tab label comes from its
@@ -84,7 +84,7 @@ export default function CodeGroup({ children }: CodeGroupProps) {
   }
 
   return (
-    <div className="ss-code-group" data-code-group>
+    <div className="rg-code-group" data-code-group>
       <div role="tablist" aria-label="Code alternatives" className={tablistStyles()}>
         {items.map((child, i) => {
           const active = i === activeIdx
@@ -106,7 +106,7 @@ export default function CodeGroup({ children }: CodeGroupProps) {
               onKeyDown={e => handleKeyDown(e, i)}
               className={tabStyles({ state: active ? 'active' : 'inactive' })}
             >
-              {icon && <Icon icon={icon} className="ss-code-group__tab-icon margin-right-1" />}
+              {icon && <Icon icon={icon} className="rg-code-group__tab-icon margin-right-1" />}
               {label}
             </button>
           )

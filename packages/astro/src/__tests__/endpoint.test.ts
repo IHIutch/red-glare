@@ -37,7 +37,7 @@ Lists branches for the specified repository.
 `
 
 function getEndpoint(): HTMLElement {
-  return document.querySelector<HTMLElement>('section.ss-endpoint')!
+  return document.querySelector<HTMLElement>('section.rg-endpoint')!
 }
 
 it('endpoint: renders a section with the method + path signature strip', async () => {
@@ -46,11 +46,11 @@ it('endpoint: renders a section with the method + path signature strip', async (
   const endpoint = getEndpoint()
   expect(endpoint).not.toBeNull()
 
-  const method = endpoint.querySelector('.ss-endpoint__method')
+  const method = endpoint.querySelector('.rg-endpoint__method')
   expect(method?.textContent).toBe('GET')
-  expect(method?.className).toContain('ss-endpoint__method--get')
+  expect(method?.className).toContain('rg-endpoint__method--get')
 
-  const path = endpoint.querySelector('.ss-endpoint__path')
+  const path = endpoint.querySelector('.rg-endpoint__path')
   expect(path?.textContent).toBe('/repos/{owner}/{repo}/branches')
 })
 
@@ -61,7 +61,7 @@ it('endpoint: renders the author h2 above the signature strip', async () => {
   const h2 = endpoint.querySelector('h2')
   expect(h2?.textContent).toBe('List branches')
 
-  const signature = endpoint.querySelector('.ss-endpoint__signature')
+  const signature = endpoint.querySelector('.rg-endpoint__signature')
   expect(signature).not.toBeNull()
   // Signature strip comes after the heading in document order.
   const headingPos = Array.prototype.indexOf.call(endpoint.children, h2!.parentElement ?? h2)
@@ -81,9 +81,9 @@ path: /things
 :::
 `)
 
-  const method = document.querySelector('.ss-endpoint__method')
+  const method = document.querySelector('.rg-endpoint__method')
   expect(method?.textContent).toBe('POST')
-  expect(method?.className).toContain('ss-endpoint__method--post')
+  expect(method?.className).toContain('rg-endpoint__method--post')
 })
 
 it('endpoint: renders auto-generated parameter sections from yaml attrs', async () => {
@@ -95,26 +95,26 @@ it('endpoint: renders auto-generated parameter sections from yaml attrs', async 
   expect(headings).toContain('Query parameters')
   expect(headings).toContain('Responses')
 
-  const rows = endpoint.querySelectorAll('.ss-parameters__row')
+  const rows = endpoint.querySelectorAll('.rg-parameters__row')
   expect(rows.length).toBe(3)
 
   const owner = rows[0]
-  expect(owner.querySelector('.ss-parameters__name')?.textContent).toBe('owner')
-  expect(owner.querySelector('.ss-parameters__type')?.textContent).toBe('string')
-  expect(owner.querySelector('.ss-parameters__pill--required')).not.toBeNull()
-  expect(owner.querySelector('.ss-parameters__description')?.textContent).toContain('The owner of the repository.')
+  expect(owner.querySelector('.rg-parameters__name')?.textContent).toBe('owner')
+  expect(owner.querySelector('.rg-parameters__type')?.textContent).toBe('string')
+  expect(owner.querySelector('.rg-parameters__pill--required')).not.toBeNull()
+  expect(owner.querySelector('.rg-parameters__description')?.textContent).toContain('The owner of the repository.')
 
   const perPage = rows[2]
-  expect(perPage.querySelector('.ss-parameters__name')?.textContent).toBe('per_page')
-  expect(perPage.querySelector('.ss-parameters__pill--required')).toBeNull()
-  expect(perPage.querySelector('.ss-parameters__meta')?.textContent).toContain('30')
+  expect(perPage.querySelector('.rg-parameters__name')?.textContent).toBe('per_page')
+  expect(perPage.querySelector('.rg-parameters__pill--required')).toBeNull()
+  expect(perPage.querySelector('.rg-parameters__meta')?.textContent).toContain('30')
 })
 
 it('endpoint: renders the responses as a status-code table in the left column', async () => {
   await renderComark(FIXTURE)
 
-  const leftCol = document.querySelectorAll('.ss-endpoint__col')[0]
-  const table = leftCol.querySelector('table.ss-responses')
+  const leftCol = document.querySelectorAll('.rg-endpoint__col')[0]
+  const table = leftCol.querySelector('table.rg-responses')
   expect(table).not.toBeNull()
 
   const headers = Array.from(table!.querySelectorAll('thead th')).map(th => th.textContent)
@@ -142,7 +142,7 @@ Removed in v2.
 :::
 `)
 
-  const deprecated = document.querySelector('.ss-endpoint__pill--deprecated')
+  const deprecated = document.querySelector('.rg-endpoint__pill--deprecated')
   expect(deprecated).not.toBeNull()
   expect(deprecated?.textContent).toBe('Deprecated')
 })
