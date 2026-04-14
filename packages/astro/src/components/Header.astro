@@ -3,22 +3,49 @@
 // https://designsystem.digital.gov/components/header/
 import config from 'virtual:starsandstripes/config'
 
-interface NavItem {
-  label: string;
-  href: string;
+import Search from './Search.astro'
+
+interface NavLink {
+  label: string
+  href: string
 }
 
+interface NavDropdown {
+  label: string
+  items: NavLink[]
+}
+
+type NavItem = NavLink | NavDropdown
+
 interface Props {
-  currentPath?: string;
+  currentPath?: string
 }
 
 const { currentPath = '' } = Astro.props
 
-// Build top-level nav from sidebar config if available
-const navItems: NavItem[] = (config.sidebar ?? []).map((group) => ({
-  label: group.label,
-  href: `/${(group.items?.[0] as string) ?? ''}`,
-}))
+// Resolve the nav source: explicit `config.nav` wins; otherwise derive a
+// flat nav from the sidebar (one link per top-level group, pointing at
+// that group's first item) — this preserves the historical behavior.
+const navItems: NavItem[]
+  = config.nav
+    ?? (config.sidebar ?? []).map(
+    (group): NavLink => ({
+      label: group.label,
+      href: `/${(group.items?.[0] as string) ?? ''}`,
+    }),
+  )
+
+function isDropdown(item: NavItem): item is NavDropdown {
+  return 'items' in item
+}
+
+function isCurrent(href: string): boolean {
+  return Boolean(href) && currentPath.startsWith(href)
+}
+
+function dropdownIsCurrent(dropdown: NavDropdown): boolean {
+  return dropdown.items.some(item => isCurrent(item.href))
+}
 ---
 
 <header class="usa-header usa-header--basic">
@@ -27,29 +54,65 @@ const navItems: NavItem[] = (config.sidebar ?? []).map((group) => ({
       <div class="usa-logo">
         <em class="usa-logo__text">
           <a href="/" title={config.title}>
-            {config.logo && <img src={config.logo} alt="" class="usa-logo__img" />}
+            {
+              config.logo && (
+                <img src={config.logo} alt="" class="usa-logo__img" />
+              )
+            }
             {config.title}
           </a>
         </em>
       </div>
       <button type="button" class="usa-menu-btn">Menu</button>
     </div>
-    <nav aria-label="Primary navigation" class="usa-nav">
+    <nav class="usa-nav">
       <button type="button" class="usa-nav__close">
         <img src="/assets/img/usa-icons/close.svg" role="img" alt="Close" />
       </button>
       <ul class="usa-nav__primary usa-accordion">
-        {navItems.map((item) => (
-          <li class="usa-nav__primary-item">
-            <a
-              href={item.href}
-              class={`usa-nav-link ${currentPath.startsWith(item.href) ? 'usa-current' : ''}`}
-            >
-              <span>{item.label}</span>
-            </a>
-          </li>
-        ))}
+        {
+          navItems.map((item, i) =>
+            isDropdown(item)
+? (
+              <li class="usa-nav__primary-item">
+                <button
+                  type="button"
+                  class={`usa-accordion__button usa-nav__link${dropdownIsCurrent(item) ? ' usa-current' : ''}`}
+                  aria-expanded="false"
+                  aria-controls={`ss-nav-section-${i}`}
+                >
+                  <span>{item.label}</span>
+                </button>
+                <ul id={`ss-nav-section-${i}`} class="usa-nav__submenu" hidden>
+                  {item.items.map(sub => (
+                    <li class="usa-nav__submenu-item">
+                      <a
+                        href={sub.href}
+                        aria-current={isCurrent(sub.href) ? 'page' : undefined}
+                      >
+                        <span>{sub.label}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            )
+: (
+              <li class="usa-nav__primary-item">
+                <a
+                  href={item.href}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                  class={`usa-nav-link${isCurrent(item.href) ? ' usa-current' : ''}`}
+                >
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ),
+          )
+        }
       </ul>
+
+      {config.pagefind && <Search />}
     </nav>
   </div>
 </header>

@@ -1,5 +1,5 @@
-import { defineConfig } from 'astro/config'
 import starsAndStripes from '@starsandstripes/astro'
+import { defineConfig } from 'astro/config'
 
 export default defineConfig({
   site: 'http://localhost:4321',
@@ -8,18 +8,28 @@ export default defineConfig({
       title: 'Agency Documentation',
       description: 'Demo documentation site powered by Stars and Stripes',
       governmentBanner: true,
+      rss: true,
+      nav: [
+        { label: 'Getting Started', href: '/getting-started/' },
+        {
+          label: 'Reference',
+          items: [
+            { label: 'Components', href: '/components/' },
+            { label: 'Configuration', href: '/configuration/' },
+            { label: 'Deployment', href: '/deployment/' },
+          ],
+        },
+        { label: 'About', href: '/about/' },
+      ],
       editLink: {
         baseUrl: 'https://github.com/example/docs/edit/main/',
       },
       footer: {
         links: [
-          {
-            heading: 'Documentation',
-            items: [
-              { label: 'Getting Started', href: '/getting-started/' },
-              { label: 'Components', href: '/components/' },
-            ],
-          },
+          { label: 'Getting Started', href: '/getting-started/' },
+          { label: 'Components', href: '/components/' },
+          { label: 'About', href: '/about/' },
+          { label: 'Contact', href: '/contact/' },
         ],
         contact: {
           heading: 'Agency Help Desk',

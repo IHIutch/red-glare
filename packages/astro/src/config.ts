@@ -6,11 +6,6 @@ const HeadTagSchema = z.object({
   content: z.string().optional(),
 })
 
-const SidebarLinkSchema = z.object({
-  label: z.string(),
-  href: z.string(),
-})
-
 // Header navigation. Each item is either a flat link or a dropdown
 // containing a list of links. Discriminated by the presence of `items`.
 const NavLinkSchema = z.object({
