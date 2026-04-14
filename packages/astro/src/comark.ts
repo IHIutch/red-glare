@@ -7,6 +7,7 @@ import highlight from 'comark/plugins/highlight'
 import summary from 'comark/plugins/summary'
 import GithubSlugger from 'github-slugger'
 
+import endpoint from './comark-plugins/endpoint'
 import { resolveIconByName } from './components/icons'
 import { getLangIcon } from './components/lang-icons'
 import { extractText, nodesToPlainText, truncate } from './utils/text'
@@ -180,6 +181,9 @@ export async function parseContent(markdown: string): Promise<ComarkTree> {
       // markdown. The plugin populates `tree.meta.summary` with the nodes
       // before the delimiter; we consume it for SEO/RSS description fallbacks.
       summary(),
+      // Validates `:::endpoint` YAML attributes (method, path, parameters,
+      // responses, etc.) at parse time — see comark-plugins/endpoint.ts
+      endpoint(),
     ],
   })
   attachIconData(tree.nodes)

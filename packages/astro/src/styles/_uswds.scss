@@ -148,6 +148,146 @@ pre {
     @include u-font("mono", "xs");
     background-color: #f0f0f0;
     padding: 1rem;
+    overflow-x: auto;
+}
+
+// API reference endpoint sections. One `:::endpoint` in markdown
+// becomes one `<section class="ss-endpoint">` containing the
+// author's h2 (rendered first), a method/path signature strip, and
+// everything else unchanged. Method colors match the conventional
+// HTTP-verb palette (GET blue, POST green, DELETE red, etc.) keyed
+// to USWDS tokens.
+.ss-endpoint {
+    margin-top: units(5);
+    margin-bottom: units(5);
+
+    > :first-child {
+        margin-top: 0;
+    }
+}
+
+.ss-endpoint__signature {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: units(1);
+    margin-top: units(1);
+    margin-bottom: units(2);
+}
+
+.ss-endpoint__method {
+    display: inline-block;
+    padding: units("05") units(1);
+    border-radius: radius("sm");
+    font-weight: font-weight("bold");
+    font-size: font-size("sans", "2xs");
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &--get {
+        background-color: color("blue-10");
+        color: color("blue-70v");
+    }
+    &--post {
+        background-color: color("green-cool-10");
+        color: color("green-cool-70v");
+    }
+    &--put,
+    &--patch {
+        background-color: color("orange-warm-10");
+        color: color("orange-warm-70v");
+    }
+    &--delete {
+        background-color: color("red-warm-10");
+        color: color("red-warm-70v");
+    }
+    &--head,
+    &--options {
+        background-color: color("base-lighter");
+        color: color("base-darker");
+    }
+}
+
+.ss-endpoint__path {
+    @include u-font("mono", "sm");
+    background-color: transparent;
+    color: color("base-darker");
+    padding: 0;
+}
+
+// GitHub-style parameter list rendered from a validated `parameters`
+// fenced block. Each row stacks the name + type + Required pill on the
+// term line and the description underneath, with thin dividers between
+// rows. Authoring contract lives in comark-plugins/parameters.ts.
+.ss-parameters {
+    margin: units(2) 0;
+    padding: 0;
+}
+.ss-parameters__row {
+    padding: units("105") 0;
+    border-top: 1px solid color("base-lighter");
+
+    &:last-child {
+        border-bottom: 1px solid color("base-lighter");
+    }
+}
+.ss-parameters__term {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    // gap: units(1);
+    margin: 0;
+}
+.ss-parameters__name {
+    @include u-font("mono", "sm");
+    font-weight: font-weight("bold");
+    color: color("base-darkest");
+    background-color: transparent;
+    padding: 0;
+}
+.ss-parameters__type {
+    @include u-font("sans", "xs");
+    color: color("base-dark");
+    margin-left: units(1);
+    font-style: italic;
+}
+.ss-parameters__meta {
+    @include u-font("sans", "2xs");
+    color: color("base");
+}
+.ss-parameters__pill--required {
+    display: inline-block;
+    // padding: units("05") units(1);
+    // border-radius: radius("sm");
+    // background-color: color("red-warm-10");
+    margin-left: units(3);
+    color: color("red-60v");
+    font-size: font-size("sans", "2xs");
+    font-weight: font-weight("bold");
+    // text-transform: uppercase;
+    // letter-spacing: 0.05em;
+}
+.ss-parameters__description {
+    margin: units("05") 0 0;
+    color: color("base-darker");
+    @include u-font("sans", "xs");
+}
+.ss-parameters__enum {
+    margin-top: units("05");
+    @include u-font("sans", "2xs");
+    color: color("base-dark");
+}
+
+.ss-endpoint__pill--deprecated {
+    display: inline-block;
+    padding: units("05") units(1);
+    border-radius: radius("sm");
+    background-color: color("gold-10v");
+    color: color("gold-70v");
+    font-size: font-size("sans", "3xs");
+    font-weight: font-weight("bold");
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 // Accordion heading slot: the author writes a real markdown heading

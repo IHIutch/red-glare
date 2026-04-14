@@ -1,11 +1,11 @@
 import { z } from 'zod/v4'
 
-export { docsLoader } from './loader.js'
+export { docsLoader } from './loader'
 
 export const docsSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
-  template: z.enum(['doc', 'splash']).default('doc'),
+  template: z.enum(['doc', 'splash', 'api']).default('doc'),
   sidebar: z
     .object({
       label: z.string().optional(),
@@ -14,6 +14,18 @@ export const docsSchema = z.object({
     })
     .optional(),
   toc: z.boolean().default(true),
+  /**
+   * Version string rendered as a small pill next to the `<h1>` on
+   * `template: 'api'` pages (e.g. `"2026-03-10"` → `v2026-03-10`).
+   * Ignored on other templates.
+   */
+  apiVersion: z.string().optional(),
+  /**
+   * Reserved for a future toggle that prefixes endpoint signature
+   * paths with the full base URL. Defined in v1 so adding that
+   * behavior later doesn't break schema validation.
+   */
+  apiBaseUrl: z.string().optional(),
   i18n: z
     .object({
       lang: z.string().optional(),

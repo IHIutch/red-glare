@@ -9,6 +9,7 @@ import AccordionHeading from '../../components/AccordionHeading'
 import Alert from '../../components/Alert'
 import AlertHeading from '../../components/AlertHeading'
 import CodeGroup from '../../components/CodeGroup'
+import Endpoint from '../../components/Endpoint'
 import LinkButton from '../../components/LinkButton'
 import ProcessList from '../../components/ProcessList'
 import ProcessListHeading from '../../components/ProcessListHeading'
@@ -31,6 +32,7 @@ const components = {
   'alert-heading': AlertHeading,
   'link-button': LinkButton,
   'code-group': CodeGroup,
+  'endpoint': Endpoint,
   'process-list': ProcessList,
   'process-list-item': ProcessListItem,
   'process-list-heading': ProcessListHeading,

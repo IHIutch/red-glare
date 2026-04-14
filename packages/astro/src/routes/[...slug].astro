@@ -59,6 +59,11 @@ const tree = getCachedTree(doc.id) ?? await parseContent(doc.body!)
 const headings = extractHeadings(tree)
 // Frontmatter description wins; otherwise fall back to the <!-- more --> summary
 const description = doc.data.description ?? extractSummaryText(tree) ?? undefined
+// API reference pages auto-hide the right-hand TOC column so wide
+// parameter tables and code samples get the full grid width. Authors
+// can still deep-link into each endpoint's h2 (slugs are backfilled
+// by `attachTocHeadings`) — they just don't get the navigation strip.
+const isApi = doc.data.template === 'api'
 const showToc = doc.data.toc !== false
 const isSplash = doc.data.template === 'splash';
 ---
@@ -85,14 +90,23 @@ const isSplash = doc.data.template === 'splash';
           </div>
           <div class="tablet:grid-col">
             <div class="grid-row grid-gap">
-              <div class="display-none tablet:display-block grid-col-auto width-card-lg order-last">
-                {showToc && headings.length > 0 && (
-                  <TableOfContents headings={headings} />
-                )}
-              </div>
+              {!isApi && (
+                <div class="display-none tablet:display-block grid-col-auto width-card-lg order-last">
+                  {showToc && headings.length > 0 && (
+                    <TableOfContents headings={headings} />
+                  )}
+                </div>
+              )}
               <div class="grid-col">
                 <article>
-                  <h1 class="margin-top-0">{doc.data.title}</h1>
+                  <h1 class="margin-top-0">
+                    {doc.data.title}
+                    {isApi && doc.data.apiVersion && (
+                      <span class="usa-tag margin-left-1 font-sans-2xs bg-base-lighter text-base-darker">
+                        v{doc.data.apiVersion}
+                      </span>
+                    )}
+                  </h1>
                   <Article
                     tree={tree}
                     className="usa-prose"

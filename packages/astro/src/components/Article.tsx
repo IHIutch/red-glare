@@ -11,6 +11,7 @@ import AccordionHeading from './AccordionHeading'
 import Alert from './Alert'
 import AlertHeading from './AlertHeading'
 import CodeGroup from './CodeGroup'
+import Endpoint from './Endpoint'
 import LinkButton from './LinkButton'
 import ProcessList from './ProcessList'
 import ProcessListHeading from './ProcessListHeading'
@@ -34,6 +35,7 @@ const components = {
   'alert-heading': AlertHeading,
   'link-button': LinkButton,
   'code-group': CodeGroup,
+  'endpoint': Endpoint,
   'process-list': ProcessList,
   'process-list-item': ProcessListItem,
   'process-list-heading': ProcessListHeading,
