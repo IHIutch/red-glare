@@ -3,7 +3,7 @@
 // Injected conditionally when config.llms is true.
 import { getCollection } from 'astro:content'
 
-import type { DocsEntry } from '../schema.js'
+import type { DocsEntry } from '../schema'
 
 export async function getStaticPaths() {
   // getCollection returns `any` inside integration packages — Astro's

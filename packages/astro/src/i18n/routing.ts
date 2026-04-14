@@ -1,7 +1,7 @@
 // Locale-based content routing utilities
 // Supports locale folders: src/content/docs/en/, src/content/docs/es/
 
-import type { StarsAndStripesConfig } from '../config.js'
+import type { StarsAndStripesConfig } from '../config'
 
 /**
  * Extract locale prefix from a content entry ID.

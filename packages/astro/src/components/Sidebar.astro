@@ -1,18 +1,18 @@
 ---
+import { getCollection } from 'astro:content'
 // USWDS Side Navigation — auto-generated from file structure with config overrides
 // https://designsystem.digital.gov/components/sidenav/
 import config from 'virtual:starsandstripes/config'
-import { getCollection } from 'astro:content'
 
 interface SidebarItem {
-  label: string;
-  href: string;
-  order: number;
-  children?: SidebarItem[];
+  label: string
+  href: string
+  order: number
+  children?: SidebarItem[]
 }
 
 interface Props {
-  currentPath: string;
+  currentPath: string
 }
 
 const { currentPath } = Astro.props
@@ -38,12 +38,13 @@ function buildSidebarTree(entries: typeof docs): SidebarItem[] {
       if (entry.id !== 'index') {
         topLevel.push({ label, href, order })
       }
-    } else {
+    }
+ else {
       // Nested page — group by first directory segment
       const groupKey = parts[0]
       if (!tree.has(groupKey)) {
         tree.set(groupKey, {
-          label: groupKey.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+          label: groupKey.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
           href: `/${groupKey}/`,
           order: 999,
           children: [],
@@ -75,13 +76,14 @@ function buildSidebarTree(entries: typeof docs): SidebarItem[] {
 }
 
 function applySidebarConfig(sidebarConfig: typeof config.sidebar, autoItems: SidebarItem[]): SidebarItem[] {
-  if (!sidebarConfig) return autoItems
+  if (!sidebarConfig)
+return autoItems
 
   return sidebarConfig.map((group) => {
     if (group.autogenerate) {
       // Find the auto-generated group matching this directory
       const autoGroup = autoItems.find(
-        (item) => item.href === `/${group.autogenerate!.directory}/`
+        item => item.href === `/${group.autogenerate!.directory}/`,
       )
       return {
         label: group.label,
@@ -99,8 +101,8 @@ function applySidebarConfig(sidebarConfig: typeof config.sidebar, autoItems: Sid
       children: (group.items ?? []).map((item, i) => {
         if (typeof item === 'string') {
           const autoItem = autoItems
-            .flatMap((g) => [g, ...(g.children ?? [])])
-            .find((g) => g.href === `/${item}/`)
+            .flatMap(g => [g, ...(g.children ?? [])])
+            .find(g => g.href === `/${item}/`)
           return {
             label: autoItem?.label ?? item,
             href: `/${item}/`,
@@ -119,15 +121,16 @@ const sidebarItems = buildSidebarTree(docs)
 <aside class="usa-layout-docs__sidenav" aria-label="Secondary navigation">
   <nav>
     <ul class="usa-sidenav">
-      {sidebarItems.map((item) => (
+      {sidebarItems.map(item => (
         <li class="usa-sidenav__item">
-          {item.children && item.children.length > 0 ? (
+          {item.children && item.children.length > 0
+? (
             <>
               <a href={item.href} class={currentPath === item.href ? 'usa-current' : ''}>
                 {item.label}
               </a>
               <ul class="usa-sidenav__sublist">
-                {item.children.map((child) => (
+                {item.children.map(child => (
                   <li class="usa-sidenav__item">
                     <a href={child.href} class={currentPath === child.href ? 'usa-current' : ''}>
                       {child.label}
@@ -136,7 +139,8 @@ const sidebarItems = buildSidebarTree(docs)
                 ))}
               </ul>
             </>
-          ) : (
+          )
+: (
             <a href={item.href} class={currentPath === item.href ? 'usa-current' : ''}>
               {item.label}
             </a>

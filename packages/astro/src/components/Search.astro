@@ -10,13 +10,19 @@
 </div>
 
 <script>
-  // Pagefind auto-initializes via astro-pagefind integration
-  // This script wires up the USWDS search input to Pagefind's UI
+  // Pagefind auto-initializes via astro-pagefind integration.
+  // This script wires up the USWDS search input to Pagefind's UI.
+  // PagefindUI's constructor mutates the target container to install
+  // its own DOM — the returned instance isn't needed, but eslint
+  // flags `new …()` as a side-effect, so we assign and ignore it.
   window.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('pagefind-search')
-  if (container && window.PagefindUI) {
+    // @ts-expect-error: Property 'PagefindUI' does not exist on type 'Window & typeof globalThis'.
+    if (container && window.PagefindUI) {
       container.innerHTML = ''
-      new window.PagefindUI({ element: container, showSubResults: true })
-  }
+
+      // @ts-expect-error: Property 'PagefindUI' does not exist on type 'Window & typeof globalThis'.
+      void new window.PagefindUI({ element: container, showSubResults: true })
+    }
   })
 </script>

@@ -5,9 +5,9 @@ import type { APIContext } from 'astro'
 import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
 
-import type { DocsEntry } from '../schema.js'
+import type { DocsEntry } from '../schema'
 
-import { extractSummaryText, parseContent } from '../comark.js'
+import { extractSummaryText, parseContent } from '../comark'
 
 export async function GET(context: APIContext) {
   // Import config at runtime via virtual module

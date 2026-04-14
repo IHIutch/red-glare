@@ -5,7 +5,9 @@ import type { APIContext } from 'astro'
 // is true. Each entry links to the raw .md file for the page.
 import { getCollection } from 'astro:content'
 
-import type { DocsEntry } from '../schema.js'
+import type { DocsEntry } from '../schema'
+
+const TRAILING_SLASH_RE = /\/$/
 
 export async function GET(context: APIContext) {
   const { default: config } = await import('virtual:starsandstripes/config')
@@ -17,7 +19,7 @@ export async function GET(context: APIContext) {
     (entry: DocsEntry) => !entry.data.draft,
   )) as DocsEntry[]
 
-  const siteUrl = context.site?.toString().replace(/\/$/, '') ?? ''
+  const siteUrl = context.site?.toString().replace(TRAILING_SLASH_RE, '') ?? ''
 
   const lines: string[] = [
     `# ${config.title}`,
