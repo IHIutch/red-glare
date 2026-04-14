@@ -33,6 +33,10 @@ document outline. The TOC picks up the inner heading automatically,
 with a github-slugger-generated anchor id:
 
 ::alert{type="warning"}
+  #heading
+  ### Warning!
+
+  #body
   The submission portal will be offline from 2:00–4:00 AM ET on Sunday while we deploy an update.
 
   The submission portal will be offline from 2:00–4:00 AM ET on Sunday while we deploy an update.
