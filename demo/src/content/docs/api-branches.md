@@ -63,7 +63,7 @@ curl -L \
   https://api.github.com/repos/OWNER/REPO/branches
 ```
 
-```javascript [octokit.js]
+```javascript [JavaScript]
 await octokit.request('GET /repos/{owner}/{repo}/branches', {
   owner: 'OWNER',
   repo: 'REPO',
