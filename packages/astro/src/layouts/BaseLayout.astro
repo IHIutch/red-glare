@@ -14,6 +14,15 @@
 import '@fontsource-variable/public-sans'
 import '@fontsource-variable/merriweather'
 import '@fontsource-variable/roboto-mono'
+// Resolve the regular-weight latin woff2 for each variable font through
+// Vite so the bundler emits a hashed asset URL we can preload. Without
+// these <link rel="preload"> hints the browser only discovers the woff2
+// files after parsing the bundled CSS, which guarantees a FOUT —
+// preloading kicks the fetch off in parallel with the HTML parse so the
+// webfont is usually ready before first paint.
+import merriweatherWoff2 from '@fontsource-variable/merriweather/files/merriweather-latin-wght-normal.woff2?url'
+import publicSansWoff2 from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url'
+import robotoMonoWoff2 from '@fontsource-variable/roboto-mono/files/roboto-mono-latin-wght-normal.woff2?url'
 
 import '../styles/styles.scss'
 import { SEO } from 'astro-seo'
@@ -44,6 +53,9 @@ const canonicalUrl = new URL(
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={publicSansWoff2} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={merriweatherWoff2} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={robotoMonoWoff2} />
     <SEO
       title={pageTitle}
       description={description}
