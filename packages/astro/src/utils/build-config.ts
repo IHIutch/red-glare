@@ -1,8 +1,8 @@
-import context from 'virtual:starsandstripes/context'
+import context from 'virtual:red-glare/context'
 
 /**
  * Expose the Astro config fields the link validator cares about via
- * the virtual `virtual:starsandstripes/context` module, which the
+ * the virtual `virtual:red-glare/context` module, which the
  * integration's Vite plugin populates at `astro:config:setup` time.
  * Going through the virtual module means the JSON is baked into the
  * prerender chunk at build time, so both the integration side and

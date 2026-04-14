@@ -10,7 +10,7 @@ import type { DocsEntry } from '../schema'
 const TRAILING_SLASH_RE = /\/$/
 
 export async function GET(context: APIContext) {
-  const { default: config } = await import('virtual:starsandstripes/config')
+  const { default: config } = await import('virtual:red-glare/config')
 
   // getCollection returns `any` inside integration packages — Astro's
   // collection types are codegen'd in the user project, not the library.

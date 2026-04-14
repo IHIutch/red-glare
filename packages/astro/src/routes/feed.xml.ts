@@ -11,7 +11,7 @@ import { extractSummaryText, parseContent } from '../comark'
 
 export async function GET(context: APIContext) {
   // Import config at runtime via virtual module
-  const { default: config } = await import('virtual:starsandstripes/config')
+  const { default: config } = await import('virtual:red-glare/config')
 
   const docs = (await getCollection('docs', (entry: DocsEntry) => !entry.data.draft)) as DocsEntry[]
 

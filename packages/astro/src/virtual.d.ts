@@ -1,9 +1,9 @@
-declare module 'virtual:starsandstripes/config' {
+declare module 'virtual:red-glare/config' {
   const config: import('./config').StarsAndStripesConfig
   export default config
 }
 
-declare module 'virtual:starsandstripes/context' {
+declare module 'virtual:red-glare/context' {
   const context: {
     root: string
     trailingSlash: string

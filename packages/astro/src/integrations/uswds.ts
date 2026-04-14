@@ -34,7 +34,7 @@ export function getUswdsViteConfig() {
   const { packages, img } = resolveUswdsPaths()
 
   const assetPlugin: Plugin = {
-    name: '@starsandstripes/uswds-assets',
+    name: '@red-glare/uswds-assets',
     configureServer(server) {
       server.middlewares.use('/assets/img', (req, res, next) => {
         const url = (req.url ?? '/').split('?')[0]

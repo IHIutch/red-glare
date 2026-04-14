@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 
 import type { StarsAndStripesConfig } from '../config'
 
-type VirtualModuleId = 'virtual:starsandstripes/config' | 'virtual:starsandstripes/context'
+type VirtualModuleId = 'virtual:red-glare/config' | 'virtual:red-glare/context'
 
 function resolvedId(id: string): string {
   return `\0${id}`
@@ -21,7 +21,7 @@ export function vitePluginVirtualConfig(
 ): Plugin {
   // Serialize a pruned slice of the resolved Astro config alongside
   // our own user-facing config. Modules that import
-  // `virtual:starsandstripes/context` — notably the slug route's
+  // `virtual:red-glare/context` — notably the slug route's
   // link validator — receive these fields as JSON constants baked
   // into the prerender chunk, which works regardless of which
   // module scope the importer ends up in (Astro hoists
@@ -35,8 +35,8 @@ export function vitePluginVirtualConfig(
       : astroConfig.site.toString()
 
   const modules: Record<VirtualModuleId, string> = {
-    'virtual:starsandstripes/config': `export default ${JSON.stringify(config)};`,
-    'virtual:starsandstripes/context': `export default ${JSON.stringify({
+    'virtual:red-glare/config': `export default ${JSON.stringify(config)};`,
+    'virtual:red-glare/context': `export default ${JSON.stringify({
       root: astroConfig.root.toString(),
       trailingSlash: astroConfig.trailingSlash ?? 'ignore',
       site: siteString,
@@ -45,7 +45,7 @@ export function vitePluginVirtualConfig(
   }
 
   return {
-    name: 'vite-plugin-starsandstripes-config',
+    name: 'vite-plugin-red-glare-config',
     resolveId(id) {
       if (id in modules)
         return resolvedId(id)
