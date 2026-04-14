@@ -43,11 +43,13 @@ export default {
         // immediately before the closing backtick). Intermediate elements
         // sit between `${` and the next `}` where trailing whitespace
         // could be intentional formatting.
-        if (!node.tail) return
+        if (!node.tail)
+          return
 
         const raw = node.value.raw
         const match = raw.match(TRAILING_WHITESPACE)
-        if (!match) return
+        if (!match)
+          return
 
         const whitespace = match[1]
 
