@@ -25,13 +25,12 @@
     "./schema": "./src/schema.ts"
   },
   "files": [
-    "dist",
     "src"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "prepublishOnly": "tsc",
+    "build": "tsc --noEmit",
+    "dev": "tsc --noEmit --watch",
+    "prepublishOnly": "tsc --noEmit",
     "test": "vitest run --browser",
     "typecheck": "tsc --noEmit"
   },
