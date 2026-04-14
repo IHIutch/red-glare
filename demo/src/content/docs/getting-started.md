@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: How to install and configure Stars and Stripes
+description: How to install and configure Red Glare
 sidebar:
   order: 1
 toc: false
@@ -12,13 +12,13 @@ Install the package using your preferred package manager:
 
 ::code-group
 ```bash [pnpm]
-pnpm add @starsandstripes/astro
+pnpm add @red-glare/astro
 ```
 ```bash [npm]
-npm install @starsandstripes/astro
+npm install @red-glare/astro
 ```
 ```bash [yarn]
-yarn add @starsandstripes/astro
+yarn add @red-glare/astro
 ```
 ::
 
@@ -28,11 +28,11 @@ Add the integration to your `astro.config.mjs`:
 
 ```js
 import { defineConfig } from 'astro/config'
-import starsAndStripes from '@starsandstripes/astro'
+import redGlare from '@red-glare/astro'
 
 export default defineConfig({
   integrations: [
-    starsAndStripes({
+    redGlare({
       title: 'My Agency Docs',
     }),
   ],
@@ -45,7 +45,7 @@ Create a `src/content.config.ts` file:
 
 ```typescript
 import { defineCollection } from 'astro:content'
-import { docsLoader, docsSchema } from '@starsandstripes/astro/schema'
+import { docsLoader, docsSchema } from '@red-glare/astro/schema'
 
 const docs = defineCollection({
   loader: docsLoader(),

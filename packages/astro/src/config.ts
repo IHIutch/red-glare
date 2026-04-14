@@ -66,7 +66,7 @@ const IdentifierSchema = z.object({
   links: z.array(z.object({ label: z.string(), href: z.string() })),
 })
 
-export const StarsAndStripesConfigSchema = z.object({
+export const RedGlareConfigSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   logo: z.string().optional(),
@@ -137,7 +137,7 @@ export const StarsAndStripesConfigSchema = z.object({
   uswdsSettings: z.string().optional(),
 })
 
-export type StarsAndStripesConfig = z.infer<typeof StarsAndStripesConfigSchema>
-export type StarsAndStripesUserConfig = z.input<
-  typeof StarsAndStripesConfigSchema
+export type RedGlareConfig = z.infer<typeof RedGlareConfigSchema>
+export type RedGlareUserConfig = z.input<
+  typeof RedGlareConfigSchema
 >

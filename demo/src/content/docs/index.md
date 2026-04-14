@@ -3,7 +3,7 @@ title: Welcome
 template: splash
 ---
 
-Welcome to the **Stars and Stripes** demo site.
+Welcome to the **Red Glare** demo site.
 
 This documentation site is powered by the U.S. Web Design System and Comark.
 

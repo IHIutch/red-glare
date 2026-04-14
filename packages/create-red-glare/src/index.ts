@@ -16,7 +16,7 @@ async function main(): Promise<void> {
 
   const projectDir = resolve(process.cwd(), projectName)
   // eslint-disable-next-line no-console
-  console.log(`\nCreating Stars and Stripes project in ${projectDir}...\n`)
+  console.log(`\nCreating Red Glare project in ${projectDir}...\n`)
 
   await mkdir(join(projectDir, 'src/content/docs'), { recursive: true })
   await mkdir(join(projectDir, 'src/styles'), { recursive: true })
@@ -55,13 +55,13 @@ async function main(): Promise<void> {
   await writeFile(
     join(projectDir, 'astro.config.mjs'),
     `import { defineConfig } from 'astro/config'
-import starsAndStripes from '@red-glare/astro'
+import redGlare from '@red-glare/astro'
 
 export default defineConfig({
   integrations: [
-    starsAndStripes({
+    redGlare({
       title: '${projectName}',
-      description: 'Documentation site powered by Stars and Stripes',
+      description: 'Documentation site powered by Red Glare',
       governmentBanner: true,
     }),
   ],
@@ -91,7 +91,7 @@ description: Getting started with your documentation site.
 template: splash
 ---
 
-Welcome to your new documentation site, powered by [Stars and Stripes](https://github.com/starsandstripes).
+Welcome to your new documentation site, powered by [Red Glare](https://github.com/red-glare).
 
 ## Getting Started
 

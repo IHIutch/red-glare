@@ -1,12 +1,12 @@
-import starsAndStripes from '@red-glare/astro'
+import redGlare from '@red-glare/astro'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
   site: 'http://localhost:4321',
   integrations: [
-    starsAndStripes({
+    redGlare({
       title: 'Agency Documentation',
-      description: 'Demo documentation site powered by Stars and Stripes',
+      description: 'Demo documentation site powered by Red Glare',
       governmentBanner: true,
       rss: true,
       nav: [

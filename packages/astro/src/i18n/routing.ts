@@ -1,7 +1,7 @@
 // Locale-based content routing utilities
 // Supports locale folders: src/content/docs/en/, src/content/docs/es/
 
-import type { StarsAndStripesConfig } from '../config'
+import type { RedGlareConfig } from '../config'
 
 /**
  * Extract locale prefix from a content entry ID.
@@ -48,7 +48,7 @@ export function getLocalizedPath(
 export function findTranslations(
   currentId: string,
   allIds: string[],
-  config: Pick<StarsAndStripesConfig, 'locales' | 'defaultLocale'>,
+  config: Pick<RedGlareConfig, 'locales' | 'defaultLocale'>,
 ): Array<{ locale: string, label: string, href: string }> {
   const locales = Object.keys(config.locales ?? {})
   if (locales.length <= 1)

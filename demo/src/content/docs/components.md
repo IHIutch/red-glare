@@ -7,7 +7,7 @@ sidebar:
 
 ## Alerts
 
-Stars and Stripes maps Comark's alert component to USWDS alerts:
+Red Glare maps Comark's alert component to USWDS alerts:
 
 ::alert{type="info"}
 This is an informational alert styled with USWDS.
@@ -262,11 +262,11 @@ inline language icon next to it:
 ::code-group
 
 ```js [astro.config.mjs]
-import starsAndStripes from '@starsandstripes/astro'
+import redGlare from '@red-glare/astro'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
-  integrations: [starsAndStripes({ title: 'My Agency Docs' })],
+  integrations: [redGlare({ title: 'My Agency Docs' })],
 })
 ```
 

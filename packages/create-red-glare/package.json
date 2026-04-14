@@ -2,12 +2,12 @@
   "name": "create-red-glare",
   "type": "module",
   "version": "0.0.1",
-  "description": "CLI scaffolder for Stars and Stripes documentation sites",
+  "description": "CLI scaffolder for Red Glare documentation sites",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/starsandstripes/starsandstripes",
-    "directory": "packages/create-starsandstripes"
+    "url": "https://github.com/red-glare/red-glare",
+    "directory": "packages/create-red-glare"
   },
   "keywords": [
     "create",

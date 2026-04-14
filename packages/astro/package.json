@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "description": "Astro integration for building USWDS-styled federal documentation sites with Comark",
   "license": "MIT",
-  "homepage": "https://github.com/starsandstripes/starsandstripes",
+  "homepage": "https://github.com/red-glare/red-glare",
   "repository": {
     "type": "git",
-    "url": "https://github.com/starsandstripes/starsandstripes",
+    "url": "https://github.com/red-glare/red-glare",
     "directory": "packages/astro"
   },
   "keywords": [

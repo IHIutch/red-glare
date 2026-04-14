@@ -154,7 +154,7 @@ importers:
         specifier: ^4.1.4
         version: 4.1.4(@types/node@22.19.17)(@vitest/browser-playwright@4.1.4)(jsdom@29.0.2)(vite@7.3.2(@types/node@22.19.17)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))
 
-  packages/create-starsandstripes:
+  packages/create-red-glare:
     devDependencies:
       '@types/node':
         specifier: ^22.0.0

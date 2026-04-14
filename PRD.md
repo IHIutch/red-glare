@@ -1,8 +1,8 @@
-# Stars and Stripes — Product Requirements Document
+# Red Glare — Product Requirements Document
 
 ## Overview
 
-Stars and Stripes is a reusable Astro integration that enables federal agencies, contractors, and developers to quickly scaffold and deploy documentation sites styled with the U.S. Web Design System (USWDS). Content is authored in CommonMark and rendered via Comark, with built-in support for syntax highlighting, math, and diagrams.
+Red Glare is a reusable Astro integration that enables federal agencies, contractors, and developers to quickly scaffold and deploy documentation sites styled with the U.S. Web Design System (USWDS). Content is authored in CommonMark and rendered via Comark, with built-in support for syntax highlighting, math, and diagrams.
 
 The framework follows a content-first philosophy inspired by VitePress, with a developer experience modeled after Starlight.
 
@@ -19,16 +19,16 @@ The framework follows a content-first philosophy inspired by VitePress, with a d
 | Content parsing  | Comark (`@comark/html`)        |
 | Design system    | USWDS (`@uswds/uswds`)        |
 | Search           | Pagefind (opt-in)              |
-| Package format   | `@starsandstripes/astro`       |
+| Package format   | `@red-glare/astro`       |
 | License          | MIT                            |
 | Node target      | 24+                            |
 | USWDS version    | Latest                         |
 
 ## Distribution
 
-Stars and Stripes ships as an **Astro integration** (`@starsandstripes/astro`), installed via npm/pnpm and configured in `astro.config.mjs`. This gives users a clean upgrade path — update the package, not a forked template.
+Red Glare ships as an **Astro integration** (`@red-glare/astro`), installed via npm/pnpm and configured in `astro.config.mjs`. This gives users a clean upgrade path — update the package, not a forked template.
 
-A companion **CLI scaffolder** (`create-starsandstripes`) bootstraps new projects with a minimal starter template (a few placeholder pages, basic config). A full example site may be provided as a separate repository.
+A companion **CLI scaffolder** (`create-red-glare`) bootstraps new projects with a minimal starter template (a few placeholder pages, basic config). A full example site may be provided as a separate repository.
 
 ## Content Authoring
 
@@ -67,7 +67,7 @@ Provided by Comark's plugin system:
 
 ## Site Chrome & Navigation
 
-All site chrome uses **real USWDS components** from `@uswds/uswds`, making every Stars and Stripes site a reference implementation of the design system.
+All site chrome uses **real USWDS components** from `@uswds/uswds`, making every Red Glare site a reference implementation of the design system.
 
 ### Government Banner
 
@@ -82,7 +82,7 @@ An optional dismissible USWDS alert banner for site-wide announcements (e.g., "T
 Follows the **Starlight hybrid model**:
 
 1. **Auto-generated** from the file/folder structure in the content directory
-2. **Config overrides** available in `starsandstripes.config.mjs` for custom ordering, grouping, and labels
+2. **Config overrides** available in `red-glare.config.mjs` for custom ordering, grouping, and labels
 3. **Frontmatter overrides** for per-page label, order, and visibility
 
 File structure example:
@@ -140,7 +140,7 @@ Agencies customize the visual layer via **USWDS SCSS settings variables**, the s
 Users can inject custom scripts and meta tags into the `<head>` via config, enabling analytics (DAP, GA), custom fonts, or third-party integrations without framework changes:
 
 ```js
-// starsandstripes.config.mjs
+// red-glare.config.mjs
 export default {
   head: [
     { tag: 'script', attrs: { src: 'https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js', async: true } },
@@ -154,7 +154,7 @@ export default {
 **Pagefind** is available as an opt-in integration:
 
 ```js
-// starsandstripes.config.mjs
+// red-glare.config.mjs
 export default {
   pagefind: true,
 }
@@ -210,7 +210,7 @@ src/content/docs/
 ### Configuration
 
 ```js
-// starsandstripes.config.mjs
+// red-glare.config.mjs
 export default {
   defaultLocale: 'en',
   locales: {
@@ -270,14 +270,14 @@ The following are explicitly deferred:
 ## Package Structure
 
 ```
-@starsandstripes/astro          # Core Astro integration
-create-starsandstripes          # CLI scaffolder
+@red-glare/astro          # Core Astro integration
+create-red-glare          # CLI scaffolder
 ```
 
 ## Configuration Reference
 
 ```js
-// starsandstripes.config.mjs
+// red-glare.config.mjs
 export default {
   // Site metadata
   title: 'My Agency Docs',

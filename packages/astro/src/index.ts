@@ -4,10 +4,10 @@ import preact from '@astrojs/preact'
 import sitemap from '@astrojs/sitemap'
 import pagefind from 'astro-pagefind'
 
-import type { StarsAndStripesUserConfig } from './config'
+import type { RedGlareUserConfig } from './config'
 
 import {
-  StarsAndStripesConfigSchema,
+  RedGlareConfigSchema,
 
 } from './config'
 import { copyUswdsImages, getUswdsViteConfig } from './integrations/uswds'
@@ -16,15 +16,15 @@ import { vitePluginVirtualConfig } from './integrations/virtual-config'
 const FONTSOURCE_REGEX = /^@fontsource(?:-variable)?\//
 
 export { extractSummaryText, parseContent } from './comark'
-export type { StarsAndStripesConfig, StarsAndStripesUserConfig } from './config'
+export type { RedGlareConfig, RedGlareUserConfig } from './config'
 export { docsLoader } from './loader'
 export type { DocsEntry, DocsFrontmatter } from './schema'
 export { docsSchema } from './schema'
 
-export default function starsAndStripes(
-  userConfig: StarsAndStripesUserConfig,
+export default function redGlare(
+  userConfig: RedGlareUserConfig,
 ): AstroIntegration {
-  const config = StarsAndStripesConfigSchema.parse(userConfig)
+  const config = RedGlareConfigSchema.parse(userConfig)
 
   return {
     name: '@red-glare/astro',

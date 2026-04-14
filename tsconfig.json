@@ -16,6 +16,6 @@
   },
   "references": [
     { "path": "packages/astro" },
-    { "path": "packages/create-starsandstripes" }
+    { "path": "packages/create-red-glare" }
   ]
 }

@@ -1,11 +1,11 @@
-// Stars and Stripes uses Astro's built-in glob() loader for content discovery.
+// Red Glare uses Astro's built-in glob() loader for content discovery.
 // Comark parsing happens at render time in the route, not at load time.
 // This file re-exports the glob loader with docs-specific defaults.
 
 import { glob } from 'astro/loaders'
 
 /**
- * Content collection loader for Stars and Stripes docs.
+ * Content collection loader for Red Glare docs.
  * Wraps Astro's glob loader with sensible defaults for the docs directory.
  */
 export function docsLoader(options?: { base?: string, pattern?: string }) {

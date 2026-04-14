@@ -1,5 +1,5 @@
 {
-  "name": "starsandstripes-monorepo",
+  "name": "red-glare-monorepo",
   "type": "module",
   "private": true,
   "packageManager": "pnpm@10.33.0",

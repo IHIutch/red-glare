@@ -1,5 +1,5 @@
 declare module 'virtual:red-glare/config' {
-  const config: import('./config').StarsAndStripesConfig
+  const config: import('./config').RedGlareConfig
   export default config
 }
 

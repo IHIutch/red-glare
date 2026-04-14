@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 
-import type { StarsAndStripesConfig } from '../config'
+import type { RedGlareConfig } from '../config'
 
 type VirtualModuleId = 'virtual:red-glare/config' | 'virtual:red-glare/context'
 
@@ -16,7 +16,7 @@ interface AstroConfigSubset {
 }
 
 export function vitePluginVirtualConfig(
-  config: StarsAndStripesConfig,
+  config: RedGlareConfig,
   astroConfig: AstroConfigSubset,
 ): Plugin {
   // Serialize a pruned slice of the resolved Astro config alongside
