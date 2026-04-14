@@ -42,7 +42,7 @@ with a github-slugger-generated anchor id:
   #heading
   ### Filing deadline
 
-  #default
+  #body
   All responses must be received by 11:59 PM ET on the date listed in
   your notice. Late submissions cannot be accepted.
 ::
@@ -80,7 +80,7 @@ and the TOC picks it up automatically).
   #heading
   ### Key filing information
 
-  #default
+  #body
   - Responses are due **20 business days** after receipt of a FOIA
     request.
   - Extensions are permitted for [unusual
@@ -100,7 +100,7 @@ slot for the step title, followed by the step's body prose.
     #heading
     ### Gather supporting records
 
-    #default
+    #body
     Collect any documents you already have that identify the records
     you're requesting — case numbers, dates, or agency names narrow
     the search.
@@ -109,7 +109,7 @@ slot for the step title, followed by the step's body prose.
     #heading
     ### Submit your request
 
-    #default
+    #body
     File through the [online FOIA portal](https://www.foia.gov/) or
     mail a written request to the agency's FOIA office. Include your
     contact information and a clear description of what you want.
@@ -118,7 +118,7 @@ slot for the step title, followed by the step's body prose.
     #heading
     ### Track the response
 
-    #default
+    #body
     Agencies have **20 business days** to acknowledge and respond.
     You'll receive a tracking number and status updates at the email
     you provided.
@@ -137,7 +137,7 @@ entry all flow from the `#` count:
     #heading
     ## How do I file a FOIA request?
 
-    #default
+    #body
     Visit the FOIA portal at [foia.gov](https://www.foia.gov/) and follow the
     prompts. You can submit your request online or by mail.
   :::
@@ -145,7 +145,7 @@ entry all flow from the `#` count:
     #heading
     ## What is the response timeline?
 
-    #default
+    #body
     Agencies have 20 business days to respond to a FOIA request, with possible
     extensions for unusual circumstances.
   :::
@@ -153,7 +153,7 @@ entry all flow from the `#` count:
     #heading
     ## Are there any fees?
 
-    #default
+    #body
     Fees vary by request type. Many requests are processed at no cost.
   :::
 ::
@@ -167,7 +167,7 @@ by default.
     #heading
     ## Eligibility
 
-    #default
+    #body
     This item is open by default. The accordion is bordered and allows multiple
     items to be open at the same time.
   :::
@@ -175,7 +175,7 @@ by default.
     #heading
     ## How to apply
 
-    #default
+    #body
     Multi-paragraph content works inside accordion items.
 
     Lists, **bold**, `code`, and other markdown render normally:
@@ -201,7 +201,7 @@ clicking these links:
     #heading
     ## Fees and billing
 
-    #default
+    #body
     ### Fee schedule
 
     Most simple requests are processed at no cost. Complex requests may incur
@@ -222,7 +222,7 @@ clicking these links:
     #heading
     ## Payment methods
 
-    #default
+    #body
     Accepted payment methods include check, money order, and electronic
     funds transfer.
   :::

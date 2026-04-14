@@ -10,14 +10,14 @@ it('accordion-hash: expands accordion panel when hash targets the item heading s
     #heading
     ## Fees and billing
 
-    #default
+    #body
     Details about fees go here.
   :::
   :::accordion-item
     #heading
     ## Payment methods
 
-    #default
+    #body
     Check, money order, or EFT.
   :::
 ::
@@ -47,7 +47,7 @@ it('accordion-hash: expands accordion panel when hash targets a heading inside i
     #heading
     ## Fees and billing
 
-    #default
+    #body
     ### Fee schedule
 
     Details about fees.
@@ -60,7 +60,7 @@ it('accordion-hash: expands accordion panel when hash targets a heading inside i
     #heading
     ## Payment methods
 
-    #default
+    #body
     Check, money order, or EFT.
   :::
 ::
@@ -83,7 +83,7 @@ it('accordion-hash: expands the correct panel for a different heading in the sam
     #heading
     ## Fees and billing
 
-    #default
+    #body
     ### Fee schedule
 
     Details about fees.
@@ -109,14 +109,14 @@ it('accordion-hash: does not expand unrelated panels', async () => {
     #heading
     ## Fees and billing
 
-    #default
+    #body
     ### Fee schedule
   :::
   :::accordion-item
     #heading
     ## Payment methods
 
-    #default
+    #body
     ### Payment options
   :::
 ::
@@ -140,7 +140,7 @@ Content outside any accordion.
     #heading
     ## FAQ
 
-    #default
+    #body
     ### A question
   :::
 ::
@@ -161,7 +161,7 @@ it('accordion-hash: does nothing when hash is empty', async () => {
     #heading
     ## Q
 
-    #default
+    #body
     ### A heading
   :::
 ::
@@ -180,7 +180,7 @@ it('accordion-hash: does nothing when hash targets a nonexistent element', async
     #heading
     ## Q
 
-    #default
+    #body
     ### A heading
   :::
 ::
@@ -200,7 +200,7 @@ it('accordion-hash: re-expands panel after it was closed (same-hash edge case)',
     #heading
     ## Fees
 
-    #default
+    #body
     ### Fee schedule
 
     Details.

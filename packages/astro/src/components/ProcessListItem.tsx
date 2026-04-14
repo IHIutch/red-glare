@@ -24,7 +24,7 @@ export default function ProcessListItem({ children, slotHeading }: ProcessListIt
       {slotHeading && (
         <div className="usa-process-list__heading">{slotHeading}</div>
       )}
-      {children}
+      <div className="margin-top-05">{children}</div>
     </li>
   )
 }
