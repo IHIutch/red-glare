@@ -4,23 +4,47 @@
 import type { Heading } from '../utils/headings'
 
 interface Props {
-  headings: Heading[];
+  headings: Heading[]
 }
 
-const { headings } = Astro.props
+const { headings } = Astro.props;
 ---
 
-{headings.length > 0 && (
-  <nav class="usa-in-page-nav" aria-label="On this page" data-toc>
-    <p class="usa-in-page-nav__heading">On this page</p>
-    <ul class="usa-in-page-nav__list">
-      {headings.map((heading) => (
-        <li class={`usa-in-page-nav__item ${heading.depth === 3 ? 'usa-in-page-nav__item--sub-item' : ''}`}>
-          <a href={`#${heading.slug}`} class="usa-in-page-nav__link">
-            {heading.text}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </nav>
-)}
+{
+  headings.length > 0 && (
+    <aside class="usa-in-page-nav">
+      <nav class="usa-in-page-nav__nav padding-0" data-toc>
+        <p class="usa-in-page-nav__heading">On this page</p>
+        <ul class="usa-in-page-nav__list">
+          {headings.map(heading => (
+            <li
+              class={`usa-in-page-nav__item ${heading.depth === 3 ? 'usa-in-page-nav__item--sub-item' : ''}`}
+            >
+              <a href={`#${heading.slug}`} class="usa-in-page-nav__link">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+  )
+}
+
+<script>
+import { expandAccordionForHash } from '../utils/accordion-hash'
+
+expandAccordionForHash()
+window.addEventListener('hashchange', expandAccordionForHash)
+
+// Handle clicks on any anchor linking to a hash on this page. Covers the
+// edge case where the user closes an accordion then clicks the same hash
+// link again — hashchange won't fire because the hash hasn't changed, but
+// we still need to re-expand the panel.
+document.addEventListener('click', (e) => {
+  const link = (e.target as Element).closest?.('a[href^="#"]')
+  if (!link)
+    return
+  requestAnimationFrame(expandAccordionForHash)
+})
+</script>
