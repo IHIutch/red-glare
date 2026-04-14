@@ -1,4 +1,4 @@
-# create-red-glare
+# @red-glare/create
 
 > CLI scaffolder for [Red Glare](https://github.com/red-glare/red-glare) USWDS documentation sites.
 
@@ -7,11 +7,11 @@ Bootstraps a new Astro project pre-wired with `@red-glare/astro`, USWDS styles, 
 ## Usage
 
 ```bash
-pnpm create red-glare my-agency-docs
+pnpm create @red-glare my-agency-docs
 # or
-npm create red-glare my-agency-docs
+npm create @red-glare my-agency-docs
 # or
-yarn create red-glare my-agency-docs
+yarn create @red-glare my-agency-docs
 ```
 
 Then:

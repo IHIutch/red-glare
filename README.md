@@ -71,7 +71,7 @@ Drop markdown into `src/content/docs/` and run `astro dev`.
 ### Scaffold a new project
 
 ```bash
-pnpm create red-glare my-agency-docs
+pnpm create @red-glare my-agency-docs
 cd my-agency-docs
 pnpm install
 pnpm dev
@@ -80,9 +80,9 @@ pnpm dev
 ## Repository layout
 
 ```
-packages/astro/            # @red-glare/astro — the integration
-packages/create-red-glare/ # create-red-glare CLI scaffolder
-demo/                      # Working example site exercising every component
+packages/astro/   # @red-glare/astro — the integration
+packages/create/  # @red-glare/create — CLI scaffolder
+demo/             # Working example site exercising every component
 ```
 
 ## Development

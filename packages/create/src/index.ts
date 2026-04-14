@@ -10,7 +10,7 @@ async function main(): Promise<void> {
 
   if (!projectName) {
     // eslint-disable-next-line no-console
-    console.log('Usage: create-red-glare <project-name>\n\nExample:\n  npx create-red-glare my-agency-docs')
+    console.log('Usage: pnpm create @red-glare <project-name>\n\nExample:\n  pnpm create @red-glare my-agency-docs')
     process.exit(1)
   }
 
