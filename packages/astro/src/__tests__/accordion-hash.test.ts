@@ -7,17 +7,17 @@ it('accordion-hash: expands accordion panel when hash targets the item heading s
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Fees and billing
-    ::::
 
+    #default
     Details about fees go here.
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Payment methods
-    ::::
 
+    #default
     Check, money order, or EFT.
   :::
 ::
@@ -44,10 +44,10 @@ it('accordion-hash: expands accordion panel when hash targets a heading inside i
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Fees and billing
-    ::::
 
+    #default
     ### Fee schedule
 
     Details about fees.
@@ -57,10 +57,10 @@ it('accordion-hash: expands accordion panel when hash targets a heading inside i
     Details about expedited processing.
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Payment methods
-    ::::
 
+    #default
     Check, money order, or EFT.
   :::
 ::
@@ -80,10 +80,10 @@ it('accordion-hash: expands the correct panel for a different heading in the sam
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Fees and billing
-    ::::
 
+    #default
     ### Fee schedule
 
     Details about fees.
@@ -106,17 +106,17 @@ it('accordion-hash: does not expand unrelated panels', async () => {
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Fees and billing
-    ::::
 
+    #default
     ### Fee schedule
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Payment methods
-    ::::
 
+    #default
     ### Payment options
   :::
 ::
@@ -137,10 +137,10 @@ Content outside any accordion.
 
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## FAQ
-    ::::
 
+    #default
     ### A question
   :::
 ::
@@ -158,10 +158,10 @@ it('accordion-hash: does nothing when hash is empty', async () => {
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Q
-    ::::
 
+    #default
     ### A heading
   :::
 ::
@@ -177,10 +177,10 @@ it('accordion-hash: does nothing when hash targets a nonexistent element', async
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Q
-    ::::
 
+    #default
     ### A heading
   :::
 ::
@@ -197,10 +197,10 @@ it('accordion-hash: re-expands panel after it was closed (same-hash edge case)',
   await renderComark(md`
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Fees
-    ::::
 
+    #default
     ### Fee schedule
 
     Details.

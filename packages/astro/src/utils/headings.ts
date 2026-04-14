@@ -23,12 +23,12 @@ const HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
 /**
  * Recursively walk a Comark tree and collect every `<h1>`–`<h6>` in
  * document order — including ones nested inside custom components
- * like `<Alert>` or `<AccordionItem>` (authors author them via
- * `:::alert-heading` / `:::accordion-heading` slots, where the inner
- * content is real markdown headings). Depth comes from the tag,
- * slug from `attrs.id` (populated upstream by `attachTocHeadings`
- * via `github-slugger` for any heading that didn't already have an
- * id), text from recursively extracted text content.
+ * like `<Alert>` or `<AccordionItem>` (authors author them via the
+ * `#heading` named slot, where the inner content is real markdown
+ * headings). Depth comes from the tag, slug from `attrs.id` (populated
+ * upstream by `attachTocHeadings` via `github-slugger` for any heading
+ * that didn't already have an id), text from recursively extracted
+ * text content.
  */
 export function extractHeadings(tree: ComarkTree): Heading[] {
   const headings: Heading[] = []

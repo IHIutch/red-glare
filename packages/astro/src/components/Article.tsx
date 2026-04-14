@@ -7,17 +7,13 @@ import type { ComarkTree } from 'comark'
 import { ComarkRenderer } from '@comark/react/components/ComarkRenderer'
 
 import { Accordion, AccordionItem } from './Accordion'
-import AccordionHeading from './AccordionHeading'
 import Alert from './Alert'
-import AlertHeading from './AlertHeading'
 import CodeGroup from './CodeGroup'
 import Endpoint from './Endpoint'
 import LinkButton from './LinkButton'
 import ProcessList from './ProcessList'
-import ProcessListHeading from './ProcessListHeading'
 import ProcessListItem from './ProcessListItem'
 import SummaryBox from './SummaryBox'
-import SummaryBoxHeading from './SummaryBoxHeading'
 import Tabs from './Tabs'
 import TabsItem from './TabsItem'
 
@@ -32,20 +28,16 @@ interface ArticleProps {
 // so we import them inside the island module and only accept data props.
 const components = {
   Alert,
-  'alert-heading': AlertHeading,
   'link-button': LinkButton,
   'code-group': CodeGroup,
   'endpoint': Endpoint,
   'process-list': ProcessList,
   'process-list-item': ProcessListItem,
-  'process-list-heading': ProcessListHeading,
   'summary-box': SummaryBox,
-  'summary-box-heading': SummaryBoxHeading,
   'tabs': Tabs,
   'tabs-item': TabsItem,
   Accordion,
   AccordionItem,
-  'accordion-heading': AccordionHeading,
 }
 
 /**

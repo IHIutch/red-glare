@@ -104,11 +104,11 @@ function attachIconData(nodes: ComarkNode[]): void {
  *
  * `extractHeadings` picks them up via its normal recursive walk —
  * no synthetic heading attrs for components needed, because authors
- * now write real markdown headings inside `:::alert-heading` /
- * `:::accordion-heading` slots and those are just `h1`–`h6` nodes
- * in the tree. Slugs come from `github-slugger`, the same library
- * Astro's markdown pipeline uses, so internal links agree with
- * Astro's own heading ids.
+ * write real markdown headings inside the `#heading` named slot of
+ * each parent directive (alert, accordion-item, summary-box,
+ * process-list-item) and those are just `h1`–`h6` nodes in the tree.
+ * Slugs come from `github-slugger`, the same library Astro's markdown
+ * pipeline uses, so internal links agree with Astro's own heading ids.
  */
 function attachTocHeadings(
   nodes: ComarkNode[],

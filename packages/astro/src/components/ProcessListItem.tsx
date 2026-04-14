@@ -2,21 +2,28 @@ import type { ReactNode } from 'react'
 
 interface ProcessListItemProps {
   children?: ReactNode
+  /**
+   * Heading content from the `#heading` named slot inside the
+   * directive. `@comark/react` converts MDC slots into props prefixed
+   * with `slot` + PascalCase, so `#heading` arrives here.
+   */
+  slotHeading?: ReactNode
 }
 
 /**
  * A single step inside a `<ProcessList>`. USWDS's CSS handles the
  * numbered circle and connector line via `:nth-child` rules on
- * `.usa-process-list__item`, so the component itself is just a
- * styled `<li>` — no counter state, no per-item props.
- *
- * Children are passed through unchanged: the author's
- * `:::process-list-heading` slot ends up inside the item alongside
- * the step body, which is how USWDS expects the DOM to look.
+ * `.usa-process-list__item`, so the component itself is just a styled
+ * `<li>` — no counter state, no per-item props. Title comes from a
+ * `#heading` slot rendered directly above the step body, which is how
+ * USWDS expects the DOM to look.
  */
-export default function ProcessListItem({ children }: ProcessListItemProps) {
+export default function ProcessListItem({ children, slotHeading }: ProcessListItemProps) {
   return (
     <li className="usa-process-list__item">
+      {slotHeading && (
+        <div className="usa-process-list__heading">{slotHeading}</div>
+      )}
       {children}
     </li>
   )

@@ -25,7 +25,7 @@ Operation completed successfully!
 Something went wrong. Please check the configuration.
 ::
 
-Alerts accept an optional `:::alert-heading` slot for a caption. The
+Alerts accept an optional `#heading` named slot for a caption. The
 slot wraps the USWDS heading treatment around whatever you write
 inside, so the semantic level comes from the markdown heading itself
 — use `#` through `######` to pick where the title sits in the
@@ -39,10 +39,10 @@ with a github-slugger-generated anchor id:
 ::
 
 ::alert{type="info"}
-  :::alert-heading
+  #heading
   ### Filing deadline
-  :::
 
+  #default
   All responses must be received by 11:59 PM ET on the date listed in
   your notice. Late submissions cannot be accepted.
 ::
@@ -72,15 +72,15 @@ Request a fee waiver
 
 Summary boxes highlight the most important information on a page —
 often a short bulleted list of key points above a longer explanation.
-Like alerts, they use a `:::summary-box-heading` slot so authors can
-write a real markdown heading inside (semantic level flows from the
-`#` count and the TOC picks it up automatically).
+Like alerts, they use a `#heading` named slot so authors can write a
+real markdown heading inside (semantic level flows from the `#` count
+and the TOC picks it up automatically).
 
 ::summary-box
-  :::summary-box-heading
+  #heading
   ### Key filing information
-  :::
 
+  #default
   - Responses are due **20 business days** after receipt of a FOIA
     request.
   - Extensions are permitted for [unusual
@@ -92,34 +92,33 @@ write a real markdown heading inside (semantic level flows from the
 ## Process lists
 
 Process lists lay out sequential steps with USWDS's numbered-circle
-treatment. Each `:::process-list-item` wraps its own
-`::::process-list-heading` slot for the step title, followed by the
-step's body prose.
+treatment. Each `:::process-list-item` provides a `#heading` named
+slot for the step title, followed by the step's body prose.
 
 ::process-list
   :::process-list-item
-    ::::process-list-heading
+    #heading
     ### Gather supporting records
-    ::::
 
+    #default
     Collect any documents you already have that identify the records
     you're requesting — case numbers, dates, or agency names narrow
     the search.
   :::
   :::process-list-item
-    ::::process-list-heading
+    #heading
     ### Submit your request
-    ::::
 
+    #default
     File through the [online FOIA portal](https://www.foia.gov/) or
     mail a written request to the agency's FOIA office. Include your
     contact information and a clear description of what you want.
   :::
   :::process-list-item
-    ::::process-list-heading
+    #heading
     ### Track the response
-    ::::
 
+    #default
     Agencies have **20 business days** to acknowledge and respond.
     You'll receive a tracking number and status updates at the email
     you provided.
@@ -129,32 +128,32 @@ step's body prose.
 ## Accordions
 
 Accordions group expandable items together. Each `:::accordion-item`
-wraps its toggle label in a `::::accordion-heading` slot where the
+provides a `#heading` named slot for the toggle label where the
 author writes a real markdown heading — semantic level, id, and TOC
 entry all flow from the `#` count:
 
 ::accordion
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## How do I file a FOIA request?
-    ::::
 
+    #default
     Visit the FOIA portal at [foia.gov](https://www.foia.gov/) and follow the
     prompts. You can submit your request online or by mail.
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## What is the response timeline?
-    ::::
 
+    #default
     Agencies have 20 business days to respond to a FOIA request, with possible
     extensions for unusual circumstances.
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Are there any fees?
-    ::::
 
+    #default
     Fees vary by request type. Many requests are processed at no cost.
   :::
 ::
@@ -165,18 +164,18 @@ by default.
 
 ::accordion{bordered multiselectable}
   :::accordion-item{expanded}
-    ::::accordion-heading
+    #heading
     ## Eligibility
-    ::::
 
+    #default
     This item is open by default. The accordion is bordered and allows multiple
     items to be open at the same time.
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## How to apply
-    ::::
 
+    #default
     Multi-paragraph content works inside accordion items.
 
     Lists, **bold**, `code`, and other markdown render normally:
@@ -199,10 +198,10 @@ clicking these links:
 
 ::accordion{bordered}
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Fees and billing
-    ::::
 
+    #default
     ### Fee schedule
 
     Most simple requests are processed at no cost. Complex requests may incur
@@ -220,10 +219,10 @@ clicking these links:
     compelling need, such as an imminent threat to life or safety.
   :::
   :::accordion-item
-    ::::accordion-heading
+    #heading
     ## Payment methods
-    ::::
 
+    #default
     Accepted payment methods include check, money order, and electronic
     funds transfer.
   :::

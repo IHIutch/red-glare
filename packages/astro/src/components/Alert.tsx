@@ -1,10 +1,6 @@
 import type { AriaRole } from 'preact'
 import type { ReactNode } from 'react'
 
-import { isValidElement } from 'react'
-
-import AlertHeading from './AlertHeading.js'
-
 const typeMap: Record<string, string> = {
   info: 'usa-alert--info',
   warning: 'usa-alert--warning',
@@ -29,44 +25,39 @@ interface AlertProps {
    */
   role?: AriaRole
   children?: ReactNode
+  /**
+   * Heading content from the `#heading` named slot inside the alert
+   * directive. `@comark/react` converts MDC slots into props prefixed
+   * with `slot` + PascalCase, so `#heading` arrives here.
+   */
+  slotHeading?: ReactNode
 }
 
 /**
- * USWDS alert. Title/heading semantics come from a nested
- * `:::alert-heading` directive rather than a `title` prop, so
- * authors can embed real markdown headings (with their own
- * semantic level, id, and inline formatting) and the TOC walker
- * picks them up via its normal recursive pass — no synthetic
- * heading attrs needed.
+ * USWDS alert. Title/heading semantics come from a `#heading` slot
+ * inside the directive rather than a `title` prop, so authors can embed
+ * real markdown headings (with their own semantic level, id, and inline
+ * formatting) and the TOC walker picks them up via its normal recursive
+ * pass — no synthetic heading attrs needed.
  *
  * Usage:
  *
  *     ::alert{type="warning"}
- *       :::alert-heading
- *       ### Heads up
- *       :::
+ *     #heading
+ *     ### Heads up
  *
- *       Body copy.
+ *     Body copy.
  *     ::
  */
-export default function Alert({ type = 'info', role, children }: AlertProps) {
+export default function Alert({ type = 'info', role, children, slotHeading }: AlertProps) {
   const alertClass = typeMap[type] ?? 'usa-alert--info'
-  // Children may include text nodes (comark's `autoUnwrap` collapses a
-  // single-paragraph alert body down to its inline content), so we
-  // iterate the raw array instead of filtering to React elements —
-  // that would drop every bare-text alert. Only the heading-slot
-  // lookup needs to match a React element by component identity.
-  const array = Array.isArray(children) ? children : [children]
-  const heading = array.find(
-    c => isValidElement(c) && c.type === AlertHeading,
-  )
-  const body = array.filter(c => c !== heading)
-
   return (
     <div className={`usa-alert ${alertClass}`} role={role}>
       <div className="usa-alert__body">
-        {heading}
-        <div className="usa-alert__text">{body}</div>
+        {slotHeading && (
+          <div className="usa-alert__heading text-bold">{slotHeading}</div>
+        )}
+        <div className="usa-alert__text">{children}</div>
       </div>
     </div>
   )

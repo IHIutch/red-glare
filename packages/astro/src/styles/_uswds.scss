@@ -305,13 +305,14 @@ pre {
     letter-spacing: 0.05em;
 }
 
-// Accordion heading slot: the author writes a real markdown heading
-// inside `:::accordion-heading`, which lives inside the toggle button
-// (USWDS's accordion pattern keeps the interactive control as the
-// label target). Reset the default heading typography so the nested
-// `<h1>`–`<h6>` visually matches the button's own text treatment —
-// the heading still anchors the document outline and the TOC, it
-// just stops fighting the button's layout.
+// Heading slot reset: authors write a real markdown heading inside
+// each component's `#heading` named slot. The accordion item puts the
+// rendered heading inside its toggle button (USWDS's pattern keeps the
+// interactive control as the label target); the alert / summary-box /
+// process-list slots wrap it in their own decorative container. Reset
+// the default heading typography so the nested `<h1>`–`<h6>` visually
+// matches the parent's text treatment — the heading still anchors the
+// document outline and the TOC, it just stops fighting the layout.
 .usa-accordion__button,
 .usa-alert__heading,
 .usa-summary-box__heading,
