@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "description": "Astro integration for building USWDS-styled federal documentation sites with Comark",
   "license": "MIT",
-  "homepage": "https://github.com/red-glare/red-glare",
+  "homepage": "https://github.com/IHIutch/red-glare",
   "repository": {
     "type": "git",
-    "url": "https://github.com/red-glare/red-glare",
+    "url": "https://github.com/IHIutch/red-glare",
     "directory": "packages/astro"
   },
   "keywords": [

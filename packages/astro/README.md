@@ -46,7 +46,7 @@ export const collections = {
 
 Drop markdown into `src/content/docs/` and run `astro dev`.
 
-See the [main README](https://github.com/red-glare/red-glare#readme) for the full feature list and configuration reference.
+See the [main README](https://github.com/IHIutch/red-glare#readme) for the full feature list and configuration reference.
 
 ## License
 

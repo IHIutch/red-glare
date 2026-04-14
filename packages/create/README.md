@@ -1,6 +1,6 @@
 # @red-glare/create
 
-> CLI scaffolder for [Red Glare](https://github.com/red-glare/red-glare) USWDS documentation sites.
+> CLI scaffolder for [Red Glare](https://github.com/IHIutch/red-glare) USWDS documentation sites.
 
 Bootstraps a new Astro project pre-wired with `@red-glare/astro`, USWDS styles, Preact for interactive islands, and a minimal docs starter.
 
@@ -22,7 +22,7 @@ pnpm install
 pnpm dev
 ```
 
-See the [main README](https://github.com/red-glare/red-glare#readme) for what `@red-glare/astro` ships and how to configure it.
+See the [main README](https://github.com/IHIutch/red-glare#readme) for what `@red-glare/astro` ships and how to configure it.
 
 ## License
 
