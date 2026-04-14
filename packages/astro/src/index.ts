@@ -4,22 +4,22 @@ import preact from '@astrojs/preact'
 import sitemap from '@astrojs/sitemap'
 import pagefind from 'astro-pagefind'
 
-import type { StarsAndStripesUserConfig } from './config.js'
+import type { StarsAndStripesUserConfig } from './config'
 
 import {
   StarsAndStripesConfigSchema,
 
-} from './config.js'
-import { copyUswdsImages, getUswdsViteConfig } from './integrations/uswds.js'
-import { vitePluginVirtualConfig } from './integrations/virtual-config.js'
+} from './config'
+import { copyUswdsImages, getUswdsViteConfig } from './integrations/uswds'
+import { vitePluginVirtualConfig } from './integrations/virtual-config'
 
 const FONTSOURCE_REGEX = /^@fontsource(?:-variable)?\//
 
-export { extractSummaryText, parseContent } from './comark.js'
-export type { StarsAndStripesConfig, StarsAndStripesUserConfig } from './config.js'
-export { docsLoader } from './loader.js'
-export type { DocsEntry, DocsFrontmatter } from './schema.js'
-export { docsSchema } from './schema.js'
+export { extractSummaryText, parseContent } from './comark'
+export type { StarsAndStripesConfig, StarsAndStripesUserConfig } from './config'
+export { docsLoader } from './loader'
+export type { DocsEntry, DocsFrontmatter } from './schema'
+export { docsSchema } from './schema'
 
 export default function starsAndStripes(
   userConfig: StarsAndStripesUserConfig,
@@ -113,7 +113,7 @@ export default function starsAndStripes(
       },
 
       'astro:config:done': function () {
-        // Reserved for post-config operations
+        // Reserved for post-config operations.
       },
 
       'astro:build:done': async function ({ dir }) {
