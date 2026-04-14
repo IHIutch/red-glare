@@ -1,5 +1,5 @@
 {
-  "name": "create-starsandstripes",
+  "name": "create-red-glare",
   "type": "module",
   "version": "0.0.1",
   "description": "CLI scaffolder for Stars and Stripes documentation sites",
@@ -19,7 +19,7 @@
     "government"
   ],
   "bin": {
-    "create-starsandstripes": "./dist/index.js"
+    "create-red-glare": "./dist/index.js"
   },
   "files": [
     "dist"

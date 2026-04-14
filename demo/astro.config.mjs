@@ -1,4 +1,4 @@
-import starsAndStripes from '@starsandstripes/astro'
+import starsAndStripes from '@red-glare/astro'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({

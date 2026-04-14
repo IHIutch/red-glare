@@ -10,7 +10,7 @@ async function main(): Promise<void> {
 
   if (!projectName) {
     // eslint-disable-next-line no-console
-    console.log('Usage: create-starsandstripes <project-name>\n\nExample:\n  npx create-starsandstripes my-agency-docs')
+    console.log('Usage: create-red-glare <project-name>\n\nExample:\n  npx create-red-glare my-agency-docs')
     process.exit(1)
   }
 
@@ -22,7 +22,7 @@ async function main(): Promise<void> {
   await mkdir(join(projectDir, 'src/styles'), { recursive: true })
   await mkdir(join(projectDir, 'public'), { recursive: true })
 
-  // `@astrojs/preact` + `preact` ship alongside `@starsandstripes/astro`
+  // `@astrojs/preact` + `preact` ship alongside `@red-glare/astro`
   // because Astro's renderer resolver looks up the integration's server
   // entry point from the project cwd, not from the transitive dep
   // graph. Omitting them here would leave a scaffolded project unable
@@ -42,7 +42,7 @@ async function main(): Promise<void> {
         },
         dependencies: {
           '@astrojs/preact': '^5.1.1',
-          '@starsandstripes/astro': '^0.0.1',
+          '@red-glare/astro': '^0.0.1',
           'astro': '^6.0.0',
           'preact': '^10.29.1',
         },
@@ -55,7 +55,7 @@ async function main(): Promise<void> {
   await writeFile(
     join(projectDir, 'astro.config.mjs'),
     `import { defineConfig } from 'astro/config'
-import starsAndStripes from '@starsandstripes/astro'
+import starsAndStripes from '@red-glare/astro'
 
 export default defineConfig({
   integrations: [
@@ -72,7 +72,7 @@ export default defineConfig({
   await writeFile(
     join(projectDir, 'src/content.config.ts'),
     `import { defineCollection } from 'astro:content'
-import { docsLoader, docsSchema } from '@starsandstripes/astro/schema'
+import { docsLoader, docsSchema } from '@red-glare/astro/schema'
 
 const docs = defineCollection({
   loader: docsLoader(),

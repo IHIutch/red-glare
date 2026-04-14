@@ -27,7 +27,7 @@ export default function starsAndStripes(
   const config = StarsAndStripesConfigSchema.parse(userConfig)
 
   return {
-    name: '@starsandstripes/astro',
+    name: '@red-glare/astro',
     hooks: {
       'astro:config:setup': function ({
         injectRoute,
@@ -101,7 +101,7 @@ export default function starsAndStripes(
               // The regex covers both `@fontsource/*` (static) and
               // `@fontsource-variable/*` namespaces.
               noExternal: [
-                '@starsandstripes/astro',
+                '@red-glare/astro',
                 '@comark/react',
                 'comark',
                 FONTSOURCE_REGEX,
