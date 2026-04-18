@@ -12,6 +12,16 @@ export default defineConfig({
       pagefind: true,
       rss: true,
       llms: true,
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            src: 'https://cdn.usefathom.com/script.js',
+            'data-site': 'GNJXITFS',
+            defer: true,
+          },
+        },
+      ],
       nav: [
         { label: 'Getting Started', href: '/getting-started/installation/' },
         {
