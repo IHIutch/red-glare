@@ -7,6 +7,27 @@ import highlight from 'comark/plugins/highlight'
 import summary from 'comark/plugins/summary'
 import GithubSlugger from 'github-slugger'
 
+// Extra languages preloaded on top of comark's defaults (vue, tsx, svelte,
+// typescript, javascript, mdc, bash, json, yaml, astro). Anything a docs
+// author is likely to fence goes here — CSS/Sass flavours, config file
+// formats (jsonc, toml, ini, dockerfile), common markup, and a handful of
+// popular programming languages. Aliases (e.g. `sh`, `md`, `py`, `ts`, `js`)
+// resolve automatically via Shiki once the parent language is registered.
+import css from 'shiki/dist/langs/css.mjs'
+import dockerfile from 'shiki/dist/langs/dockerfile.mjs'
+import go from 'shiki/dist/langs/go.mjs'
+import html from 'shiki/dist/langs/html.mjs'
+import ini from 'shiki/dist/langs/ini.mjs'
+import jsonc from 'shiki/dist/langs/jsonc.mjs'
+import python from 'shiki/dist/langs/python.mjs'
+import rust from 'shiki/dist/langs/rust.mjs'
+import sass from 'shiki/dist/langs/sass.mjs'
+import scss from 'shiki/dist/langs/scss.mjs'
+import shellscript from 'shiki/dist/langs/shellscript.mjs'
+import sql from 'shiki/dist/langs/sql.mjs'
+import toml from 'shiki/dist/langs/toml.mjs'
+import xml from 'shiki/dist/langs/xml.mjs'
+
 import bodySlot from './comark-plugins/body-slot'
 import endpoint from './comark-plugins/endpoint'
 import { resolveIconByName } from './components/icons'
@@ -177,6 +198,22 @@ export async function parseContent(markdown: string): Promise<ComarkTree> {
           light: githubLight,
           dark: githubDark,
         },
+        languages: [
+          css,
+          dockerfile,
+          go,
+          html,
+          ini,
+          jsonc,
+          python,
+          rust,
+          sass,
+          scss,
+          shellscript,
+          sql,
+          toml,
+          xml,
+        ],
       }),
       // Authors mark a "summary cut" by inserting `<!-- more -->` in their
       // markdown. The plugin populates `tree.meta.summary` with the nodes

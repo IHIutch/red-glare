@@ -1,0 +1,17 @@
+{
+  "name": "red-glare-docs",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^5.1.1",
+    "@red-glare/astro": "workspace:*",
+    "astro": "^6.1.4",
+    "preact": "^10.29.1"
+  }
+}
