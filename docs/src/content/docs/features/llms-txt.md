@@ -33,9 +33,9 @@ The `llms.txt` file is a structured index: site title + description, then a list
 
 ## Getting Started
 
-- [Installation](https://red-glare.dev/getting-started/installation/): Install Red Glare into a new or existing Astro project.
-- [Project structure](https://red-glare.dev/getting-started/project-structure/): What the files in a Red Glare project do and how they fit together.
-- [Quickstart](https://red-glare.dev/getting-started/quickstart/): Write your first page, preview it locally, and ship a build.
+- [Installation](https://redglare.dev/getting-started/installation/): Install Red Glare into a new or existing Astro project.
+- [Project structure](https://redglare.dev/getting-started/project-structure/): What the files in a Red Glare project do and how they fit together.
+- [Quickstart](https://redglare.dev/getting-started/quickstart/): Write your first page, preview it locally, and ship a build.
 
 ## Configuration
 

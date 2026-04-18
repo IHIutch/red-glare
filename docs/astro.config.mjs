@@ -2,7 +2,7 @@ import redGlare from '@red-glare/astro'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
-  site: 'https://red-glare.dev',
+  site: 'https://redglare.dev',
   integrations: [
     redGlare({
       title: 'Red Glare',
