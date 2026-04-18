@@ -8,7 +8,7 @@ export default defineConfig({
       title: 'Red Glare',
       description:
         'Astro integration for building USWDS-styled federal documentation sites with Comark.',
-      governmentBanner: true,
+      governmentBanner: false,
       pagefind: true,
       rss: true,
       llms: true,
