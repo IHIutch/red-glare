@@ -38,6 +38,11 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      # Trusted Publishing: no NPM_TOKEN. `id-token: write` above lets the
+      # workflow mint an OIDC token that npm accepts because we configured
+      # this repo+workflow as a Trusted Publisher on npmjs.com. Auth
+      # tokens stop living in GitHub secrets; each publish exchanges an
+      # ephemeral OIDC credential for a short-lived npm token.
       - name: Create Release PR or publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -47,5 +52,4 @@ jobs:
           commit: "chore: release packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
