@@ -1,28 +1,36 @@
-<div class="usa-search usa-search--small" role="search" id="pagefind-search">
-  <label class="usa-sr-only" for="search-field">Search</label>
-  <input
-    class="usa-input"
-    id="search-field"
-    type="search"
-    name="search"
-    placeholder="Search documentation..."
-  />
+<div
+  id="pagefind-search"
+  class="pagefind-init"
+  data-pagefind-ui
+  data-bundle-path="/pagefind/"
+>
+  <label class="usa-sr-only" for="pagefind-search-input">Search documentation</label>
 </div>
 
 <script>
-  // Pagefind auto-initializes via astro-pagefind integration.
-  // This script wires up the USWDS search input to Pagefind's UI.
-  // PagefindUI's constructor mutates the target container to install
-  // its own DOM — the returned instance isn't needed, but eslint
-  // flags `new …()` as a side-effect, so we assign and ignore it.
-  window.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('pagefind-search')
-    // @ts-expect-error: Property 'PagefindUI' does not exist on type 'Window & typeof globalThis'.
-    if (container && window.PagefindUI) {
-      container.innerHTML = ''
+  // Pagefind ships a default UI that renders its own search input + results
+  // dropdown. Its CSS lives alongside the JS, so both have to be pulled in
+  // explicitly — `astro-pagefind` runs the indexer at build time, but it
+  // doesn't register the runtime UI for us.
+  import { PagefindUI } from '@pagefind/default-ui'
+  import '@pagefind/default-ui/css/ui.css'
 
-      // @ts-expect-error: Property 'PagefindUI' does not exist on type 'Window & typeof globalThis'.
-      void new window.PagefindUI({ element: container, showSubResults: true })
-    }
-  })
+  function initPagefind() {
+    const el = document.getElementById('pagefind-search')
+    if (!el || !el.classList.contains('pagefind-init'))
+      return
+    const bundlePath = el.getAttribute('data-bundle-path') ?? '/pagefind/'
+    // eslint-disable-next-line no-new
+    new PagefindUI({
+      element: '#pagefind-search',
+      bundlePath,
+      showSubResults: true,
+    })
+    el.classList.remove('pagefind-init')
+  }
+
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', initPagefind)
+  else
+    initPagefind()
 </script>

@@ -50,6 +50,7 @@
     "@iconify-json/logos": "^1.2.11",
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/vscode-icons": "^1.2.45",
+    "@pagefind/default-ui": "^1.5.0",
     "@shikijs/themes": "^4.0.2",
     "@uswds/uswds": "^3.13.0",
     "astro-pagefind": "^1.8.6",
