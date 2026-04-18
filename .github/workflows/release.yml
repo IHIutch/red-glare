@@ -2,21 +2,19 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
-  id-token: write
   pull-requests: write
+  id-token: write
 
 jobs:
   release:
     name: Release
+    if: github.repository_owner == 'IHIutch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,33 +22,33 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
+      - name: Install pnpm
         uses: pnpm/action-setup@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version-file: .nvmrc
+          registry-url: "https://registry.npmjs.org"
           cache: pnpm
-          registry-url: https://registry.npmjs.org
-
-      - name: Upgrade npm for Trusted Publishing
-        run: npm install -g npm@latest
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Verify build
+        run: |
+          pnpm build
+          pnpm publint
 
-      - name: Create Release PR or publish to npm
+      - name: Create Release Pull Request or Publish
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
         with:
-          publish: npx changeset publish
-          title: "chore: release packages"
-          commit: "chore: release packages"
+          publish: pnpm changeset:publish
+          version: pnpm changeset:version
+          commit: "ci: Version Packages"
+          title: "ci: Version Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ""
-          NPM_CONFIG_PROVENANCE: "true"
+          NPM_TOKEN: "" # https://github.com/changesets/changesets/issues/1152#issuecomment-3190884868
+          NPM_CONFIG_PROVENANCE: true

@@ -14,8 +14,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "changeset publish"
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "publint": "pnpm -r --no-bail exec publint"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.1.1",
@@ -25,6 +26,7 @@
     "astro-eslint-parser": "^1.4.0",
     "eslint": "^10.2.0",
     "eslint-plugin-astro": "^1.7.0",
-    "eslint-plugin-react-refresh": "^0.5.2"
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "publint": "^0.3.18"
   }
 }
