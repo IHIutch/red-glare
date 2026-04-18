@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content'
 // USWDS Breadcrumb navigation
 // https://designsystem.digital.gov/components/breadcrumb/
 import config from 'virtual:red-glare/config'
@@ -10,14 +11,27 @@ interface Props {
 
 const { currentPath, title } = Astro.props
 
+// The set of paths that actually have a page. Intermediate breadcrumb
+// segments that don't match a real page render as plain text (no link),
+// since clicking them would 404 — a common trap for folder-based docs
+// where authors don't add an `index.md` per group.
+const docs = await getCollection('docs')
+const validPaths = new Set(
+  docs.map(entry => `/${entry.id === 'index' ? '' : `${entry.id}/`}`),
+)
+
 // Build breadcrumb trail from URL path
 const segments = currentPath.split('/').filter(Boolean)
 const crumbs = [
-  { label: config.title, href: '/' },
-  ...segments.map((segment, i) => ({
-    label: segment.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-    href: `/${segments.slice(0, i + 1).join('/')}/`,
-  })),
+  { label: config.title, href: '/', hasPage: true },
+  ...segments.map((segment, i) => {
+    const href = `/${segments.slice(0, i + 1).join('/')}/`
+    return {
+      label: segment.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      href,
+      hasPage: validPaths.has(href),
+    }
+  }),
 ]
 
 // Replace last crumb label with actual page title
@@ -34,7 +48,7 @@ if (crumbs.length > 1) {
           class={`usa-breadcrumb__list-item ${i === crumbs.length - 1 ? 'usa-current' : ''}`}
           aria-current={i === crumbs.length - 1 ? 'page' : undefined}
         >
-          {i === crumbs.length - 1
+          {i === crumbs.length - 1 || !crumb.hasPage
 ? (
             <span>{crumb.label}</span>
           )

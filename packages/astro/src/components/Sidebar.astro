@@ -27,6 +27,17 @@ function buildSidebarTree(entries: typeof docs): SidebarItem[] {
   const tree: Map<string, SidebarItem & { children: SidebarItem[] }> = new Map()
   const topLevel: SidebarItem[] = []
 
+  // IDs that are the index page of a group — i.e. another entry has an
+  // id starting with `<this>/`. Astro's content collection normalizes
+  // `<group>/index.md` to a length-1 id (`"components"`, not
+  // `"components/index"`), so we can't tell "group landing page" from
+  // "top-level leaf page" by path shape alone.
+  const groupIndexIds = new Set(
+    entries
+      .map(e => e.id)
+      .filter(id => !id.includes('/') && entries.some(o => o.id.startsWith(`${id}/`))),
+  )
+
   for (const entry of entries) {
     const parts = entry.id.split('/')
     const label = entry.data.sidebar?.label ?? entry.data.title
@@ -34,19 +45,26 @@ function buildSidebarTree(entries: typeof docs): SidebarItem[] {
     const href = `/${entry.id === 'index' ? '' : entry.id}/`
 
     if (parts.length === 1) {
-      // Top-level page
-      if (entry.id !== 'index') {
-        topLevel.push({ label, href, order })
+      // Top-level page — skip the site root and any page that is the
+      // landing page of a group (it surfaces as the group header below).
+      if (entry.id === 'index' || groupIndexIds.has(entry.id)) {
+        continue
       }
+      topLevel.push({ label, href, order })
     }
  else {
-      // Nested page — group by first directory segment
+      // Nested page — group by first directory segment. Authors are
+      // expected to provide `<group>/index.md`; the group label is a
+      // link and USWDS sidenav has no concept of a non-link heading.
       const groupKey = parts[0]
       if (!tree.has(groupKey)) {
+        const groupIndex = entries.find(e => e.id === groupKey)
         tree.set(groupKey, {
-          label: groupKey.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+          label: groupIndex?.data.sidebar?.label
+            ?? groupIndex?.data.title
+            ?? groupKey.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
           href: `/${groupKey}/`,
-          order: 999,
+          order: groupIndex?.data.sidebar?.order ?? 999,
           children: [],
         })
       }
