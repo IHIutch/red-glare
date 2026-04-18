@@ -38,18 +38,27 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      # Trusted Publishing: no NPM_TOKEN. `id-token: write` above lets the
-      # workflow mint an OIDC token that npm accepts because we configured
-      # this repo+workflow as a Trusted Publisher on npmjs.com. Auth
-      # tokens stop living in GitHub secrets; each publish exchanges an
-      # ephemeral OIDC credential for a short-lived npm token.
-      - name: Create Release PR or publish to npm
+      # Trusted Publishing, via the two-step pattern from
+      # https://github.com/changesets/action/issues/422#issuecomment-2742776221.
+      # The action manages the Version PR and git tagging (`changeset tag`
+      # creates tags but doesn't publish). The actual `npm publish` runs
+      # in the next step so npm's OIDC flow isn't pre-empted by the
+      # placeholder auth token `actions/setup-node` injects when it sees
+      # a registry-url. Explicit `NPM_TOKEN: ''` tells setup-node "don't
+      # fill this in" — OIDC is the auth source.
+      - name: Create Release PR or tag release
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish
+          publish: pnpm changeset tag
           title: "chore: release packages"
           commit: "chore: release packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ''
+
+      - name: Publish to npm
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm publish -r --access public --no-git-checks
+        env:
           NPM_CONFIG_PROVENANCE: "true"
