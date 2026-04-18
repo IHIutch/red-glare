@@ -42,7 +42,7 @@ jobs:
       # https://github.com/changesets/action/issues/422#issuecomment-2742776221.
       # The action manages the Version PR and git tagging (`changeset tag`
       # creates tags but doesn't publish). The actual `npm publish` runs
-      # in the next step so npm's OIDC flow isn't pre-empted by the
+      # in the next step so npm's OIDC flow isn't overridden by the
       # placeholder auth token `actions/setup-node` injects when it sees
       # a registry-url. Explicit `NPM_TOKEN: ''` tells setup-node "don't
       # fill this in" — OIDC is the auth source.
@@ -54,7 +54,6 @@ jobs:
           title: "chore: release packages"
           commit: "chore: release packages"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ''
 
       - name: Publish to npm
