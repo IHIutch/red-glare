@@ -30,6 +30,8 @@ title: My Page
 | `sidebar.order` | `number` | — | Numeric sort position within the sidebar group. |
 | `sidebar.hidden` | `boolean` | `false` | Exclude from sidebar + prev/next. |
 | `toc` | `boolean` | `true` | Render the right-column table of contents. |
+| `hero` | `Hero` | — | Splash-template hero band. See below. |
+| `features` | `Feature[]` | — | Splash-template feature grid. See below. |
 | `i18n.lang` | `string` | `defaultLocale` | Page language (sets `<html lang>`). |
 | `draft` | `boolean` | `false` | Skip in RSS, llms.txt, and sitemap when `true`. |
 
@@ -122,6 +124,76 @@ When `true`:
 - Excluded from sitemap.
 
 The page still builds and is reachable at its URL — "draft" means "not yet announced," not "unpublished." Useful for staging new content before public launch.
+
+### `hero` & `features` (splash template only)
+
+`splash`-template pages accept a structured `hero` block and an optional `features` array in frontmatter. Both render above the markdown body — authors don't need directives or component imports to lay out a landing page.
+
+```yaml
+---
+title: Welcome
+template: splash
+hero:
+  text: Let's build docs sites together  # main <h1>
+  tagline: One-line description.         # optional lede
+  image:                                 # optional
+    src: /hero.svg
+    alt: Mascot
+  actions:
+    - text: Get started
+      link: /getting-started/installation/
+    - text: Browse components
+      link: /components/alert/
+      variant: outline
+      outline: true
+    - text: View on GitHub
+      link: https://github.com/example/repo
+      variant: inverse
+      external: true
+features:
+  - icon: 🏛️
+    title: USWDS out of the box
+    details: Real government banner, header, identifier, footer.
+    link: /configuration/overview/        # optional "Learn more" button
+  - icon: ✍️
+    title: Markdown-first
+    details: CommonMark via Comark, plus MDC directives.
+---
+```
+
+#### `hero` fields
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `name` | `string` | Optional pre-title "eyebrow" line. |
+| `text` | `string` | Required. Main headline, rendered as `<h1>`. |
+| `tagline` | `string` | Optional lede paragraph. |
+| `image.src` | `string` | Optional hero image. |
+| `image.alt` | `string` | Image alt text. Leave empty for decorative images. |
+| `actions` | `HeroAction[]` | Optional button group. |
+
+#### `HeroAction` fields
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `text` | `string` | Button label. |
+| `link` | `string` | Destination URL (internal or external). |
+| `variant` | `'secondary' \| 'accent-cool' \| 'accent-warm' \| 'base' \| 'outline' \| 'inverse'` | USWDS button variant. Omit for primary. |
+| `outline` | `boolean` | Adds `usa-button--outline` on top of the variant. |
+| `big` | `boolean` | Render as the `big` USWDS button. |
+| `external` | `boolean` | Opens in a new tab with `rel="noopener noreferrer"`. |
+
+#### `features` fields
+
+Each feature is a card. All fields are plain strings — no markdown expansion inside `details`, keep it one-liner copy.
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `icon` | `string` | Emoji or single character rendered above the title. |
+| `title` | `string` | Required. Card heading. |
+| `details` | `string` | Required. Card body copy. |
+| `link` | `string` | Optional call-to-action link. Requires `linkText` to render. |
+| `linkText` | `string` | Call-to-action label. Use a specific verb per card — a page of cards all reading "Learn more" is a weaker signal than distinct labels. |
 
 ## Example: doc page
 

@@ -386,3 +386,55 @@ pre {
     box-shadow: inset 0 -4px 0 color("primary-vivid");
     z-index: 1;
 }
+
+// Splash-template hero band. A dark USWDS primary surface with a
+// headline, optional eyebrow + tagline, and a `usa-button-group` of
+// action links. Typography sizing is handled by USWDS utilities in
+// `SplashLayout.astro`; this block only fills in the bits utilities
+// don't cover — the eyebrow uppercase treatment, tagline dimming,
+// and link colors scoped to the dark surface.
+.rg-hero {
+    a:not(.usa-button) {
+        color: color("primary-lighter");
+        text-decoration: underline;
+
+        &:hover {
+            color: color("base-lightest");
+        }
+    }
+}
+
+.rg-hero__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: color("primary-lighter");
+    font-weight: font-weight("semibold");
+}
+
+.rg-hero__text {
+    letter-spacing: -0.02em;
+    font-weight: font-weight("bold");
+    text-wrap: balance;
+}
+
+.rg-hero__tagline {
+    // USWDS's primary family tops out at `primary-lighter`; a very-light
+    // neutral plays the same "dimmed" role as a `primary-lightest` token
+    // would without depending on a theme-specific extension.
+    color: color("base-lightest");
+    max-width: 60ch;
+    text-wrap: balance;
+    line-height: 1.6;
+}
+
+.rg-hero__image img {
+    max-width: 100%;
+    height: auto;
+}
+
+// Feature card icon — big emoji/char rendered above the card heading.
+.rg-feature__icon {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+}

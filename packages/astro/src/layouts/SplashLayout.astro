@@ -1,44 +1,180 @@
 ---
 // Splash / landing page layout — wider layout, no sidebar or TOC.
-// Wraps slot content in a USWDS hero (optional) + section/grid-container.
+// Renders an optional dark-band hero and an optional feature grid from
+// frontmatter, followed by the author's markdown body.
 import BaseLayout from './BaseLayout.astro'
+
+interface HeroAction {
+  text: string
+  link: string
+  variant?:
+    | 'secondary'
+    | 'accent-cool'
+    | 'accent-warm'
+    | 'base'
+    | 'outline'
+    | 'inverse'
+  outline?: boolean
+  big?: boolean
+  external?: boolean
+}
+
+interface Hero {
+  name?: string
+  text: string
+  tagline?: string
+  image?: { src: string, alt?: string }
+  actions?: HeroAction[]
+}
+
+interface Feature {
+  icon?: string
+  title: string
+  details: string
+  link?: string
+  linkText?: string
+}
 
 interface Props {
   title: string
   description?: string
-  hero?: {
-    heading: string
-    tagline?: string
-    image?: string
-    callToAction?: { label: string, href: string }
-  }
+  hero?: Hero
+  features?: Feature[]
+  /**
+   * Whether the slot holds real body content. Set by the route based on
+   * `tree.nodes.length > 0` so a frontmatter-only splash page (hero +
+   * features, no body) doesn't ship an empty `<section class="usa-section">`
+   * beneath the feature grid. `Astro.slots.has('default')` can't be used
+   * here — it returns true whenever the component was called with
+   * children, even when the expression evaluates to `false`.
+   */
+  hasBody?: boolean
 }
 
-const { title, description, hero } = Astro.props
+const { title, description, hero, features, hasBody = false } = Astro.props
+
+function actionClass(action: HeroAction): string {
+  // Use a Set so `variant: "outline"` + `outline: true` don't emit the
+  // same modifier twice. USWDS button modifiers can legitimately stack
+  // (e.g. `inverse` + `outline`), but a given modifier should never
+  // appear more than once on a single element.
+  const parts = new Set(['usa-button'])
+  if (action.variant)
+parts.add(`usa-button--${action.variant}`)
+  if (action.outline)
+parts.add('usa-button--outline')
+  if (action.big)
+parts.add('usa-button--big')
+  return [...parts].join(' ')
+}
 ---
 
 <BaseLayout title={title} description={description}>
-  {hero && (
-    <section class="usa-hero" aria-label="Introduction">
+  {
+    hero && (
+      <section
+        class="rg-hero bg-primary-darker text-white overflow-hidden"
+        aria-label="Introduction"
+      >
+        <div class="grid-container padding-y-5 tablet-lg:padding-y-10 desktop-lg:padding-top-15 desktop-lg:padding-bottom-10 position-relative">
+          <div class="grid-row grid-gap flex-align-center">
+            <div
+              class={
+                hero.image
+                  ? 'tablet:grid-col-7 desktop:grid-col-8'
+                  : 'tablet:grid-col-10 desktop:grid-col-9'
+              }
+            >
+              <h1 class="rg-hero__text font-sans-xl tablet:font-sans-2xl desktop-lg:font-sans-3xl line-height-sans-2 margin-top-2 margin-bottom-2">
+                {hero.text}
+              </h1>
+              {hero.tagline && (
+                <p class="rg-hero__tagline font-sans-md tablet:font-sans-lg margin-y-3">
+                  {hero.tagline}
+                </p>
+              )}
+              {hero.actions && hero.actions.length > 0 && (
+                <ul class="usa-button-group usa-dark-background bg-transparent margin-top-4 padding-0">
+                  {hero.actions.map(action => (
+                    <li class="usa-button-group__item">
+                      <a
+                        href={action.link}
+                        class={actionClass(action)}
+                        target={action.external ? '_blank' : undefined}
+                        rel={
+                          action.external ? 'noopener noreferrer' : undefined
+                        }
+                      >
+                        {action.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {hero.image && (
+              <div class="tablet:grid-col-5 desktop:grid-col-4 rg-hero__image">
+                <img src={hero.image.src} alt={hero.image.alt ?? ''} />
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    features && features.length > 0 && (
+      <section class="usa-section" aria-label="Features">
+        <div class="grid-container">
+          <ul class="usa-card-group">
+            {features.map(feature => (
+              <li class="usa-card tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card__container">
+                  <div class="usa-card__header">
+                    {feature.icon && (
+                      <span
+                        class="rg-feature__icon font-sans-2xl margin-right-1 margin-bottom-2"
+                        aria-hidden="true"
+                      >
+                        {feature.icon}
+                      </span>
+                    )}
+                    <h3 class="usa-card__heading">{feature.title}</h3>
+                  </div>
+                  <div class="usa-card__body">
+                    <p>{feature.details}</p>
+                  </div>
+                  {feature.link && feature.linkText && (
+                    <div class="usa-card__footer">
+                      <a
+                        class="usa-button usa-button--outline"
+                        href={feature.link}
+                      >
+                        {feature.linkText}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {hasBody && (
+    <section class="usa-section">
       <div class="grid-container">
-        <div class="usa-hero__callout">
-          <h1 class="usa-hero__heading">
-            <span class="usa-hero__heading--alt">{hero.heading}</span>
-          </h1>
-          {hero.tagline && <p>{hero.tagline}</p>}
-          {hero.callToAction && (
-            <a class="usa-button" href={hero.callToAction.href}>
-              {hero.callToAction.label}
-            </a>
-          )}
+        <div class="grid-row">
+          <div
+            class="grid-col-12 tablet:grid-col-10 tablet-lg:grid-col-8 margin-x-auto"
+          >
+            <slot />
+          </div>
         </div>
       </div>
     </section>
   )}
-
-  <section class="usa-section">
-    <div class="grid-container">
-      <slot />
-    </div>
-  </section>
 </BaseLayout>

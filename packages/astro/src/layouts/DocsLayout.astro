@@ -13,5 +13,7 @@ const { title, description, alert } = Astro.props
 ---
 
 <BaseLayout title={title} description={description} alert={alert}>
-  <slot />
+  <div class="usa-section">
+    <slot />
+  </div>
 </BaseLayout>

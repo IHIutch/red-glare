@@ -29,7 +29,7 @@ export async function getStaticPaths() {
   // up front, not halfway through rendering.
   const parsed = await Promise.all(
     docs.map(async (doc) => {
-      const tree = await parseContent(doc.body!)
+      const tree = await parseContent(doc.body)
       setCachedTree(doc.id, tree)
       return { slug: doc.id, tree }
     }),
@@ -55,7 +55,7 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props
-const tree = getCachedTree(doc.id) ?? await parseContent(doc.body!)
+const tree = getCachedTree(doc.id) ?? await parseContent(doc.body)
 const headings = extractHeadings(tree)
 // Frontmatter description wins; otherwise fall back to the <!-- more --> summary
 const description = doc.data.description ?? extractSummaryText(tree) ?? undefined
@@ -71,14 +71,22 @@ const isSplash = doc.data.template === 'splash';
 {
   isSplash
   ? (
-    <SplashLayout title={doc.data.title} description={description}>
-      <article>
-        <Article
-          tree={tree}
-          className="usa-prose"
-          client:visible
-        />
-      </article>
+    <SplashLayout
+      title={doc.data.title}
+      description={description}
+      hero={doc.data.hero}
+      features={doc.data.features}
+      hasBody={tree.nodes.length > 0}
+    >
+      {tree.nodes.length > 0 && (
+        <article>
+          <Article
+            tree={tree}
+            className="usa-prose"
+            client:visible
+          />
+        </article>
+      )}
     </SplashLayout>
   )
 : (

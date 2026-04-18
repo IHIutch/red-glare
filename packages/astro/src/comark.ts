@@ -185,9 +185,14 @@ function attachTocHeadings(
  * The AST is then rendered by @comark/react's ComarkRenderer in Astro
  * routes, with custom USWDS component mappings passed via the `components`
  * prop.
+ *
+ * Accepts `undefined` for frontmatter-only pages — Astro's content
+ * collection returns `body: undefined` when a `.md` file has no body
+ * after the closing `---`, and comark's internal `parseFrontmatter`
+ * calls `.startsWith` on its argument unconditionally.
  */
-export async function parseContent(markdown: string): Promise<ComarkTree> {
-  const tree = await parse(markdown, {
+export async function parseContent(markdown: string | undefined): Promise<ComarkTree> {
+  const tree = await parse(markdown ?? '', {
     plugins: [
       highlight({
         // Themes must be passed as preloaded ThemeRegistration objects, not
