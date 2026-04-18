@@ -43,17 +43,6 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      # Trusted Publishing: no NPM_TOKEN. `id-token: write` above lets
-      # npm mint an OIDC token at publish time, which npm accepts because
-      # this repo+workflow is registered as a Trusted Publisher on
-      # npmjs.com. `NPM_TOKEN: ""` overrides the placeholder that
-      # actions/setup-node would otherwise inject from the registry-url
-      # config — npm prefers a real token over OIDC when one is present,
-      # so we make sure there isn't one.
-      #
-      # Publish via `npx changeset publish` (npm CLI) rather than
-      # `pnpm changeset publish`. npm's OIDC flow is native; pnpm's
-      # publish shim may not route through it in all versions.
       - name: Create Release PR or publish to npm
         id: changesets
         uses: changesets/action@v1
