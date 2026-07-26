@@ -35,7 +35,6 @@ export default antfu(
       '**/dist/**',
       '**/node_modules/**',
       '**/.astro/**',
-      '**/.beads/**',
       '**/*.md',
       'pnpm-lock.yaml',
     ],
