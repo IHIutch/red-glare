@@ -16,7 +16,8 @@
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
-    "publint": "pnpm -r --no-bail exec publint"
+    "publint": "pnpm -r --no-bail exec publint",
+    "verify": "pnpm lint && pnpm typecheck && pnpm -r test && pnpm build"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.1.1",

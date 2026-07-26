@@ -89,9 +89,11 @@ demo/             # Working example site exercising every component
 
 ```bash
 pnpm install
+pnpm --filter @red-glare/astro exec playwright install chromium   # one-time, needed by the browser test suite
 pnpm --filter @red-glare/astro test       # browser tests via @vitest/browser + Playwright
 pnpm --filter @red-glare/astro typecheck
 pnpm lint
+pnpm verify   # lint + typecheck + tests + build
 pnpm --filter red-glare-demo dev          # run the demo site locally
 ```
 
