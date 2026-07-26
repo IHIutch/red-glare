@@ -16,9 +16,9 @@ export default defineConfig({
         {
           tag: 'script',
           attrs: {
-            src: 'https://cdn.usefathom.com/script.js',
+            'src': 'https://cdn.usefathom.com/script.js',
             'data-site': 'GNJXITFS',
-            defer: true,
+            'defer': true,
           },
         },
       ],

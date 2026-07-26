@@ -6,7 +6,6 @@ import { parse } from 'comark'
 import highlight from 'comark/plugins/highlight'
 import summary from 'comark/plugins/summary'
 import GithubSlugger from 'github-slugger'
-
 // Extra languages preloaded on top of comark's defaults (vue, tsx, svelte,
 // typescript, javascript, mdc, bash, json, yaml, astro). Anything a docs
 // author is likely to fence goes here — CSS/Sass flavours, config file
