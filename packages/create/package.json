@@ -28,10 +28,12 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "prepublishOnly": "tsc",
+    "test": "tsc && vitest run",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
   }
 }

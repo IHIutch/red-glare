@@ -1,20 +1,59 @@
 #!/usr/bin/env node
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { parseArgs } from 'node:util'
 
+const USAGE = 'Usage: pnpm create @red-glare <project-name>\n\nExample:\n  pnpm create @red-glare my-agency-docs'
+
+const PROJECT_NAME_RE = /^[a-z0-9][a-z0-9._-]*$/
+
 async function main(): Promise<void> {
-  const { positionals } = parseArgs({ allowPositionals: true })
+  let positionals: string[]
+  let help: boolean
+  try {
+    const parsed = parseArgs({ allowPositionals: true, options: { help: { type: 'boolean', short: 'h' } } })
+    positionals = parsed.positionals
+    help = parsed.values.help ?? false
+  }
+  catch {
+    // eslint-disable-next-line no-console
+    console.log(USAGE)
+    process.exit(1)
+  }
+
+  if (help) {
+    // eslint-disable-next-line no-console
+    console.log(USAGE)
+    process.exit(0)
+  }
+
   const projectName = positionals[0]
 
   if (!projectName) {
     // eslint-disable-next-line no-console
-    console.log('Usage: pnpm create @red-glare <project-name>\n\nExample:\n  pnpm create @red-glare my-agency-docs')
+    console.log(USAGE)
+    process.exit(1)
+  }
+
+  if (!PROJECT_NAME_RE.test(projectName) || projectName.includes('/') || projectName.includes('\\')) {
+    console.error(`Error: "${projectName}" is not a valid project name.\n\n${USAGE}`)
     process.exit(1)
   }
 
   const projectDir = resolve(process.cwd(), projectName)
+
+  try {
+    const entries = await readdir(projectDir)
+    if (entries.some(entry => !entry.startsWith('.'))) {
+      console.error(`Error: directory ${projectName} already exists and is not empty`)
+      process.exit(1)
+    }
+  }
+  catch {
+    // ENOENT is fine — the directory doesn't exist yet.
+  }
+
   // eslint-disable-next-line no-console
   console.log(`\nCreating Red Glare project in ${projectDir}...\n`)
 
@@ -42,7 +81,7 @@ async function main(): Promise<void> {
         },
         dependencies: {
           '@astrojs/preact': '^5.1.1',
-          '@red-glare/astro': '^0.0.1',
+          '@red-glare/astro': '^0.1.0',
           'astro': '^6.0.0',
           'preact': '^10.29.1',
         },
@@ -60,7 +99,7 @@ import redGlare from '@red-glare/astro'
 export default defineConfig({
   integrations: [
     redGlare({
-      title: '${projectName}',
+      title: ${JSON.stringify(projectName)},
       description: 'Documentation site powered by Red Glare',
       governmentBanner: true,
     }),
@@ -140,13 +179,22 @@ toc: true
     `${JSON.stringify(
       {
         extends: 'astro/tsconfigs/strict',
-        compilerOptions: {
-          types: ['node'],
-        },
       },
       null,
       2,
     )}\n`,
+  )
+
+  await writeFile(
+    join(projectDir, '.gitignore'),
+    `node_modules/
+dist/
+.astro/
+.env
+.env.*
+.dev.vars*
+.wrangler/
+`,
   )
 
   // eslint-disable-next-line no-console
