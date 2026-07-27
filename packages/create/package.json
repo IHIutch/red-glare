@@ -1,7 +1,7 @@
 {
   "name": "@red-glare/create",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI scaffolder for Red Glare documentation sites",
   "license": "MIT",
   "repository": {
